@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.7.0_21" class="java.beans.XMLDecoder">
+ <object class="parisWork.Chemicals">
+  <void method="add">
+   <object class="parisWork.Chemical">
+    <void property="CAS">
+     <string>23-4-1234</string>
+    </void>
+    <void property="boilingPoint">
+     <double>273.15</double>
+    </void>
+    <void property="meltingPoint">
+     <double>253.15</double>
+    </void>
+    <void property="name">
+     <string>ChemicalX</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="parisWork.Chemical">
+    <void property="CAS">
+     <string>23-5-1234</string>
+    </void>
+    <void property="boilingPoint">
+     <double>303.15</double>
+    </void>
+    <void property="meltingPoint">
+     <double>273.15</double>
+    </void>
+    <void property="name">
+     <string>ChemicalY</string>
+    </void>
+    <void property="synonyms">
+     <void method="add">
+      <string>Synonym1</string>
+     </void>
+     <void method="add">
+      <string>Synonym2</string>
+     </void>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>

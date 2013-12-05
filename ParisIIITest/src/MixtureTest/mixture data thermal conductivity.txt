@@ -1,0 +1,20 @@
+		Mole fraction component 1					
+Component1	Component2	0	0.2	0.4	0.6	0.8	1
+water	ethanol	0.162	0.183	0.213	0.266	0.372	0.628
+water	1-propanol	0.155	0.166	0.136	0.232	0.335	0.628
+water	2-propanol	0.137	0.148	0.17	0.216	0.321	0.628
+water	glycerol	0.285	0.296	0.313	0.345	0.412	0.628
+water	acetone	0.154	0.166	0.19	0.234	0.335	0.628
+water	ethylene glycol	0.252	0.27	0.293	0.333	0.413	0.628
+water	propylene glycol	0.199	0.212	0.236	0.278	0.363	0.628
+water	formamide	0.352	0.368	0.394	0.434	0.501	0.628
+water	diethylene glycol	0.205	0.22	0.235	0.266	0.337	0.628
+water	triethylene glycol	0.194	0.201	0.212	0.235	0.293	0.628
+water	pyridine	0.163	0.17	0.184	0.221	0.312	0.628
+water	dimethyl formamide	0.181	0.191	0.206	0.24	0.324	0.628
+glycerol	n-butanol	0.147	0.165	0.186	0.215	0.247	0.283
+formamide	triethylene glycol	0.195	0.198	0.207	0.223	0.262	0.35
+formamide	methanol	0.205	0.234	0.263	0.292	0.321	0.35
+triethylene glycol	1-propanol	0.153	0.155	0.168	0.179	0.188	0.195
+formamide	2-propanol	0.137	0.151	0.176	0.213	0.262	0.35
+triethylene glycol	n-butanol	0.147	0.16	0.17	0.181	0.188	0.195

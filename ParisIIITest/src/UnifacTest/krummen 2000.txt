@@ -1,0 +1,10 @@
+Solute	wt% water	30C	40C	50C	60C
+n-hexane	0	13.1	11.8	10.9	10
+n-hexane	3	21.1	19.1	17.4	15.9
+n-hexane	6	34.8	31.4	27.9	25.1
+cyclohexane	0	8.06	7.4	6.8	6.32
+cyclohexane	3	12.7	11.5	10.5	9.61
+cyclohexane	6	20.1	17.8	16.2	14.5
+benzene	0	1.04	1.05	1.05	1.06
+benzene	3	1.36	1.4	1.44	1.47
+benzene	6	1.92	1.93	1.94	1.99

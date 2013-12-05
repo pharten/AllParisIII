@@ -1,0 +1,695 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_17" class="java.beans.XMLDecoder"> 
+ <object class="parisWork.ChemicalFamilies"> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>1</int> 
+    </void> 
+    <void property="name"> 
+     <string>n-Alkanes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>2</int> 
+    </void> 
+    <void property="name"> 
+     <string>Methylalkanes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>3</int> 
+    </void> 
+    <void property="name"> 
+     <string>Dimethylalkanes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>4</int> 
+    </void> 
+    <void property="name"> 
+     <string>Other alkanes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>5</int> 
+    </void> 
+    <void property="name"> 
+     <string>Cycloalkanes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>6</int> 
+    </void> 
+    <void property="name"> 
+     <string>Alkylcyclopentanes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>7</int> 
+    </void> 
+    <void property="name"> 
+     <string>Alkylcyclohexanes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>8</int> 
+    </void> 
+    <void property="name"> 
+     <string>Multi-ring cycloalkanes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>9</int> 
+    </void> 
+    <void property="name"> 
+     <string>1-alkynes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>10</int> 
+    </void> 
+    <void property="name"> 
+     <string>2,3,4-alkenes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>11</int> 
+    </void> 
+    <void property="name"> 
+     <string>Methylalkenes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>12</int> 
+    </void> 
+    <void property="name"> 
+     <string>Ethyl &amp; higher alkenes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>13</int> 
+    </void> 
+    <void property="name"> 
+     <string>Cycloalkenes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>22</int> 
+    </void> 
+    <void property="name"> 
+     <string>Terpenes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>14</int> 
+    </void> 
+    <void property="name"> 
+     <string>Dialkenes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>15</int> 
+    </void> 
+    <void property="name"> 
+     <string>Alkynes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>16</int> 
+    </void> 
+    <void property="name"> 
+     <string>n-alkylbenzenes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>17</int> 
+    </void> 
+    <void property="name"> 
+     <string>Other alkylbenzenes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>18</int> 
+    </void> 
+    <void property="name"> 
+     <string>Other monoaromatics</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>21</int> 
+    </void> 
+    <void property="name"> 
+     <string>Diphenyl/Polyaromatics</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>19</int> 
+    </void> 
+    <void property="name"> 
+     <string>Napthalenes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>23</int> 
+    </void> 
+    <void property="name"> 
+     <string>Other hydrocarbon rings</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>25</int> 
+    </void> 
+    <void property="name"> 
+     <string>Aldehydes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>65</int> 
+    </void> 
+    <void property="name"> 
+     <string>Oth. polyfunc. C,H,O</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>26</int> 
+    </void> 
+    <void property="name"> 
+     <string>Ketones</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>69</int> 
+    </void> 
+    <void property="name"> 
+     <string>Polyfunc. C,H,O,N</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>40</int> 
+    </void> 
+    <void property="name"> 
+     <string>Other sat. aliph esters</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>27</int> 
+    </void> 
+    <void property="name"> 
+     <string>n-alcohols</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>28</int> 
+    </void> 
+    <void property="name"> 
+     <string>Other alcohols(aliph.)</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>29</int> 
+    </void> 
+    <void property="name"> 
+     <string>Cycloaliphatic alcohols</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>30</int> 
+    </void> 
+    <void property="name"> 
+     <string>Aromatic alcohols</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>31</int> 
+    </void> 
+    <void property="name"> 
+     <string>Polyols</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>32</int> 
+    </void> 
+    <void property="name"> 
+     <string>n-aliphatic acids</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>33</int> 
+    </void> 
+    <void property="name"> 
+     <string>Other aliphat acids</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>36</int> 
+    </void> 
+    <void property="name"> 
+     <string>Anhydrides</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>37</int> 
+    </void> 
+    <void property="name"> 
+     <string>Formates</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>38</int> 
+    </void> 
+    <void property="name"> 
+     <string>Acetates</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>39</int> 
+    </void> 
+    <void property="name"> 
+     <string>Propionates &amp; Butyrates</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>41</int> 
+    </void> 
+    <void property="name"> 
+     <string>Unsat aliphatic esters</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>42</int> 
+    </void> 
+    <void property="name"> 
+     <string>Aromatic esters</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>64</int> 
+    </void> 
+    <void property="name"> 
+     <string>Polyfunctional esters</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>79</int> 
+    </void> 
+    <void property="name"> 
+     <string>Organic salts</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>43</int> 
+    </void> 
+    <void property="name"> 
+     <string>Aliphatic ethers</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>45</int> 
+    </void> 
+    <void property="name"> 
+     <string>Epoxides</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>44</int> 
+    </void> 
+    <void property="name"> 
+     <string>Other Ethers/Diethers</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>48</int> 
+    </void> 
+    <void property="name"> 
+     <string>C3 &amp; higher aliph. chlorides</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>47</int> 
+    </void> 
+    <void property="name"> 
+     <string>C1/C2 Aliphatic chlorides</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>49</int> 
+    </void> 
+    <void property="name"> 
+     <string>Aromatic chlorides</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>71</int> 
+    </void> 
+    <void property="name"> 
+     <string>Polyfunc. C,H,O,halide</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>50</int> 
+    </void> 
+    <void property="name"> 
+     <string>C,H,Br compounds</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>51</int> 
+    </void> 
+    <void property="name"> 
+     <string>C,H,I compounds</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>55</int> 
+    </void> 
+    <void property="name"> 
+     <string>Other aliphatic amines</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>54</int> 
+    </void> 
+    <void property="name"> 
+     <string>n-Aliph primary amines</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>57</int> 
+    </void> 
+    <void property="name"> 
+     <string>Other amines, imines</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>68</int> 
+    </void> 
+    <void property="name"> 
+     <string>Polyfunc. Amides/Amines</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>56</int> 
+    </void> 
+    <void property="name"> 
+     <string>Aromatic amines</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>59</int> 
+    </void> 
+    <void property="name"> 
+     <string>C,H,NO2 compounds</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>66</int> 
+    </void> 
+    <void property="name"> 
+     <string>Polyfunc. nitriles</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>58</int> 
+    </void> 
+    <void property="name"> 
+     <string>Nitriles</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>60</int> 
+    </void> 
+    <void property="name"> 
+     <string>Isocyanates/Diisocyanates</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>61</int> 
+    </void> 
+    <void property="name"> 
+     <string>Mercaptans</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>62</int> 
+    </void> 
+    <void property="name"> 
+     <string>Sulfides/Theophenes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>70</int> 
+    </void> 
+    <void property="name"> 
+     <string>Polyfunc. C,H,O,S</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>53</int> 
+    </void> 
+    <void property="name"> 
+     <string>C,H multihalog cmps</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>72</int> 
+    </void> 
+    <void property="name"> 
+     <string>Polyfunc. C,H,N,halide, (o)</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>52</int> 
+    </void> 
+    <void property="name"> 
+     <string>C,H,F compounds</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>75</int> 
+    </void> 
+    <void property="name"> 
+     <string>Silanes/Siloxanes</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>76</int> 
+    </void> 
+    <void property="name"> 
+     <string>Organic-Inorganic compounds</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="parisWork.ChemicalFamily"> 
+    <void property="id"> 
+     <int>63</int> 
+    </void> 
+    <void property="name"> 
+     <string>Polyfunctional acids</string> 
+    </void> 
+   </object> 
+  </void> 
+ </object> 
+</java> 

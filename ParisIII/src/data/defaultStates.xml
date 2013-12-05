@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.7.0_02" class="java.beans.XMLDecoder">
+ <object class="parisInit.States">
+  <void method="add">
+   <object class="parisInit.State" id="State0">
+    <void property="fileName">
+     <string>C:\PaulHartenSpace\Juno\workspace\ParisIII\src\data\defaultState.xml</string>
+    </void>
+    <void property="systemName">
+     <string>default</string>
+    </void>
+   </object>
+  </void>
+  <void property="activeState">
+   <object idref="State0"/>
+  </void>
+ </object>
+</java>
