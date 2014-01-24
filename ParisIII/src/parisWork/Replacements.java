@@ -21,18 +21,19 @@ public class Replacements extends Vector<Chemical> implements Serializable {
 	private static final long serialVersionUID = 6784893243942873489L;
 	
 	private State state;
-	private Chemicals chemicals;
+//	private Chemicals chemicals;
 	private boolean changed = false;
 	
 	public Replacements(State state, Chemicals chemicals) {
 		super();
 		this.state = state;
-		this.chemicals = chemicals;
-		filter();
-		quickSort();
+		filter(chemicals);
+//		quickSort();
+		quickSort_inPlace(0,this.size()-1);
+//		testSort();
 	}
 
-	private void filter() {
+	private void filter(Chemicals chemicals) {
 		double systemPressure = Units.pressureConvertFrom(Double.parseDouble(this.state.getSystemPres()),Units.US);
 		Mixture mixture = this.state.getMixture();
 		double aIndex = mixture.getAirIndex();
@@ -44,6 +45,7 @@ public class Replacements extends Vector<Chemical> implements Serializable {
 			chemical.calculateEnvironmentalIndexes(impactFactors, systemPressure);
 			if (chemical.getEnvironmentalIndex() < eIndex && chemical.getAirIndex() < aIndex) {
 				chemical.calculateReplacementScore(state);
+//				chemical.setReplacementScore(1.0);
 				this.add(chemical);
 			}
 		}
@@ -69,9 +71,10 @@ public class Replacements extends Vector<Chemical> implements Serializable {
 				chem1 = get(i);
 				set(i, get(minIndex));
 				set(minIndex, chem1);
+				changed = true;
 			}
 		}
-		changed = true;
+
 	}
 	
 	private Chemicals sort(Chemicals chemicals) {
@@ -93,9 +96,9 @@ public class Replacements extends Vector<Chemical> implements Serializable {
 				chem1 = chemicals.get(i);
 				chemicals.set(i, chemicals.get(minIndex));
 				chemicals.set(minIndex, chem1);
+				changed = true;
 			}
 		}
-		changed = true;
 		
 		return chemicals;
 	}
@@ -133,7 +136,7 @@ public class Replacements extends Vector<Chemical> implements Serializable {
 		}
 		
 	}
-
+	
 	private void quickSort() {
 		int midIndex, minQuick = 9;
 		double score, firstScore;
@@ -191,9 +194,212 @@ public class Replacements extends Vector<Chemical> implements Serializable {
 		for (Chemicals chemicals: newQuickLists ) {
 			this.addAll(sort(chemicals));  // sort the replacements from this list into this
 		}
-		changed = true;
 		
 		return; // return the original replacements all sorted
+	}
+	
+	private void quickSort_inPlace() { // non-recursive
+		
+		int minQuick = 9;
+		int l, u, i, j;
+		double score;
+		Chemical temp;
+		Vector<Integer> list = null;
+		Vector<Integer> newList = new Vector<Integer>();
+		
+		newList.add(0);
+		newList.add(this.size());
+		
+		do {
+			
+			list = newList;
+			newList = new Vector<Integer>();
+
+			for (int k=0; k<list.size()-1; k++) {
+				
+				newList.add(list.get(k));
+
+				l = list.get(k);
+				u = list.get(k+1)-1;
+
+				if (u-l+1<=minQuick) { // don't do anything if this is already small
+
+					// do nothing more
+
+				} else { // more than minQuick elements
+
+					i = l-1; j = u;
+					score = this.get(u).getReplacementScore();
+
+//					System.out.println(l+":"+u);
+
+					while (true) {
+						while (i<u && this.get(++i).getReplacementScore() <= score);
+						while (j>l && this.get(--j).getReplacementScore() >= score);
+						if (i>=j) break;
+						temp = this.get(i);
+						this.set(i, this.get(j));
+						this.set(j, temp);
+						changed = true;
+					}
+
+					if (i==u) {
+						newList.add(i);
+					} else { // i < u
+						temp = this.get(i);
+						this.set(i, this.get(u));
+						this.set(u, temp);
+						changed = true;
+						newList.add(i+1);
+					}
+
+				}
+				
+			}
+			newList.add(this.size());
+			
+		} while (newList.size() > list.size()); // there are more breakups
+		
+		for (int k=0; k<newList.size()-1; k++) {
+			sort_inPlace(newList.get(k), newList.get(k+1)-1);
+		}
+		
+		return; // return the original replacements all sorted
+	}
+	
+	private void quickSort_inPlace(int l, int r) { // recursive
+		// This method has a problem when the elements are all the same.
+		// Then the last element is greater than or equal to all the rest
+		// of the elements, and the block splits into block sizes r-l and 1
+		// each recursive iteration.  If the starting block size is large
+		// enough, a stack overflow error is given.
+		
+		int minQuick = 9;
+		int i, j;
+		double score;
+		Chemical temp;
+
+		if (r-l+1<=minQuick) {
+
+			sort_inPlace(l, r);
+
+		} else {
+
+			i = l-1; j = r;
+			score = this.get(r).getReplacementScore();
+			
+			while (true) {
+				while (i<r && this.get(++i).getReplacementScore() <= score);
+				while (j>l && this.get(--j).getReplacementScore() >= score);
+				if (i>=j) break;
+				temp = this.get(i);
+				this.set(i, this.get(j));
+				this.set(j, temp);
+				changed = true;
+			}
+			
+			if (i!=r) {
+				temp = this.get(i);
+				this.set(i, this.get(r));
+				this.set(r, temp);
+				changed = true;
+			}
+			
+			if (i<r) {
+				
+				quickSort_inPlace(l,i-1);
+				quickSort_inPlace(i+1,r);
+				
+			} else { // i==r, all values <= last value
+				
+				// j is first element (from right-to-left) whose score is less than last element
+				
+				if (j-l+1 > minQuick) {
+					
+					int m = (r+l)/2;
+					if (this.get(m).getReplacementScore()!=score) {
+						// try midpoint for partitioning instead
+						temp = this.get(m);
+						this.set(m, this.get(r));
+						this.set(r, temp);
+						changed = true;
+						quickSort_inPlace(l,r);
+					} else {
+						quickSort_inPlace(l,j);
+					}
+
+				} else if (j>l) { // all scores before j (from right-to-left) are the same value, no more sorting needed
+					
+					quickSort_inPlace(l,j);
+					
+				} else {
+					
+					// nothing more needed
+					
+				}
+				
+			}
+
+
+
+		}
+
+		return; // return the original replacements all sorted
+	}
+	
+	private void sort_inPlace(int lower, int upper) {
+		
+		Chemical temp;
+		
+		int size = upper-lower+1;
+		if (size<=1) {
+			
+			// do nothing
+			
+		} else if (size==2) {
+			
+			temp = this.get(lower);
+			if (temp.getReplacementScore()>this.get(upper).getReplacementScore()) {
+				this.set(lower, this.get(upper));
+				this.set(upper, temp);
+				changed = true;
+			}
+			
+		} else {
+			
+			double minScore, thisScore;
+			int minIndex;
+			
+			for (int i=lower; i<upper; i++) {
+				minIndex = i;
+				temp = this.get(minIndex);
+				minScore = temp.getReplacementScore();
+				for (int j=i+1; j<=upper; j++) {
+					thisScore = this.get(j).getReplacementScore();
+					if (thisScore < minScore) {
+						minIndex = j;
+						minScore = thisScore;
+					}
+				}
+				if (minIndex!=i) {
+					this.set(i, this.get(minIndex));
+					this.set(minIndex, temp);
+					changed = true;
+				}
+				
+			}
+			
+		}
+		
+	}
+	
+	private void testSort() {
+		for (int i=0; i<this.size()-1; i++) {
+			if (this.get(i).getReplacementScore()>this.get(i+1).getReplacementScore()) {
+				System.out.println("Error: "+i+", "+this.get(i).getReplacementScore()+" > "+this.get(i+1).getReplacementScore());
+				break;
+			}
+		}
 	}
 
 	public String[] getNames() {

@@ -130,7 +130,7 @@ public class ParisWork extends java.lang.Object implements Serializable {
 				display.sleep();
 			}
 		}
-		display.dispose();
+//		display.dispose();
 
 	}
 

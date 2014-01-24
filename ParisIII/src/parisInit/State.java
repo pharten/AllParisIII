@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Vector;
 
 import parisWork.Chemical;
@@ -82,13 +83,21 @@ public class State extends Object implements Serializable, Cloneable {
 	
 	@Override
 	public State clone() { // deep copy
-		State state = new State();
-		state.fileName = this.fileName;
+		
+		State state = null;
+		try {
+			state = (State) super.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		state.fileName = new String(this.fileName);
 		state.screen0StackOption = this.screen0StackOption;
-		state.screen0TableHeader = this.screen0TableHeader;
-		state.systemName = this.systemName;
-		state.systemPres = this.systemPres;
-		state.systemTemp = this.systemTemp;
+		state.screen0TableHeader = new String(this.screen0TableHeader);
+		state.systemName = new String(this.systemName);
+		state.systemPres = new String(this.systemPres);
+		state.systemTemp = new String(this.systemTemp);
 		state.systemUnit = this.systemUnit;
 		if (this.mixture!=null) state.mixture = this.mixture.clone();
 		state.impactFactors = this.impactFactors.clone();
@@ -98,12 +107,64 @@ public class State extends Object implements Serializable, Cloneable {
 		state.aTolerances = this.aTolerances.clone();
 		if (this.aDesiredVals!=null) state.aDesiredVals = this.aDesiredVals.clone();
 		state.aScale = this.aScale;
+		state.single = this.single;
+		state.replacementIndex = this.replacementIndex;
+		state.replacementTopIndex = this.replacementTopIndex;
+		
 		return state;
+	}
+	
+	public boolean equals(State otherState) { // deep equals
+
+		if (this==otherState) return true;
+		if (otherState==null) return false;
+		if (!(otherState instanceof State)) return false;
+		
+		// compare primitives
+		if (this.screen0StackOption!=otherState.screen0StackOption) return false;
+		if (this.pScale!=otherState.pScale) return false;
+		if (this.aScale!=otherState.aScale) return false;
+		if (this.single!=otherState.single) return false;
+		if (this.replacementIndex!=otherState.replacementIndex) return false;
+		if (this.replacementTopIndex!=otherState.replacementTopIndex) return false;
+		
+		// compare strings
+		if (this.fileName==null && otherState.fileName!=null) return false;
+		if (this.fileName!=null && !this.fileName.equals(otherState.fileName)) return false;
+		if (this.screen0TableHeader==null && otherState.screen0TableHeader!=null) return false;
+		if (this.screen0TableHeader!=null && !this.screen0TableHeader.equals(otherState.screen0TableHeader)) return false;
+		if (this.systemName==null && otherState.systemName!=null) return false;
+		if (this.systemName!=null && !this.systemName.equals(otherState.systemName)) return false;
+		if (this.systemPres==null && otherState.systemPres!=null) return false;
+		if (this.systemPres!=null && !this.systemPres.equals(otherState.systemPres)) return false;
+		if (this.systemTemp==null && otherState.systemTemp!=null) return false;
+		if (this.systemTemp!=null && !this.systemTemp.equals(otherState.systemTemp)) return false;
+		
+		// compare arrays of primitives
+		if (!Arrays.equals(this.impactFactors, otherState.impactFactors)) return false; 
+		if (!Arrays.equals(this.pTolerances, otherState.pTolerances)) return false;
+		if (!Arrays.equals(this.pDesiredVals, otherState.pDesiredVals)) return false;
+		if (!Arrays.equals(this.aTolerances, otherState.aTolerances)) return false;
+		if (!Arrays.equals(this.aDesiredVals, otherState.aDesiredVals)) return false;
+		
+		// compare user defined classes
+		if (this.systemUnit==null && otherState.systemUnit!=null) return false;
+		if (this.systemUnit!=null && !this.systemUnit.equals(otherState.systemUnit)) return false;
+		if (this.mixture==null && otherState.mixture!=null) return false;
+		if (this.mixture!=null && !this.mixture.equals(otherState.mixture)) return false;
+
+		return true;
 	}
 	
 	public void calculateEnvironmentalIndexes() {
 		Mixture mixture = this.getMixture();
-		if (mixture!=null) mixture.calculateEnvironmentalIndexesOfMixture();
+		if (mixture!=null) {
+			Chemical[] chemicals = mixture.getChemicals2();
+			for (int i=0; i<chemicals.length; i++) {
+				chemicals[i].calculateEnvironmentalIndexes(getImpactFactors(), pressureConvertToSI());
+			}
+			mixture.calculateEnvironmentalIndexesOfMixture();
+		}
 	}
 	
 	public String getFileName() {

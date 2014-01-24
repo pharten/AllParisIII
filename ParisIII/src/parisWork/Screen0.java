@@ -45,9 +45,12 @@ public class Screen0 extends Screen {
 	private StackLayout stack = new StackLayout();
 	private Composite stackComposite, composite_6, composite_7, composite_8;
 	private List list_0, list_3;
+	private Button btn_3;
 	private Table table;
 	private TableEditor tableEditor;
 	private Shell shell;
+	private Reference reference;
+	private State initialState;
 
 	/**
 	 * Create the composite.
@@ -538,7 +541,7 @@ public class Screen0 extends Screen {
 		rl_composite_13.center = true;
 		composite_13.setLayout(rl_composite_13);
 		
-		Button btn_3 = new Button(composite_11, SWT.NONE);
+		btn_3 = new Button(composite_11, SWT.NONE);
 		btn_3.setText("ref");
 		
 		Composite composite_20 = new Composite(composite_11, SWT.NONE);
@@ -548,7 +551,7 @@ public class Screen0 extends Screen {
 				int index=list_3.getSelectionIndex();
 				if (index<0) return;
 				
-				Reference reference = new Reference(e.display.getActiveShell());
+				reference = new Reference(e.display.getActiveShell());
 				reference.open(chemicals.get(index), states.getActiveState().getSystemUnit());
 			}
 		});
@@ -684,23 +687,25 @@ public class Screen0 extends Screen {
 	public void updateShared() throws Exception { 
 		if (states!=null) {
 			State activeState = states.getActiveState();
+
 			if (table.getItemCount()==0) {
 				activeState.setMixture(null);
 				activeState.setPDesiredVals(null);
 				activeState.setADesiredVals(null);
+			} else {
+				saveTable(activeState);
+				activeState.setPDesiredVals();
+				activeState.setADesiredVals();
+				activeState.calculateEnvironmentalIndexes();
+			}
+
+			if (!activeState.equals(initialState)) {
+				// reset values
 				replacements = null;
 				bestMixtures = null;
+				activeState.setSingle(true);
 			}
-			Mixture mixture = activeState.getMixture();
-			if (mixture!=null) {
-				Chemical[] chemicals = mixture.getChemicals2();
-				for (int i=0; i<chemicals.length; i++) {
-					chemicals[i].calculateEnvironmentalIndexes(activeState.getImpactFactors(), activeState.pressureConvertToSI());
-				}
-				saveTable(activeState);
-				mixture.calculateEnvironmentalIndexesOfMixture();
-			}
-			if (bestMixtures==null) activeState.setSingle(true);
+
 		}
 		ParisWork.states = states;
 		ParisWork.chemicals = chemicals;
@@ -719,6 +724,7 @@ public class Screen0 extends Screen {
 		combo_1.setItems(states.getSystemNames());
 		
 		changeState(states.getActiveState());
+		initialState = states.getActiveState().clone();
 	}
 
 	public void changeState(State state) throws Exception {
@@ -815,6 +821,18 @@ public class Screen0 extends Screen {
 			mixture.setWghtFractions(mixture.calculateMassFractions(molFractions));
 		}
 		
+	}
+
+	public List getList() {
+		return list_3;
+	}
+
+	public Button getBtn() {
+		return btn_3;
+	}
+
+	public Reference getReference() {
+		return reference;
 	}	
 	
 }

@@ -1,6 +1,5 @@
 package parisWork;
 
-import java.io.Serializable;
 import java.text.DecimalFormat;
 
 import org.eclipse.swt.events.SelectionAdapter;
@@ -10,23 +9,18 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.List;
 
 import parisInit.Units;
 
 public class Reference extends Dialog {
 
-	protected Object result;
+	protected int result = SWT.OK;
 	protected Shell shell;
 	private Text text_3;
 	private Text text_4;
@@ -59,6 +53,7 @@ public class Reference extends Dialog {
 	protected Label lblKgms;
 	protected Label lblJmsk;
 	protected Label lblKgs;
+	protected Button btnOK;
 	
 	private static DecimalFormat df = new DecimalFormat("0.0##");
 	private static DecimalFormat ef = new DecimalFormat("#0.000E0");
@@ -81,13 +76,18 @@ public class Reference extends Dialog {
 	 * Open the dialog.
 	 * @return the result
 	 */
-	public Object open(Chemical chemical, Units units) {
+	public void open(Chemical chemical, Units units) {
 		
 		addInChemicalProperties(chemical, units);
 		modifyUnits(units);
 
 		shell.open();
 		shell.layout();
+
+		return;
+	}
+	
+	public int stop() {
 		Display display = getParent().getDisplay();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
@@ -187,85 +187,79 @@ public class Reference extends Dialog {
 	private void createContents() {
 		shell = new Shell(getParent(), getStyle());
 		shell.setText("Paris III");
-		shell.setSize(588, 404);
-		shell.setLayout(new RowLayout(SWT.HORIZONTAL));
+		shell.setSize(577, 414);
+		shell.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
-		Composite composite = new Composite(shell, SWT.NONE);
-		composite.setLayoutData(new RowData(574, 18));
+		SashForm sashForm_1 = new SashForm(shell, SWT.VERTICAL);
+		
+		Composite composite = new Composite(sashForm_1, SWT.NONE);
+		composite.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
 		Label lblNewLabel = new Label(composite, SWT.CENTER);
-		lblNewLabel.setAlignment(SWT.CENTER);
-		lblNewLabel.setBounds(80, 0, 345, 18);
 		lblNewLabel.setText("Properties of Selected Chemical at Specified Temperature");
 		
-		Group group = new Group(shell, SWT.NONE);
-		group.setLayout(new FillLayout(SWT.VERTICAL));
-		group.setLayoutData(new RowData(230, 114));
+		SashForm sashForm_2 = new SashForm(sashForm_1, SWT.NONE);
 		
-		Composite composite_3 = new Composite(group, SWT.NONE);
-		composite_3.setLayout(new RowLayout(SWT.HORIZONTAL));
+		Composite composite_23 = new Composite(sashForm_2, SWT.NONE);
+		composite_23.setLayout(new FillLayout(SWT.VERTICAL));
 		
-		Label lblNewLabel_1 = new Label(composite_3, SWT.NONE);
+		SashForm sashForm_4 = new SashForm(composite_23, SWT.NONE);
+		
+		Label lblNewLabel_1 = new Label(sashForm_4, SWT.NONE);
 		lblNewLabel_1.setAlignment(SWT.RIGHT);
-		lblNewLabel_1.setLayoutData(new RowData(76, 20));
 		lblNewLabel_1.setText("Chemical Name");
 		
-		text_3 = new Text(composite_3, SWT.BORDER);
+		text_3 = new Text(sashForm_4, SWT.BORDER | SWT.WRAP);
 		text_3.setEditable(false);
-		text_3.setLayoutData(new RowData(136, 18));
+		sashForm_4.setWeights(new int[] {1, 2});
 		
-		Composite composite_4 = new Composite(group, SWT.NONE);
-		composite_4.setLayout(new RowLayout(SWT.HORIZONTAL));
+		SashForm sashForm_5 = new SashForm(composite_23, SWT.NONE);
 		
-		Label lblNewLabel_3 = new Label(composite_4, SWT.NONE);
+		Label lblNewLabel_3 = new Label(sashForm_5, SWT.NONE);
 		lblNewLabel_3.setAlignment(SWT.RIGHT);
-		lblNewLabel_3.setLayoutData(new RowData(76, 20));
 		lblNewLabel_3.setText("Formula");
 		
-		text_4 = new Text(composite_4, SWT.BORDER);
+		text_4 = new Text(sashForm_5, SWT.BORDER | SWT.WRAP);
 		text_4.setEditable(false);
-		text_4.setLayoutData(new RowData(136, 18));
+		sashForm_5.setWeights(new int[] {1, 2});
 		
-		Composite composite_5 = new Composite(group, SWT.NONE);
-		composite_5.setLayout(new RowLayout(SWT.HORIZONTAL));
+		SashForm sashForm_6 = new SashForm(composite_23, SWT.NONE);
 		
-		Label lblNewLabel_5 = new Label(composite_5, SWT.NONE);
+		Label lblNewLabel_5 = new Label(sashForm_6, SWT.NONE);
 		lblNewLabel_5.setAlignment(SWT.RIGHT);
-		lblNewLabel_5.setLayoutData(new RowData(76, 22));
 		lblNewLabel_5.setText("CAS Number");
 		
-		text_5 = new Text(composite_5, SWT.BORDER);
+		text_5 = new Text(sashForm_6, SWT.BORDER | SWT.WRAP);
 		text_5.setEditable(false);
-		text_5.setLayoutData(new RowData(136, 18));
+		sashForm_6.setWeights(new int[] {1, 2});
 		
-		Composite composite_6 = new Composite(group, SWT.NONE);
-		composite_6.setLayout(new RowLayout(SWT.HORIZONTAL));
+		SashForm sashForm_7 = new SashForm(composite_23, SWT.NONE);
 		
-		Label lblNewLabel_6 = new Label(composite_6, SWT.NONE);
+		Label lblNewLabel_6 = new Label(sashForm_7, SWT.NONE);
 		lblNewLabel_6.setAlignment(SWT.RIGHT);
-		lblNewLabel_6.setLayoutData(new RowData(76, 20));
 		lblNewLabel_6.setText("Structure");
 		
-		text_6 = new Text(composite_6, SWT.BORDER);
+		text_6 = new Text(sashForm_7, SWT.BORDER | SWT.WRAP);
 		text_6.setEditable(false);
-		text_6.setLayoutData(new RowData(136, 18));
+		sashForm_7.setWeights(new int[] {1, 2});
 		
-		Composite composite_1 = new Composite(shell, SWT.NONE);
-		composite_1.setLayout(new RowLayout(SWT.HORIZONTAL));
-		composite_1.setLayoutData(new RowData(331, 130));
+		Composite composite_1 = new Composite(sashForm_2, SWT.NONE);
+		composite_1.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
 		Group grpSynonyms = new Group(composite_1, SWT.NONE);
 		grpSynonyms.setLayout(new FillLayout(SWT.HORIZONTAL));
-		grpSynonyms.setLayoutData(new RowData(316, 107));
 		grpSynonyms.setText("Synonyms");
 		
-		txtSynonym = new Text(grpSynonyms, SWT.BORDER | SWT.READ_ONLY | SWT.WRAP | SWT.H_SCROLL | SWT.CANCEL | SWT.MULTI);
+		txtSynonym = new Text(grpSynonyms, SWT.BORDER | SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI);
 		txtSynonym.setEditable(false);
+		sashForm_2.setWeights(new int[] {251, 316});
 		
-		SashForm sashForm = new SashForm(shell, SWT.NONE);
-		sashForm.setLayoutData(new RowData(574, 187));
+		SashForm sashForm = new SashForm(sashForm_1, SWT.NONE);
 		
-		Group group1 = new Group(sashForm, SWT.NONE);
+		Composite composite_25 = new Composite(sashForm, SWT.NONE);
+		composite_25.setLayout(new FillLayout(SWT.HORIZONTAL));
+		
+		Group group1 = new Group(composite_25, SWT.NONE);
 		group1.setLayout(new FillLayout(SWT.VERTICAL));
 		
 		Composite composite_7 = new Composite(group1, SWT.NONE);
@@ -372,11 +366,15 @@ public class Reference extends Dialog {
 		lblK_4 = new Label(composite_14, SWT.NONE);
 		lblK_4.setText(" K");
 		
-		Group group2 = new Group(sashForm, SWT.NONE);
+		Composite composite_24 = new Composite(sashForm, SWT.NONE);
+		composite_24.setLayout(new FillLayout(SWT.HORIZONTAL));
+		
+		Group group2 = new Group(composite_24, SWT.NONE);
 		group2.setText("Temperature Dependent");
 		group2.setLayout(new FillLayout(SWT.VERTICAL));
 		
-		Composite composite_21 = new Composite(group2, SWT.NONE);
+		Composite composite_3 = new Composite(group2, SWT.NONE);
+		composite_3.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
 		Composite composite_15 = new Composite(group2, SWT.NONE);
 		composite_15.setLayout(new FillLayout(SWT.HORIZONTAL));
@@ -456,22 +454,34 @@ public class Reference extends Dialog {
 		lblKgs = new Label(composite_20, SWT.NONE);
 		lblKgs.setText(" kg/s2");
 		
-		Composite composite_22 = new Composite(group2, SWT.NONE);
+		Composite composite_4 = new Composite(group2, SWT.NONE);
+		composite_4.setLayout(new FillLayout(SWT.HORIZONTAL));
+		
 		sashForm.setWeights(new int[] {1, 1});
 		
-		Composite composite_2 = new Composite(shell, SWT.NONE);
-		composite_2.setLayoutData(new RowData(574, 27));
+		SashForm sashForm_3 = new SashForm(sashForm_1, SWT.NONE);
 		
-		Button btnOK = new Button(composite_2, SWT.NONE);
-		btnOK.setBounds(253, 0, 68, 24);
+		Composite composite_5 = new Composite(sashForm_3, SWT.NONE);
+		composite_5.setLayout(new FillLayout(SWT.HORIZONTAL));
+		
+		btnOK = new Button(sashForm_3, SWT.NONE);
 		btnOK.setText("OK");
 		btnOK.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				result = SWT.OK;
 				shell.dispose();
+				result = stop();
 			}
 		});
 		
+		Composite composite_2 = new Composite(sashForm_3, SWT.NONE);
+		composite_2.setLayout(new FillLayout(SWT.HORIZONTAL));
+		sashForm_3.setWeights(new int[] {5, 1, 5});
+		sashForm_1.setWeights(new int[] {1, 5, 7, 1});
+		
+	}
+
+	public Button getBtnOK() {
+		return btnOK;
 	}
 }

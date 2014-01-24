@@ -59,6 +59,8 @@ public class ParisTabFolderGUITest {
 
 				window.getShell().dispose();
 				
+				window.stop();
+				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

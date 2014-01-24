@@ -34,6 +34,8 @@ public class ParisMenuGUITest {
 			assertMenuBarItem(menuBar.getItem(3), "Help");
 			
 			window.getShell().dispose();
+			
+			window.stop();
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -73,6 +75,8 @@ public class ParisMenuGUITest {
 			
 			window.getShell().dispose();
 			
+			window.stop();
+			
 //			fileItem.setSelection(false);
 //			fileItem.getMenu().notifyListeners(SWT.Selection, new Event());
 
@@ -108,6 +112,8 @@ public class ParisMenuGUITest {
 			assertMenuItem(editMenu.getItem(6), false, "Select All", SWT.CTRL+'A');
 			
 			window.getShell().dispose();
+			
+			window.stop();
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -137,6 +143,8 @@ public class ParisMenuGUITest {
 
 			window.getShell().dispose();
 			
+			window.stop();
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -165,6 +173,8 @@ public class ParisMenuGUITest {
 //			helpMenu.getItem(3).notifyListeners(SWT.Selection, new Event());;
 
 			window.getShell().dispose();
+			
+			window.stop();
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
