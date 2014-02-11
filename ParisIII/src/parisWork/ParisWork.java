@@ -616,11 +616,13 @@ public class ParisWork extends java.lang.Object implements Serializable {
 					URL myURL = ClassLoader.getSystemResource("./UsersGuide.pdf");
 
 					if (myURL==null) {
-						File file = new File(strUserFolder+"UsersGuide.pdf");
-						if (file.getParentFile().mkdirs() && !file.exists()) {
-							Files.copy(ClassLoader.getSystemResourceAsStream("data/UsersGuide.pdf"),file.toPath());
+						File file1 = new File(strUserFolder+"UsersGuide.pdf");
+						File file2 = new File(ClassLoader.getSystemResource("data/UsersGuide.pdf").getPath());
+						if (!file1.getParentFile().exists()) file1.getParentFile().mkdir();
+						if (!file1.exists() || file1.lastModified() < file2.lastModified()) {
+							Files.copy(ClassLoader.getSystemResourceAsStream("data/UsersGuide.pdf"),file1.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
 						}
-						myURL = file.toURI().toURL();
+						myURL = file1.toURI().toURL();
 					}
 
 					BrowserLauncher launcher = new BrowserLauncher(null);

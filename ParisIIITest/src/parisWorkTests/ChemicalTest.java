@@ -2,8 +2,7 @@ package parisWorkTests;
 
 import java.util.Vector;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import parisWork.Chemical;

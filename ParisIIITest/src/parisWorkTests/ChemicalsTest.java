@@ -196,6 +196,8 @@ public class ChemicalsTest {
 		chemicals1 = Chemicals.readFromFile("data/Chemicals.txt");
 		chemicals2 = Chemicals.readFromFile("data/Chemicals.xml");
 		
+		Assert.assertNotNull("Chemical list from txt file is null", chemicals1);
+		Assert.assertNotNull("Chemical list form xml file is null", chemicals2);
 		Assert.assertEquals("Chemical lists are not same size", chemicals1.size(), chemicals2.size());
 		
 		for (int i=0; i<chemicals1.size(); i++) {
