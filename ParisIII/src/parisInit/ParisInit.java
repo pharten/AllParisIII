@@ -130,7 +130,7 @@ public class ParisInit extends Dialog {
 		});
 		
 		developersButton = new Button(composite_3, SWT.NONE);
-		developersButton.setText("Developer and Acknolodgements");
+		developersButton.setText("Developers and Acknowledgements");
 		developersButton.setBounds(30, 42, 238, 40);
 		developersButton.setTouchEnabled(true);
 		developersButton.addSelectionListener(new SelectionAdapter() {

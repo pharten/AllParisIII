@@ -80,14 +80,30 @@ public class Developers extends Dialog {
 		lblNewLabel_1.setText("Developers");
 		
 		Text text_1 = new Text(sashForm_1, SWT.BORDER | SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL);
-		text_1.setText("Paul Harten, Douglas Young, Todd Martin, and Heriberto Cabezas, National Risk Management Research Laboratory U.S. Environmental Protection Agency");
+		text_1.setText("Paul Harten, Douglas Young, Todd Martin, and Heriberto Cabezas from the "
+				+ "Sustainable Technology Division, National Risk Management Research Laboratory, "
+				+ "U.S. Environmental Protection Agency");
 		
 		Label lblNewLabel_2 = new Label(sashForm_1, SWT.CENTER);
 		lblNewLabel_2.setFont(SWTResourceManager.getFont("Times New Roman", 12, SWT.BOLD));
 		lblNewLabel_2.setText("Acknowledgements");
 		
 		Text text_2 = new Text(sashForm_1, SWT.BORDER | SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL);
-		text_2.setText("The basic concepts were adopted from the PARIS (1995) developed under a Cooporative Agreement by Renhong Zhao, Yuanxiang Fang, and Rakesh Govind at the University of Cincinnati, in collaboration with Subhas K. Sikdar and Dennis L. Timberlake, Sustainable Technology Division, National Risk Management Research Laboratory, U.S. Environmental Protection Agency.\r\n \r\nPhysical property database of pure compound properties and the property calculations of mixed compounds were developed by Todd Martin from the Sustainable Technology Division, National Risk Management Research Laboratory, U.S. Environmental Protection Agency.\r\n\r\nThe UNIFAC parameter table was obtained from CAPEC,  Department of Chemical Engineering, Technical University of Denmark, Lyngby, Denmark.\r\n\r\nThe database of chemical environmental impact data, compiled by Douglas Young and Todd Martin from the Sustainable Technology Division, National Risk Management Research Laboratory, U.S. Environmental Protection Agency.\r\n");
+		text_2.setText("The Physical property database of pure compound properties and the property "
+				+ "calculations of mixed compounds were developed by Todd Martin from the "
+				+ "Sustainable Technology Division, National Risk Management Research Laboratory, "
+				+ "U.S. Environmental Protection Agency."
+				+ "\r\n\r\nThe database of chemical environmental impact data was compiled by "
+				+ "Douglas Young and Todd Martin from the Sustainable Technology Division, "
+				+ "National Risk Management Research Laboratory, U.S. Environmental Protection Agency."
+				+ "\r\n\r\nThe UNIFAC parameter table was obtained from CAPEC, "
+				+ "Department of Chemical Engineering, Technical University of Denmark, "
+				+ "Lyngby, Denmark."
+				+ "\r\n\r\nThe basic concepts were adopted from the PARIS (1995) developed "
+				+ "under a Cooperative Agreement by Renhong Zhao, Yuanxiang Fang, and Rakesh Govind "
+				+ "at the University of Cincinnati, in collaboration with Subhas K. Sikdar and "
+				+ "Dennis L. Timberlake from the Sustainable Technology Division, National Risk Management "
+				+ "Research Laboratory, U.S. Environmental Protection Agency.");
 		
 		SashForm sashForm = new SashForm(sashForm_1, SWT.NONE);
 		
@@ -106,7 +122,7 @@ public class Developers extends Dialog {
 		Composite composite_1 = new Composite(sashForm, SWT.NONE);
 		sashForm.setWeights(new int[] {5, 1, 5});
 		
-		sashForm_1.setWeights(new int[] {1, 4, 1, 4, 1});
+		sashForm_1.setWeights(new int[] {1, 2, 1, 6, 1});
 	}
 
 	public int getResult() {
