@@ -22,7 +22,7 @@ public class Replacements extends Vector<Chemical> implements Serializable {
 	
 	private State state;
 //	private Chemicals chemicals;
-	private boolean changed = false;
+	private boolean changed = true;
 	
 	public Replacements(State state, Chemicals chemicals) {
 		super();
@@ -405,7 +405,7 @@ public class Replacements extends Vector<Chemical> implements Serializable {
 	public String[] getNames() {
 		String[] names = new String[this.size()];
 		for (int i=0; i<this.size(); i++) {
-			String init = (int)(this.get(i).getReplacementScore()/1000.0) + ": ";
+			String init = (int)(this.get(i).getReplacementScore()*1.0e-9) + ": ";
 			names[i] = init + this.get(i).getName();
 		}
 		return names;

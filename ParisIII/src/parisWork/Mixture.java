@@ -227,7 +227,7 @@ public class Mixture extends Chemical implements Serializable, Cloneable {
 		if (lowerBound < 0.0) lowerBound = 0.0;
 
 		double offset = 0.0;
-		if (actual < lowerBound || upperBound < actual) offset += 1000.0;
+		if (actual < lowerBound || upperBound < actual) offset += 1.0e9;
 				
 		if (actual < desired) {
 			offset += (desired-actual)/(desired-lowerBound);
@@ -242,7 +242,7 @@ public class Mixture extends Chemical implements Serializable, Cloneable {
 		if (lowerBound < 0.0) lowerBound = 0.0;
 
 		double offset = 0.0;
-		if (actual < lowerBound) offset += 1000.0;
+		if (actual < lowerBound) offset += 1.0e9;
 				
 		return offset;
 	}
@@ -1749,7 +1749,7 @@ public class Mixture extends Chemical implements Serializable, Cloneable {
 		String chemName;
 		
 		String mixName = new String();
-		mixName += (int)(this.getMixtureScore()/1000.0)+": ";
+		mixName += (int)(this.getMixtureScore()*1.0e-9)+": ";
 		
 		Chemical[] chemicals = this.getChemicals2();
 		for (int i=0; i<chemicals.length; i++) {

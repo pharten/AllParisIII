@@ -103,15 +103,19 @@ public class Screen3 extends Screen {
 		lblEthanol.setAlignment(SWT.CENTER);
 		
 		Text text_0 = new Text(composite_5, SWT.BORDER | SWT.CENTER);
+		text_0.setEditable(false);
 		textArray[0][0] = text_0;
 		
 		Text text_1 = new Text(composite_5, SWT.BORDER | SWT.CENTER);
+		text_1.setEditable(false);
 		textArray[0][1] = text_1;
 		
 		Text text_2 = new Text(composite_5, SWT.BORDER | SWT.CENTER);
+		text_2.setEditable(false);
 		textArray[0][2] = text_2;
 		
 		Text text_3 = new Text(composite_5, SWT.BORDER | SWT.CENTER);
+		text_3.setEditable(false);
 		textArray[0][3] = text_3;
 		
 		Text text_4 = new Text(composite_5, SWT.BORDER | SWT.CENTER);
@@ -128,15 +132,19 @@ public class Screen3 extends Screen {
 		lblDiethyl.setAlignment(SWT.CENTER);
 		
 		Text text_5 = new Text(composite_6, SWT.BORDER | SWT.CENTER);
+		text_5.setEditable(false);
 		textArray[1][0] = text_5;
 		
 		Text text_6 = new Text(composite_6, SWT.BORDER | SWT.CENTER);
+		text_6.setEditable(false);
 		textArray[1][1] = text_6;
 		
 		Text text_7 = new Text(composite_6, SWT.BORDER | SWT.CENTER);
+		text_7.setEditable(false);
 		textArray[1][2] = text_7;
 		
 		Text text_8 = new Text(composite_6, SWT.BORDER | SWT.CENTER);
+		text_8.setEditable(false);
 		textArray[1][3] = text_8;
 		
 		Text text_9 = new Text(composite_6, SWT.BORDER | SWT.CENTER);
@@ -153,15 +161,19 @@ public class Screen3 extends Screen {
 		lblAcetone.setAlignment(SWT.CENTER);
 		
 		Text text_10 = new Text(composite_7, SWT.BORDER | SWT.CENTER);
+		text_10.setEditable(false);
 		textArray[2][0] = text_10;
 		
 		Text text_11 = new Text(composite_7, SWT.BORDER | SWT.CENTER);
+		text_11.setEditable(false);
 		textArray[2][1] = text_11;
 		
 		Text text_12 = new Text(composite_7, SWT.BORDER | SWT.CENTER);
+		text_12.setEditable(false);
 		textArray[2][2] = text_12;
 		
 		Text text_13 = new Text(composite_7, SWT.BORDER | SWT.CENTER);
+		text_13.setEditable(false);
 		textArray[2][3] = text_13;
 		
 		Text text_14 = new Text(composite_7, SWT.BORDER | SWT.CENTER);
@@ -179,15 +191,19 @@ public class Screen3 extends Screen {
 		lblWater.setAlignment(SWT.CENTER);
 		
 		Text text_15 = new Text(composite_8, SWT.BORDER | SWT.CENTER);
+		text_15.setEditable(false);
 		textArray[3][0] = text_15;
 		
 		Text text_16 = new Text(composite_8, SWT.BORDER | SWT.CENTER);
+		text_16.setEditable(false);
 		textArray[3][1] = text_16;
 		
 		Text text_17 = new Text(composite_8, SWT.BORDER | SWT.CENTER);
+		text_17.setEditable(false);
 		textArray[3][2] = text_17;
 		
 		Text text_18 = new Text(composite_8, SWT.BORDER | SWT.CENTER);
+		text_18.setEditable(false);
 		textArray[3][3] = text_18;
 		
 		Text text_19 = new Text(composite_8, SWT.BORDER | SWT.CENTER);
@@ -204,15 +220,19 @@ public class Screen3 extends Screen {
 		lblBenzene.setAlignment(SWT.CENTER);
 		
 		Text text_20 = new Text(composite_9, SWT.BORDER | SWT.CENTER);
+		text_20.setEditable(false);
 		textArray[4][0] = text_20;
 		
 		Text text_21 = new Text(composite_9, SWT.BORDER | SWT.CENTER);
+		text_21.setEditable(false);
 		textArray[4][1] = text_21;
 		
 		Text text_22 = new Text(composite_9, SWT.BORDER | SWT.CENTER);
+		text_22.setEditable(false);
 		textArray[4][2] = text_22;
 		
 		Text text_23 = new Text(composite_9, SWT.BORDER | SWT.CENTER);
+		text_23.setEditable(false);
 		textArray[4][3] = text_23;
 		
 		Text text_24 = new Text(composite_9, SWT.BORDER | SWT.CENTER);
@@ -229,15 +249,19 @@ public class Screen3 extends Screen {
 		lblCisHeptene.setAlignment(SWT.CENTER);
 		
 		Text text_25 = new Text(composite_10, SWT.BORDER | SWT.CENTER);
+		text_25.setEditable(false);
 		textArray[5][0] = text_25;
 		
 		Text text_26 = new Text(composite_10, SWT.BORDER | SWT.CENTER);
+		text_26.setEditable(false);
 		textArray[5][1] = text_26;
 		
 		Text text_27 = new Text(composite_10, SWT.BORDER | SWT.CENTER);
+		text_27.setEditable(false);
 		textArray[5][2] = text_27;
 		
 		Text text_28 = new Text(composite_10, SWT.BORDER | SWT.CENTER);
+		text_28.setEditable(false);
 		textArray[5][3] = text_28;
 		
 		Text text_29 = new Text(composite_10, SWT.BORDER | SWT.CENTER);
@@ -254,15 +278,19 @@ public class Screen3 extends Screen {
 		lblNPropylChloride.setAlignment(SWT.CENTER);
 		
 		Text text_30 = new Text(composite_11, SWT.BORDER | SWT.CENTER);
+		text_30.setEditable(false);
 		textArray[6][0] = text_30;
 		
 		Text text_31 = new Text(composite_11, SWT.BORDER | SWT.CENTER);
+		text_31.setEditable(false);
 		textArray[6][1] = text_31;
 		
 		Text text_32 = new Text(composite_11, SWT.BORDER | SWT.CENTER);
+		text_32.setEditable(false);
 		textArray[6][2] = text_32;
 		
 		Text text_33 = new Text(composite_11, SWT.BORDER | SWT.CENTER);
+		text_33.setEditable(false);
 		textArray[6][3] = text_33;
 		
 		Text text_34 = new Text(composite_11, SWT.BORDER | SWT.CENTER);
@@ -279,15 +307,19 @@ public class Screen3 extends Screen {
 		lblNHeptaDecane.setAlignment(SWT.CENTER);
 		
 		Text text_35 = new Text(composite_12, SWT.BORDER | SWT.CENTER);
+		text_35.setEditable(false);
 		textArray[7][0] = text_35;
 		
 		Text text_36 = new Text(composite_12, SWT.BORDER | SWT.CENTER);
+		text_36.setEditable(false);
 		textArray[7][1] = text_36;
 		
 		Text text_37 = new Text(composite_12, SWT.BORDER | SWT.CENTER);
+		text_37.setEditable(false);
 		textArray[7][2] = text_37;
 		
 		Text text_38 = new Text(composite_12, SWT.BORDER | SWT.CENTER);
+		text_38.setEditable(false);
 		textArray[7][3] = text_38;
 		
 		Text text_39 = new Text(composite_12, SWT.BORDER | SWT.CENTER);
@@ -304,15 +336,19 @@ public class Screen3 extends Screen {
 		lblNpropylAmine.setAlignment(SWT.CENTER);
 		
 		Text text_40 = new Text(composite_13, SWT.BORDER | SWT.CENTER);
+		text_40.setEditable(false);
 		textArray[8][0] = text_40;
 		
 		Text text_41 = new Text(composite_13, SWT.BORDER | SWT.CENTER);
+		text_41.setEditable(false);
 		textArray[8][1] = text_41;
 		
 		Text text_42 = new Text(composite_13, SWT.BORDER | SWT.CENTER);
+		text_42.setEditable(false);
 		textArray[8][2] = text_42;
 		
 		Text text_43 = new Text(composite_13, SWT.BORDER | SWT.CENTER);
+		text_43.setEditable(false);
 		textArray[8][3] = text_43;
 		
 		Text text_44 = new Text(composite_13, SWT.BORDER | SWT.CENTER);
@@ -329,15 +365,19 @@ public class Screen3 extends Screen {
 		lblDimethylDisulfide.setAlignment(SWT.CENTER);
 
 		Text text_45 = new Text(composite_14, SWT.BORDER | SWT.CENTER);
+		text_45.setEditable(false);
 		textArray[9][0] = text_45;
 
 		Text text_46 = new Text(composite_14, SWT.BORDER | SWT.CENTER);
+		text_46.setEditable(false);
 		textArray[9][1] = text_46;
 
 		Text text_47 = new Text(composite_14, SWT.BORDER | SWT.CENTER);
+		text_47.setEditable(false);
 		textArray[9][2] = text_47;
 
 		Text text_48 = new Text(composite_14, SWT.BORDER | SWT.CENTER);
+		text_48.setEditable(false);
 		textArray[9][3] = text_48;
 
 		Text text_49 = new Text(composite_14, SWT.BORDER | SWT.CENTER);
@@ -648,8 +688,8 @@ public class Screen3 extends Screen {
 
 	@Override
 	public void begin() throws Exception {
-		addFocusListeners(states.getActiveState());
 		restore();
+		addFocusListeners(states.getActiveState());
 		int screenNum = Integer.parseInt(this.getClass().getSimpleName().substring(6));
 		states.getActiveState().setOpenScreen(screenNum);
 //		System.out.println("at Screen"+screenNum);
@@ -860,22 +900,32 @@ public class Screen3 extends Screen {
 	}
 	
 	private void addFocusListeners(State activeState) {
+		
+		Mixture mixture = activeState.getMixture();
+		if (mixture==null || mixture.getChemicals().size()==0) return;
+		
 		FocusListener listener;
 		for (int i=0; i<10; i++) {
 			listener = new FocusListenerAdapter(textArray, i, ef, null, activeState.getATolerances());  // unit is not used
 			for (int j=0; j<4; j++) {
 				textArray[i][j].addFocusListener(listener);
+				textArray[i][j].setEditable(true);
 			}
 			focusListener[i] = listener;
 		}
 	}
 	
 	private void removeFocusListeners() {
+		
+		Mixture mixture = states.getActiveState().getMixture();
+		if (mixture==null || mixture.getChemicals().size()==0) return;
+		
 		FocusListener listener;
 		for (int i=0; i<10; i++) {
 			listener = focusListener[i];
 			for (int j=0; j<4; j++) {
 				textArray[i][j].removeFocusListener(listener);
+				textArray[i][j].setEditable(false);
 			}
 		}
 	}
@@ -886,6 +936,10 @@ public class Screen3 extends Screen {
 			names[i] = bestMixtures.get(i).getMixtureName();
 		}
 		return names;
+	}
+
+	public Text[][] getTextArray() {
+		return textArray;
 	}
 	
 }

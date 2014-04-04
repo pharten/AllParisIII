@@ -110,15 +110,19 @@ public class Screen2 extends Screen {
 		lblMolecularMass.setAlignment(SWT.CENTER);
 		
 		Text text_0 = new Text(composite_5, SWT.BORDER | SWT.CENTER);
+		text_0.setEditable(false);
 		textArray[0][0] = text_0;
 		
 		Text text_1 = new Text(composite_5, SWT.BORDER | SWT.CENTER);
+		text_1.setEditable(false);
 		textArray[0][1] = text_1;
 		
 		Text text_2 = new Text(composite_5, SWT.BORDER | SWT.CENTER);
+		text_2.setEditable(false);
 		textArray[0][2] = text_2;
 		
 		Text text_3 = new Text(composite_5, SWT.BORDER | SWT.CENTER);
+		text_3.setEditable(false);
 		textArray[0][3] = text_3;
 		
 		Text text_4 = new Text(composite_5, SWT.BORDER | SWT.CENTER);
@@ -137,15 +141,19 @@ public class Screen2 extends Screen {
 		lblLiquidDensity.setAlignment(SWT.CENTER);
 		
 		Text text_5 = new Text(composite_6, SWT.BORDER | SWT.CENTER);
+		text_5.setEditable(false);
 		textArray[1][0] = text_5;
 		
 		Text text_6 = new Text(composite_6, SWT.BORDER | SWT.CENTER);
+		text_6.setEditable(false);
 		textArray[1][1] = text_6;
 		
 		Text text_7 = new Text(composite_6, SWT.BORDER | SWT.CENTER);
+		text_7.setEditable(false);
 		textArray[1][2] = text_7;
 		
 		Text text_8 = new Text(composite_6, SWT.BORDER | SWT.CENTER);
+		text_8.setEditable(false);
 		textArray[1][3] = text_8;
 		
 		Text text_9 = new Text(composite_6, SWT.BORDER | SWT.CENTER);
@@ -164,15 +172,19 @@ public class Screen2 extends Screen {
 		lblBoilingTemperature.setAlignment(SWT.CENTER);
 		
 		Text text_10 = new Text(composite_7, SWT.BORDER | SWT.CENTER);
+		text_10.setEditable(false);
 		textArray[2][0] = text_10;
 		
 		Text text_11 = new Text(composite_7, SWT.BORDER | SWT.CENTER);
+		text_11.setEditable(false);
 		textArray[2][1] = text_11;
 		
 		Text text_12 = new Text(composite_7, SWT.BORDER | SWT.CENTER);
+		text_12.setEditable(false);
 		textArray[2][2] = text_12;
 		
 		Text text_13 = new Text(composite_7, SWT.BORDER | SWT.CENTER);
+		text_13.setEditable(false);
 		textArray[2][3] = text_13;
 		
 		Text text_14 = new Text(composite_7, SWT.BORDER | SWT.CENTER);
@@ -191,15 +203,19 @@ public class Screen2 extends Screen {
 		lblVaporPressure.setAlignment(SWT.CENTER);
 		
 		Text text_15 = new Text(composite_8, SWT.BORDER | SWT.CENTER);
+		text_15.setEditable(false);
 		textArray[3][0] = text_15;
 		
 		Text text_16 = new Text(composite_8, SWT.BORDER | SWT.CENTER);
+		text_16.setEditable(false);
 		textArray[3][1] = text_16;
 		
 		Text text_17 = new Text(composite_8, SWT.BORDER | SWT.CENTER);
+		text_17.setEditable(false);
 		textArray[3][2] = text_17;
 		
 		Text text_18 = new Text(composite_8, SWT.BORDER | SWT.CENTER);
+		text_18.setEditable(false);
 		textArray[3][3] = text_18;
 		
 		Text text_19 = new Text(composite_8, SWT.BORDER | SWT.CENTER);
@@ -218,15 +234,19 @@ public class Screen2 extends Screen {
 		lblSurfaceTension.setAlignment(SWT.CENTER);
 		
 		Text text_20 = new Text(composite_9, SWT.BORDER | SWT.CENTER);
+		text_20.setEditable(false);
 		textArray[4][0] = text_20;
 		
 		Text text_21 = new Text(composite_9, SWT.BORDER | SWT.CENTER);
+		text_21.setEditable(false);
 		textArray[4][1] = text_21;
 		
 		Text text_22 = new Text(composite_9, SWT.BORDER | SWT.CENTER);
+		text_22.setEditable(false);
 		textArray[4][2] = text_22;
 		
 		Text text_23 = new Text(composite_9, SWT.BORDER | SWT.CENTER);
+		text_23.setEditable(false);
 		textArray[4][3] = text_23;
 		
 		Text text_24 = new Text(composite_9, SWT.BORDER | SWT.CENTER);
@@ -245,15 +265,19 @@ public class Screen2 extends Screen {
 		lblViscosity.setAlignment(SWT.CENTER);
 		
 		Text text_25 = new Text(composite_10, SWT.BORDER | SWT.CENTER);
+		text_25.setEditable(false);
 		textArray[5][0] = text_25;
 		
 		Text text_26 = new Text(composite_10, SWT.BORDER | SWT.CENTER);
+		text_26.setEditable(false);
 		textArray[5][1] = text_26;
 		
 		Text text_27 = new Text(composite_10, SWT.BORDER | SWT.CENTER);
+		text_27.setEditable(false);
 		textArray[5][2] = text_27;
 		
 		Text text_28 = new Text(composite_10, SWT.BORDER | SWT.CENTER);
+		text_28.setEditable(false);
 		textArray[5][3] = text_28;
 		
 		Text text_29 = new Text(composite_10, SWT.BORDER | SWT.CENTER);
@@ -272,15 +296,19 @@ public class Screen2 extends Screen {
 		lblThermalConductivity.setAlignment(SWT.CENTER);
 		
 		Text text_30 = new Text(composite_11, SWT.BORDER | SWT.CENTER);
+		text_30.setEditable(false);
 		textArray[6][0] = text_30;
 		
 		Text text_31 = new Text(composite_11, SWT.BORDER | SWT.CENTER);
+		text_31.setEditable(false);
 		textArray[6][1] = text_31;
 		
 		Text text_32 = new Text(composite_11, SWT.BORDER | SWT.CENTER);
+		text_32.setEditable(false);
 		textArray[6][2] = text_32;
 		
 		Text text_33 = new Text(composite_11, SWT.BORDER | SWT.CENTER);
+		text_33.setEditable(false);
 		textArray[6][3] = text_33;
 		
 		Text text_34 = new Text(composite_11, SWT.BORDER | SWT.CENTER);
@@ -304,6 +332,7 @@ public class Screen2 extends Screen {
 		textArray[7][0] = text_35;
 		
 		Text text_36 = new Text(composite_12, SWT.BORDER | SWT.CENTER);
+		text_36.setEditable(false);
 		textArray[7][1] = text_36;
 		
 		Text text_37 = new Text(composite_12, SWT.BORDER | SWT.CENTER);
@@ -691,8 +720,8 @@ public class Screen2 extends Screen {
 
 	@Override
 	public void begin() throws Exception {
-		addFocusListeners(states.getActiveState());
 		restore();
+		addFocusListeners(states.getActiveState());
 		int screenNum = Integer.parseInt(this.getClass().getSimpleName().substring(6));
 		states.getActiveState().setOpenScreen(screenNum);
 //		System.out.println("at Screen"+screenNum);
@@ -992,6 +1021,10 @@ public class Screen2 extends Screen {
 	}
 	
 	private void addFocusListeners(State activeState) {
+		
+		Mixture mixture = activeState.getMixture();
+		if (mixture==null || mixture.getChemicals().size()==0) return;
+		
 		FocusListenerAdapter listener;
 		for (int i=0; i<7; i++) {
 			if (i==0) {
@@ -1003,24 +1036,32 @@ public class Screen2 extends Screen {
 			}
 			for (int j=0; j<4; j++) {
 				textArray[i][j].addFocusListener(listener);
+				textArray[i][j].setEditable(true);
 			}
 			focusListener[i] = listener;
 		}
 		listener = new FocusListenerAdapter(textArray, 7, df, null, activeState.getPTolerances());  // unit is not used
 		textArray[7][1].addFocusListener(listener);
+		textArray[7][1].setEditable(true);
 		focusListener[7] = listener;
 	}
 	
 	private void removeFocusListeners() {
+		
+		Mixture mixture = states.getActiveState().getMixture();
+		if (mixture==null || mixture.getChemicals().size()==0) return;
+		
 		FocusListener listener;
 		for (int i=0; i<7; i++) {
 			listener = focusListener[i];
 			for (int j=0; j<4; j++) {
 				textArray[i][j].removeFocusListener(listener);
+				textArray[i][j].setEditable(false);
 			}
 		}
 		listener = focusListener[7];
-		textArray[7][2].removeFocusListener(listener);
+		textArray[7][1].removeFocusListener(listener);
+		textArray[7][1].setEditable(false);
 	}
 	
 	private String[] generateMixtureNames(Vector<Mixture> bestMixtures) {
@@ -1029,6 +1070,10 @@ public class Screen2 extends Screen {
 			names[i] = bestMixtures.get(i).getMixtureName();
 		}
 		return names;
+	}
+
+	public Text[][] getTextArray() {
+		return textArray;
 	}
 	
 }

@@ -818,7 +818,7 @@ public class Chemical extends Object implements Serializable, Cloneable {
 		if (lowerBound < 0.0) lowerBound = 0.0;
 
 		double offset = 0.0;
-		if (actual < lowerBound || upperBound < actual) offset += 1000.0;
+		if (actual < lowerBound || upperBound < actual) offset += 1.0e9;
 				
 		if (actual < desired) {
 			return offset + (desired-actual)/(desired-lowerBound);
@@ -831,7 +831,7 @@ public class Chemical extends Object implements Serializable, Cloneable {
 		if (lowerBound < 0.0) lowerBound = 0.0;
 
 		double offset = 0.0;
-		if (actual < lowerBound) offset += 1000.0;
+		if (actual < lowerBound) offset += 1.0e9;
 				
 		return offset;
 	}

@@ -75,36 +75,36 @@ public class ParisInit extends Dialog {
 		shell.setImage(getParent().getImage());
 		shell.setText("Paris III");
 		shell.setSize(455, 311);
-		shell.setBackground(SWTResourceManager.getColor(157, 185, 235));
+		shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_BACKGROUND));
 		shell.setLayout(null);
 		
 		Composite composite = new Composite(shell, SWT.NONE);
 		composite.setBounds(5, 5, 316, 142);
-		composite.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+		composite.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_BACKGROUND));
 		composite.setLayout(null);
 		
 		Text text = new Text(composite, SWT.CENTER | SWT.MULTI);
 		text.setEditable(false);
 		text.setText("Program for Assisting the Replacement of\r\nIndustrial Solvents");
-		text.setBounds(0, 10, 316, 30);
-		text.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+		text.setBounds(0, 5, 316, 30);
+		text.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_BACKGROUND));
 		
 		Text text_1 = new Text(composite, SWT.CENTER | SWT.MULTI);
 		text_1.setEditable(false);
-		text_1.setText(" PARIS III");
-		text_1.setBounds(0, 41, 316, 55);
-		text_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
-		text_1.setFont(SWTResourceManager.getFont("Arial", 40, SWT.BOLD));
+		text_1.setText("PARIS III");
+		text_1.setBounds(0, 36, 316, 70);
+		text_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_BACKGROUND));
+		text_1.setFont(SWTResourceManager.getFont("Arial", 45, SWT.BOLD));
 		
 		Text text_2 = new Text(composite, SWT.CENTER | SWT.MULTI);
 		text_2.setEditable(false);
 		text_2.setText("Solvent Design Software\r\nfrom US EPA");
-		text_2.setBounds(0, 102, 306, 30);
-		text_2.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+		text_2.setBounds(0, 107, 316, 30);
+		text_2.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_BACKGROUND));
 
 		Composite composite_1 = new Composite(shell, SWT.NONE);
 		composite_1.setBounds(326, 5, 114, 160);
-		composite_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+		composite_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_BACKGROUND));
 		composite_1.setLayout(null);
 		
 		ImageHyperlink parisImagehyperlink = new ImageHyperlink(composite_1, SWT.NONE);
@@ -114,7 +114,7 @@ public class ParisInit extends Dialog {
 		
 		Composite composite_3 = new Composite(shell, SWT.NONE);
 		composite_3.setBounds(5, 152, 297, 92);
-		composite_3.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+		composite_3.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_BACKGROUND));
 		composite_3.setLayout(null);
 		
 		techSupportButton = new Button(composite_3, SWT.NONE);
@@ -143,7 +143,7 @@ public class ParisInit extends Dialog {
 		
 		Composite composite_2 = new Composite(shell, SWT.NONE);
 		composite_2.setBounds(307, 170, 133, 74);
-		composite_2.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+		composite_2.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_BACKGROUND));
 		composite_2.setLayout(null);
 		
 		startButton = new Button(composite_2, SWT.NONE);
@@ -172,14 +172,14 @@ public class ParisInit extends Dialog {
 		
 		Composite composite_4 = new Composite(shell, SWT.NONE);
 		composite_4.setBounds(5, 249, 435, 15);
-		composite_4.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+		composite_4.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_BACKGROUND));
 		composite_4.setLayout(null);
 		
 		Label lblNewLabel = new Label(composite_4, SWT.CENTER);
 		lblNewLabel.setBounds(94, 0, 231, 13);
 		lblNewLabel.setAlignment(SWT.CENTER);
 		lblNewLabel.setText("Paris III is a trademark of the US EPA");
-		lblNewLabel.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+		lblNewLabel.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_BACKGROUND));
 		
 		shell.setTabList(new Control[]{composite, composite_1, composite_3, composite_2, composite_4});
 
