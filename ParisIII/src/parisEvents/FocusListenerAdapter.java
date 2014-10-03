@@ -44,7 +44,7 @@ public class FocusListenerAdapter extends FocusAdapter {
 		
 		try {
 			Color swtRed = SWTResourceManager.getColor(SWT.COLOR_RED);
-			Color swtGreen = SWTResourceManager.getColor(SWT.COLOR_GREEN);
+			Color swtGreen = SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN);
 			
 			focusText.setForeground(this.getDefaultColor());
 			if (vText.length!=5) {

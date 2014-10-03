@@ -438,22 +438,23 @@ public class Screen2 extends Screen {
 			@Override
 			public void widgetSelected(SelectionEvent e) {	
          		Scale scale = (Scale)e.widget;
+         		
+         		int sel = scale.getSelection();
         		int max = scale.getMaximum();
         		int min = scale.getMinimum();
-        		State activeState = states.getActiveState();
-        		double[] tolerances = activeState.getPTolerances();
-        		double pscale = 4.0*(activeState.getPScale()-min)/(max-min);
-        		double dscale = 4.0*(scale.getSelection()-min)/(max-min);
+        		
+         		if (sel==min) scale.setSelection(++sel);
+
+        		double oldScale = Double.parseDouble(scale.getToolTipText());
+        		double dscale = 4.0*(sel-min)/(max-min);
         		scale.setToolTipText(Double.toString(dscale));
         		
-        		double factor = 0.0;
-        		if (pscale != 0) factor = dscale/pscale;
         		for (int i=0; i<7; i++) {
-        			textArray[i][0].setText(pf.format(tolerances[i]*factor));
+        			double tol = Double.parseDouble(textArray[i][0].getText());
+        			textArray[i][0].setText(pf.format(tol*dscale/oldScale));
             		textArray[i][0].notifyListeners(SWT.FocusOut, new Event());
         		}
-        		activeState.setPScale(scale.getSelection());
-        		
+
 			}
 		});
 		
@@ -534,7 +535,7 @@ public class Screen2 extends Screen {
 					
 					Chemical replacement = replacements.get(index);
 					Color swtRed = SWTResourceManager.getColor(SWT.COLOR_RED);
-					Color swtGreen = SWTResourceManager.getColor(SWT.COLOR_GREEN);
+					Color swtGreen = SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN);
 					
 					double value = replacement.getMolecularWeight();
 					ub = getUb(desired[0], tolerances[0]);
@@ -621,7 +622,7 @@ public class Screen2 extends Screen {
 					
 					Mixture mixture = bestMixtures.get(index);		
 					Color swtRed = SWTResourceManager.getColor(SWT.COLOR_RED);
-					Color swtGreen = SWTResourceManager.getColor(SWT.COLOR_GREEN);
+					Color swtGreen = SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN);
 					
 					// first update the table
 					table.clearAll();
