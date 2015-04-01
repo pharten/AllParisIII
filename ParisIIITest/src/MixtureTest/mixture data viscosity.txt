@@ -22,7 +22,7 @@ x1	Viscosity in cp
 0.7914	0.4028453
 0.8938	0.38586825
 	
-acetone	cis-1,2-dimethylcyclohexane
+acetone	1,2-dimethylcyclohexane
 x1	Viscosity in cp
 0.1145	0.7992603
 0.1946	0.72865802

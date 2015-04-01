@@ -34,6 +34,7 @@ public class MixtureTestViscosity {
 		
 		
 		DecimalFormat df=new DecimalFormat("0.00");
+		double largestError = 25.0;
 		
 		double meanAbsPercentErrorOverall=0;
 		int mixtureCount=0;
@@ -64,7 +65,7 @@ public class MixtureTestViscosity {
 			// how well the mixture values are calculated not the pure comp values
 			this.usePureComponentValuesFromPapers(allChemicals);
 			
-			System.out.println("\n"+property+"\nComp1\tComp2\tMAE");
+//			System.out.println("\n"+property+"\nComp1\tComp2\tMAE");
 			
 			Vector <MixtureDataSet>dataSets=AllMixtureTests.readDataFileFormat1("src/MixtureTest/"+mixtureFileName);
 			
@@ -129,14 +130,15 @@ public class MixtureTestViscosity {
 				}
 
 //				System.out.println(line1+"\t"+df.format(MRSDUnifac)+"\t"+df.format(MRSDVolFrac));
-				System.out.println(mds.nameChemical1+"\t"+mds.nameChemical2+"\t"+df.format(meanAbsPercentError));
+//				System.out.println(mds.nameChemical1+"\t"+mds.nameChemical2+"\t"+df.format(meanAbsPercentError));
+				assertTrue(meanAbsPercentError<largestError);
 
 			}// end loop over data sets
 			
 			//Now average results over all data sets:
 			meanAbsPercentErrorOverall/=(double)dataSets.size();
 
-			System.out.println("overall\t"+df.format(meanAbsPercentErrorOverall));			
+//			System.out.println("overall\t"+df.format(meanAbsPercentErrorOverall));			
 			
 			if (AllMixtureTests.createPlots) {
 				AllMixtureTests.createPlotWebPage(outputFolder,property);
@@ -148,7 +150,7 @@ public class MixtureTestViscosity {
 				BrowserLauncher.openURL(strURL);
 			}
 			
-			assertTrue(meanAbsPercentErrorOverall<10);
+			assertTrue(meanAbsPercentErrorOverall<largestError/Math.sqrt(dataSets.size()));
 		
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -168,7 +170,7 @@ public class MixtureTestViscosity {
 		chemical=chemicals.getBySynonym("methylcyclohexane");
 		chemical.setViscosity(Units.viscosityConvertFrom(0.67355936,Units.COMMON));
 
-		chemical=chemicals.getBySynonym("cis-1,2-dimethylcyclohexane");
+		chemical=chemicals.getBySynonym("1,2-dimethylcyclohexane");
 		chemical.setViscosity(Units.viscosityConvertFrom(1.0133262,Units.COMMON));
 
 		chemical=chemicals.getBySynonym("benzene");

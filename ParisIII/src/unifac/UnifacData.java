@@ -37,7 +37,7 @@ Hashtable<String, Hashtable<String, Integer>> htChemInfo = new Hashtable<String,
 		UnifacData uf=new UnifacData();
 		long t2=System.currentTimeMillis();
 		System.out.println((t2-t1)/1000.0);
-		
+				
 		
 	}
 	private void readInputInfo() {

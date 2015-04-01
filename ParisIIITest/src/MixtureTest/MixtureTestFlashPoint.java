@@ -70,6 +70,7 @@ public class MixtureTestFlashPoint {
 		
 		
 		DecimalFormat df=new DecimalFormat("0.00");
+		double largestError = 2.0;
 		
 		double meanAbsPercentErrorOverall=0;
 		int mixtureCount=0;
@@ -108,7 +109,7 @@ public class MixtureTestFlashPoint {
 			// how well the mixture values are calculated not the pure comp values
 			this.usePureComponentValuesFromPapers(allChemicals);
 			
-			System.out.println("\n"+property+"\nComp1\tComp2\tMAE");
+//			System.out.println("\n"+property+"\nComp1\tComp2\tMAE");
 			
 			Vector <MixtureDataSet>dataSets=AllMixtureTests.readDataFileFormat1("src/MixtureTest/"+mixtureFileName);
 			
@@ -174,14 +175,15 @@ public class MixtureTestFlashPoint {
 				}
 
 //				System.out.println(line1+"\t"+df.format(MRSDUnifac)+"\t"+df.format(MRSDVolFrac));
-				System.out.println(mds.nameChemical1+"\t"+mds.nameChemical2+"\t"+df.format(meanAbsPercentError));
+//				System.out.println(mds.nameChemical1+"\t"+mds.nameChemical2+"\t"+df.format(meanAbsPercentError));
+				assertTrue(meanAbsPercentError<largestError);
 
 			}// end loop over data sets
 			
 			//Now average results over all data sets:
 			meanAbsPercentErrorOverall/=(double)dataSets.size();
 
-			System.out.println("overall\t"+df.format(meanAbsPercentErrorOverall));			
+//			System.out.println("overall\t"+df.format(meanAbsPercentErrorOverall));			
 			
 			if (AllMixtureTests.createPlots) {
 				AllMixtureTests.createPlotWebPage(outputFolder,property);
@@ -193,7 +195,7 @@ public class MixtureTestFlashPoint {
 				BrowserLauncher.openURL(strURL);
 			}
 			
-			assertTrue(meanAbsPercentErrorOverall<10);
+			assertTrue(meanAbsPercentErrorOverall<largestError/Math.sqrt(dataSets.size()));
 		
 		} catch (Exception e) {
 			e.printStackTrace();

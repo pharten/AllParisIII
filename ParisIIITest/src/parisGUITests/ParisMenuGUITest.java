@@ -62,16 +62,16 @@ public class ParisMenuGUITest {
 			
 			Menu fileMenu = window.getShell().getMenuBar().getItem(0).getMenu();
 			
-			Assert.assertEquals(5+2, fileMenu.getItemCount()); // include separators
+			Assert.assertEquals(6+2, fileMenu.getItemCount()); // include separators
 			
 			assertMenuItem(fileMenu.getItem(0), true, "Open", SWT.ALT+'O');		
 			assertMenuItem(fileMenu.getItem(1), false, "Save", SWT.ALT+'S');	
 			assertMenuItem(fileMenu.getItem(2), true, "Save As", SWT.ALT+'A');	
 			assertMenuItem(fileMenu.getItem(3), false, "Close", SWT.ALT+'W');
 			Assert.assertEquals(SWT.SEPARATOR, fileMenu.getItem(4).getStyle());
-//			assertMenuItem(fileMenu.getItem(5), true, "Print", SWT.ALT+'P');
-			Assert.assertEquals(SWT.SEPARATOR, fileMenu.getItem(5).getStyle());
-			assertMenuItem(fileMenu.getItem(6), true, "Exit", SWT.ALT+'X');
+			assertMenuItem(fileMenu.getItem(5), true, "Print", SWT.ALT+'P');
+			Assert.assertEquals(SWT.SEPARATOR, fileMenu.getItem(6).getStyle());
+			assertMenuItem(fileMenu.getItem(7), true, "Exit", SWT.ALT+'X');
 			
 			window.getShell().dispose();
 			

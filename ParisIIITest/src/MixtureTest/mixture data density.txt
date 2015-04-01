@@ -22,7 +22,7 @@ x1	density in kg/m3
 0.7914	786.5
 0.8938	792.5
 	
-acetone	cis-1,2-dimethylcyclohexane
+acetone	1,2-dimethylcyclohexane
 x1	density in kg/m3
 0.1145	785.9
 0.1946	784.6

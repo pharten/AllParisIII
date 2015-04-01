@@ -18,7 +18,13 @@ import org.eclipse.swt.dnd.*;
 import org.eclipse.swt.events.MenuListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.graphics.GCData;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
@@ -28,7 +34,11 @@ import org.eclipse.swt.widgets.Text;
 import parisInit.ParisInit;
 import parisInit.State;
 import parisInit.States;
+
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.printing.PrintDialog;
+import org.eclipse.swt.printing.Printer;
+import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.swt.events.MenuEvent;
 
 import edu.stanford.ejalbert.BrowserLauncher;
@@ -36,6 +46,7 @@ import edu.stanford.ejalbert.BrowserLauncher;
 public class ParisWork extends java.lang.Object implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private static final int bestMixturesPrintMax = 100;
 
 	private static Display display = Display.getDefault();
 	private static Clipboard clipboard = new Clipboard(display);
@@ -111,7 +122,7 @@ public class ParisWork extends java.lang.Object implements Serializable {
 		//		allChemicals.addSynListDataFromFile("./src/data/synlist.dat");
 		//		allChemicals.addWarScoreDataFromFile("./src/data/war_score.dat");
 		//		allChemicals.addPropertyDataFromFile("./src/data/prop_25c.dat");
-		//		allChemicals.writeByXML("./src/data/Chemicals2.xml");
+//				allChemicals.writeByXML("data/Chemicals2.xml");
 
 		createContents();
 		shell.open();
@@ -165,11 +176,11 @@ public class ParisWork extends java.lang.Object implements Serializable {
 //					if (!finishUp()) return;
 					FileDialog fd = new FileDialog(shell, SWT.OPEN);
 					fd.setText("Open");
-					String currentFileName = states.getActiveState().getFileName();
-					if (currentFileName==null || currentFileName.length()==0) {
+					String filterPath = fd.getFilterPath();
+					if (filterPath==null || filterPath.length()==0) {
 						fd.setFilterPath("C:/");
 					} else {
-						fd.setFilterPath(currentFileName);
+						fd.setFilterPath(filterPath);
 					}
 					String[] filterExt = { "*.xml", "*.txt", "*.doc", "*.rtf", "*.*" };
 					fd.setFilterExtensions(filterExt);
@@ -177,7 +188,6 @@ public class ParisWork extends java.lang.Object implements Serializable {
 					if (selected != null) {
 						int openScreen = states.getActiveState().getOpenScreen();
 						State state = State.readFromFile(selected);					
-						state.setFileName(selected);
 						state.setOpenScreen(openScreen);
 						states.addToList(state);
 						states.setActiveState(state);
@@ -211,7 +221,7 @@ public class ParisWork extends java.lang.Object implements Serializable {
 					state.setSingle(true);
 					String selected = state.getFileName();
 					if (selected!=null && new File(selected).exists()) {
-						state.writeToFile(selected);
+						state.writeToFile();
 					} else {
 						FileDialog fd = new FileDialog(shell, SWT.SAVE);
 						fd.setText("Save");
@@ -221,7 +231,7 @@ public class ParisWork extends java.lang.Object implements Serializable {
 						selected = fd.open();
 						if (selected != null) {
 							state.setFileName(selected);
-							state.writeToFile(selected);
+							state.writeToFile();
 						}
 					}
 				} catch (FileNotFoundException e) {
@@ -260,7 +270,7 @@ public class ParisWork extends java.lang.Object implements Serializable {
 					String selected = fd.open();
 					if (selected != null) {
 						state.setFileName(selected);
-						state.writeToFile(selected);
+						state.writeToFile();
 					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -293,7 +303,7 @@ public class ParisWork extends java.lang.Object implements Serializable {
 						if (response != SWT.CANCEL) {
 							messageBox.setText("Closing Application");
 							if (response == SWT.YES) {
-								state.writeToFile(selected);
+								state.writeToFile();
 							}
 							int openScreen = state.getOpenScreen();
 							states.remove(state);
@@ -324,10 +334,100 @@ public class ParisWork extends java.lang.Object implements Serializable {
 
 		new MenuItem(fileMenu, SWT.SEPARATOR);
 
-//		MenuItem printItem = new MenuItem(fileMenu, SWT.NONE);
-//		printItem.setText("Print\tALT+P");
-//		printItem.setAccelerator(SWT.ALT + 'P');
-//		printItem.addSelectionListener(menuItemSelectionAdapter);
+		MenuItem printItem = new MenuItem(fileMenu, SWT.NONE);
+		printItem.setText("Print\tALT+P");
+		printItem.setAccelerator(SWT.ALT + 'P');
+		printItem.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				try {
+					if (!finishUp()) return;
+					State state = states.getActiveState();
+					MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
+					messageBox.setMessage("Do you want to print "+state.getSystemName()+" substitutes?");
+					int response = messageBox.open();
+					if (response != SWT.CANCEL) {
+						messageBox.setText("Printing Substitutes");
+						if (response == SWT.YES) {
+							Text t = new Text(shell, SWT.BORDER | SWT.MULTI);
+							t.setText("A PrintDialog Example");
+							PrintDialog printDialog = new PrintDialog(shell, SWT.NONE);
+							printDialog.setText("Print");
+
+							int[] line = {0};
+							int[] page = {1};
+							
+							PrinterData printerData = printDialog.open();
+							if (printerData != null) {
+								switch (printerData.scope) {
+									case PrinterData.ALL_PAGES:
+										printerData.startPage = 1;
+										printerData.endPage = Integer.MAX_VALUE;
+										break;
+									case PrinterData.PAGE_RANGE:
+									case PrinterData.SELECTION:
+										break;
+									default:
+										throw new Exception("Incorrect Printer Scope");
+								}
+								Printer p = new Printer(printerData);
+								p.startJob("PrintJob"); // name of PDF file
+								
+								if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) p.startPage();
+								
+								state.print(p, line, page);
+								
+								Rectangle trim = p.computeTrim(0, 0, 0, 0);
+								Point dpi = p.getDPI();
+								int leftMargin = dpi.x + trim.x;
+								int topMargin = dpi.y / 2 + trim.y;
+								GC gc = new GC(p);
+								FontMetrics metrics = gc.getFontMetrics();
+								int lineHeight = metrics.getHeight();
+								int linesPerPage = (p.getBounds().height-2*topMargin)/lineHeight;
+	
+								if (line[0]>=linesPerPage-2) { // page increases
+									if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) p.endPage();
+									line[0]=0;
+									page[0]++;
+									if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) p.startPage();
+								} else {
+									line[0]++; // include blank line
+								}
+								
+								line[0]++;
+								if (printerData.startPage<=page[0] && page[0]<=printerData.endPage) {
+									String output = "Greener Replacements:";
+									gc.drawString(output, leftMargin, topMargin+(line[0]-1)*lineHeight);
+								}
+								gc.dispose();
+								
+								if (bestMixtures!=null) {
+									for (int i=0; i<bestMixturesPrintMax; i++) {
+										bestMixtures.get(i).print(p, i+1, line, page);
+									}
+								}
+								
+								if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) p.endPage();
+								
+								p.endJob();
+								p.dispose();
+							}
+
+						}
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 
 		new MenuItem(fileMenu, SWT.SEPARATOR);
 

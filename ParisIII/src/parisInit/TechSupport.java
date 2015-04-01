@@ -76,7 +76,11 @@ public class TechSupport extends Dialog {
 		lblNewLabel.setText("Tech Support");
 		
 		Text text_1 = new Text(sashForm_1, SWT.BORDER | SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL);
-		text_1.setText("\r\nPARIS III is distributed by:\r\n              \r\nUS EPA, AWBERC\r\n26 W. M.L. King Drive          \r\nCincinnati, Ohio \r\n              \r\nFax: 513-569-7677\r\n              \r\nWeb Site:\r\n              \r\nPhone: (Tech Support)\r\n              \r\nE-mail: (Tech Support)");
+		text_1.setText("\r\nPARIS III is distributed by:\r\n              \r\n"+
+				"US EPA, NRMRL\r\n26 W. M.L. King Drive          \r\n"+
+				"Cincinnati, Ohio 45268\r\n              \r\nFax: 513-569-7677\r\n              \r\n"+
+				"Web Site: http://www.epa.gov/nrmrl/std/parisIII/parisIII.html \r\n              \r\n"+
+				"Phone: (Tech Support)\r\n              \r\nE-mail: ParisIII@epa.gov");
 		
 		SashForm sashForm = new SashForm(sashForm_1, SWT.NONE);
 		

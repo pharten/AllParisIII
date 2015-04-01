@@ -52,6 +52,10 @@ public class Screen2 extends Screen {
 	private static DecimalFormat pf = new DecimalFormat("#0.0#");
 	private Table table;
 	
+	private String[] initTol = new String[8];
+	private String[] initProp = new String[8];
+	boolean updateReplacements = false;
+	
 	public Screen2(Composite parent, int style) {
 		super(parent, style);
 		
@@ -436,9 +440,9 @@ public class Screen2 extends Screen {
 		scale.setSelection(10);
 		scale.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {	
-         		Scale scale = (Scale)e.widget;
-         		
+			public void widgetSelected(SelectionEvent e) {
+        		Scale scale = (Scale)e.widget;
+        		
          		int sel = scale.getSelection();
         		int max = scale.getMaximum();
         		int min = scale.getMinimum();
@@ -454,7 +458,7 @@ public class Screen2 extends Screen {
         			textArray[i][0].setText(pf.format(tol*dscale/oldScale));
             		textArray[i][0].notifyListeners(SWT.FocusOut, new Event());
         		}
-
+        		
 			}
 		});
 		
@@ -525,8 +529,6 @@ public class Screen2 extends Screen {
 				int index = list.getSelectionIndex();
 				State activeState = states.getActiveState();
 				Units unit = activeState.getSystemUnit();
-				double[] tolerances = activeState.getPTolerances();
-				double[] desired = activeState.getPDesiredVals();
 				
 				if (index>=0) {
 					activeState.setSingle(true);
@@ -537,51 +539,51 @@ public class Screen2 extends Screen {
 					Color swtRed = SWTResourceManager.getColor(SWT.COLOR_RED);
 					Color swtGreen = SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN);
 					
-					double value = replacement.getMolecularWeight();
-					ub = getUb(desired[0], tolerances[0]);
-					lb = getLb(desired[0], tolerances[0]);
-					textArray[0][4].setText(df.format(Units.massConvertTo(value, unit)));
+					double value = Units.massConvertTo(replacement.getMolecularWeight(), unit);
+					lb = Double.parseDouble(textArray[0][1].getText());
+					ub = Double.parseDouble(textArray[0][3].getText());
+					textArray[0][4].setText(df.format(value));
 					textArray[0][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
-					value = replacement.getDensity();
-					ub = getUb(desired[1], tolerances[1]);
-					lb = getLb(desired[1], tolerances[1]);
-					textArray[1][4].setText(ef.format(Units.densityConvertTo(value, unit)));
+					value = Units.densityConvertTo(replacement.getDensity(), unit);
+					lb = Double.parseDouble(textArray[1][1].getText());
+					ub = Double.parseDouble(textArray[1][3].getText());
+					textArray[1][4].setText(ef.format(value));
 					textArray[1][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
-					value = replacement.getBoilingPoint();
-					ub = getUb(desired[2], tolerances[2]);
-					lb = getLb(desired[2], tolerances[2]);
-					textArray[2][4].setText(df.format(Units.tempConvertTo(value, unit)));
+					value = Units.tempConvertTo(replacement.getBoilingPoint(), unit);
+					lb = Double.parseDouble(textArray[2][1].getText());
+					ub = Double.parseDouble(textArray[2][3].getText());
+					textArray[2][4].setText(df.format(value));
 					textArray[2][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
-					value = replacement.getVaporPressure();
-					ub = getUb(desired[3], tolerances[3]);
-					lb = getLb(desired[3], tolerances[3]);
-					textArray[3][4].setText(ef.format(Units.pressureConvertTo(value, unit)));
+					value = Units.pressureConvertTo(replacement.getVaporPressure(), unit);
+					lb = Double.parseDouble(textArray[3][1].getText());
+					ub = Double.parseDouble(textArray[3][3].getText());
+					textArray[3][4].setText(ef.format(value));
 					textArray[3][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
-					value = replacement.getSurfaceTension();
-					ub = getUb(desired[4], tolerances[4]);
-					lb = getLb(desired[4], tolerances[4]);
-					textArray[4][4].setText(ef.format(Units.surfaceTensionConvertTo(value, unit)));
+					value = Units.surfaceTensionConvertTo(replacement.getSurfaceTension(), unit);
+					lb = Double.parseDouble(textArray[4][1].getText());
+					ub = Double.parseDouble(textArray[4][3].getText());
+					textArray[4][4].setText(ef.format(value));
 					textArray[4][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
-					value = replacement.getViscosity();
-					ub = getUb(desired[5], tolerances[5]);
-					lb = getLb(desired[5], tolerances[5]);
-					textArray[5][4].setText(ef.format(Units.viscosityConvertTo(value, unit)));
+					value = Units.viscosityConvertTo(replacement.getViscosity(), unit);
+					lb = Double.parseDouble(textArray[5][1].getText());
+					ub = Double.parseDouble(textArray[5][3].getText());
+					textArray[5][4].setText(ef.format(value));
 					textArray[5][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
-					value = replacement.getThermalConductivity();
-					ub = getUb(desired[6], tolerances[6]);
-					lb = getLb(desired[6], tolerances[6]);
-					textArray[6][4].setText(ef.format(Units.thermalConductivityConvertTo(value, unit)));
+					value = Units.thermalConductivityConvertTo(replacement.getThermalConductivity(), unit);
+					lb = Double.parseDouble(textArray[6][1].getText());
+					ub = Double.parseDouble(textArray[6][3].getText());
+					textArray[6][4].setText(ef.format(value));
 					textArray[6][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
-					value = replacement.getFlashPoint();
-					lb = Units.tempConvertFrom(Double.parseDouble(textArray[7][1].getText()), unit);
-					textArray[7][4].setText(df.format(Units.tempConvertTo(value, unit)));
+					value = Units.tempConvertTo(replacement.getFlashPoint(), unit);
+					lb = Double.parseDouble(textArray[7][1].getText());
+					textArray[7][4].setText(df.format(value));
 					textArray[7][4].setForeground(value >= lb ? swtGreen : swtRed);
 					
 					value = replacement.getAirIndex();
@@ -612,8 +614,6 @@ public class Screen2 extends Screen {
 				int index = list.getSelectionIndex();
 				State activeState = states.getActiveState();
 				Units unit = activeState.getSystemUnit();
-				double[] tolerances = activeState.getPTolerances();
-				double[] desired = activeState.getPDesiredVals();
 				
 				if (index>=0) {
 					activeState.setSingle(false);
@@ -633,51 +633,51 @@ public class Screen2 extends Screen {
 					}
 					
 					// then update the replacement values
-					double value = mixture.getMolecularWeight();
-					ub = getUb(desired[0], tolerances[0]);
-					lb = getLb(desired[0], tolerances[0]);
-					textArray[0][4].setText(df.format(Units.massConvertTo(value, unit)));
+					double value = Units.massConvertTo(mixture.getMolecularWeight(), unit);
+					lb = Double.parseDouble(textArray[0][1].getText());
+					ub = Double.parseDouble(textArray[0][3].getText());
+					textArray[0][4].setText(df.format(value));
 					textArray[0][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
-					value = mixture.getDensity();
-					ub = getUb(desired[1], tolerances[1]);
-					lb = getLb(desired[1], tolerances[1]);
-					textArray[1][4].setText(ef.format(Units.densityConvertTo(value, unit)));
+					value = Units.densityConvertTo(mixture.getDensity(), unit);
+					lb = Double.parseDouble(textArray[1][1].getText());
+					ub = Double.parseDouble(textArray[1][3].getText());
+					textArray[1][4].setText(ef.format(value));
 					textArray[1][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
-					value = mixture.getBoilingPoint();
-					ub = getUb(desired[2], tolerances[2]);
-					lb = getLb(desired[2], tolerances[2]);
-					textArray[2][4].setText(df.format(Units.tempConvertTo(value, unit)));
+					value = Units.tempConvertTo(mixture.getBoilingPoint(), unit);
+					lb = Double.parseDouble(textArray[2][1].getText());
+					ub = Double.parseDouble(textArray[2][3].getText());
+					textArray[2][4].setText(df.format(value));
 					textArray[2][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
-					value = mixture.getVaporPressure();
-					ub = getUb(desired[3], tolerances[3]);
-					lb = getLb(desired[3], tolerances[3]);
-					textArray[3][4].setText(ef.format(Units.pressureConvertTo(value, unit)));
+					value = Units.pressureConvertTo(mixture.getVaporPressure(), unit);
+					lb = Double.parseDouble(textArray[3][1].getText());
+					ub = Double.parseDouble(textArray[3][3].getText());
+					textArray[3][4].setText(ef.format(value));
 					textArray[3][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
-					value = mixture.getSurfaceTension();
-					ub = getUb(desired[4], tolerances[4]);
-					lb = getLb(desired[4], tolerances[4]);
-					textArray[4][4].setText(ef.format(Units.surfaceTensionConvertTo(value, unit)));
+					value = Units.surfaceTensionConvertTo(mixture.getSurfaceTension(), unit);
+					lb = Double.parseDouble(textArray[4][1].getText());
+					ub = Double.parseDouble(textArray[4][3].getText());
+					textArray[4][4].setText(ef.format(value));
 					textArray[4][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
-					value = mixture.getViscosity();
-					ub = getUb(desired[5], tolerances[5]);
-					lb = getLb(desired[5], tolerances[5]);
-					textArray[5][4].setText(ef.format(Units.viscosityConvertTo(value, unit)));
+					value = Units.viscosityConvertTo(mixture.getViscosity(), unit);
+					lb = Double.parseDouble(textArray[5][1].getText());
+					ub = Double.parseDouble(textArray[5][3].getText());
+					textArray[5][4].setText(ef.format(value));
 					textArray[5][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
-					value = mixture.getThermalConductivity();
-					ub = getUb(desired[6], tolerances[6]);
-					lb = getLb(desired[6], tolerances[6]);
-					textArray[6][4].setText(ef.format(Units.thermalConductivityConvertTo(value, unit)));
+					value = Units.thermalConductivityConvertTo(mixture.getThermalConductivity(), unit);
+					lb = Double.parseDouble(textArray[6][1].getText());
+					ub = Double.parseDouble(textArray[6][3].getText());
+					textArray[6][4].setText(ef.format(value));
 					textArray[6][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
-					value = mixture.getFlashPoint();
-					lb = Units.tempConvertFrom(Double.parseDouble(textArray[7][1].getText()), unit);
-					textArray[7][4].setText(df.format(Units.tempConvertTo(value, unit)));
+					value = Units.tempConvertTo(mixture.getFlashPoint(), unit);
+					lb = Double.parseDouble(textArray[7][1].getText());
+					textArray[7][4].setText(df.format(value));
 					textArray[7][4].setForeground(value >= lb ? swtGreen : swtRed);
 					
 					value = mixture.getAirIndex();
@@ -722,7 +722,6 @@ public class Screen2 extends Screen {
 	@Override
 	public void begin() throws Exception {
 		restore();
-		addFocusListeners(states.getActiveState());
 		int screenNum = Integer.parseInt(this.getClass().getSimpleName().substring(6));
 		states.getActiveState().setOpenScreen(screenNum);
 //		System.out.println("at Screen"+screenNum);
@@ -731,21 +730,19 @@ public class Screen2 extends Screen {
 	@Override
 	public boolean finishUp() throws Exception {
 		updateShared();
-		removeFocusListeners();
 		return true;
 	}
 
 	@Override
 	public void updateShared() throws Exception {
+		
+		removeFocusListeners();
+		
 		saveTolerances(states.getActiveState());
 		saveProperties(states.getActiveState());
-		saveReplacements(states.getActiveState());
-//		if (states.getActiveState().isSingle()) {
-//			saveReplacements(states.getActiveState());
-//			loadReplacements(states.getActiveState());
-//		} else {
-//			loadMixtures(states.getActiveState());
-//		}
+		
+		if (updateReplacements && replacements!=null) replacements.bubbleSort();
+		
 		ParisWork.states = states;
 		ParisWork.chemicals = chemicals;
 		ParisWork.replacements = replacements;
@@ -775,12 +772,37 @@ public class Screen2 extends Screen {
 			radioButton_1.setSelection(false);
 		}
 		
+		for (int i=0; i<initTol.length; i++) {
+			initTol[i] = textArray[i][0].getText();
+			initProp[i] = textArray[i][2].getText();
+		}
+		
+		addFocusListeners(states.getActiveState());
+		
+		updateReplacements = false;
+		
 	}
 	
 	private void loadTolerances(State activeState) {
-		double[] tolerances = activeState.getPTolerances();
+		
+		blankoutTolerances();
+		
+		Mixture mixture = activeState.getMixture();
+		if (mixture==null || mixture.getChemicals().size()==0) return;
+		
+		double[] tolSI = activeState.getPTolerances();
+		double[] desSI = activeState.getPDesiredVals();
+		Units units = activeState.getSystemUnit();
+
 		for (int i=0; i<7; i++) {
-			textArray[i][0].setText(pf.format(tolerances[i]));
+			if (i==2) {
+				double temp = Units.tempConvertTo(desSI[2], units);
+				double ubTemp = Units.tempConvertTo(getUb(desSI[2],tolSI[2]), units); // 
+				double tol = 100.0*(ubTemp-temp)/temp;
+				textArray[2][0].setText(pf.format(tol));
+			} else {
+				textArray[i][0].setText(pf.format(tolSI[i]));
+			}
 		}
 		scale.setSelection(activeState.getPScale());
 		int max = scale.getMaximum();
@@ -790,11 +812,39 @@ public class Screen2 extends Screen {
 	}
 	
 	private void saveTolerances(State activeState) {
-		double[] tolerances = activeState.getPTolerances();
+
+		Mixture mixture = activeState.getMixture();
+		if (mixture==null || mixture.getChemicals().size()==0) return;
+		
+		double[] tolSI = activeState.getPTolerances();
+		Units units = activeState.getSystemUnit();
+		
 		for (int i=0; i<7; i++) {
-			tolerances[i] = Double.parseDouble(textArray[i][0].getText());
+			if (i==2) {
+				if (!textArray[2][0].getText().equals(initTol[2])) {
+					updateReplacements = true;
+					double temp = Double.parseDouble(textArray[2][2].getText());
+					double tol = Double.parseDouble(textArray[2][0].getText());
+					double ubTempSI = Units.tempConvertFrom(getUb(temp,tol), units);
+					double tempSI = Units.tempConvertFrom(temp, units);
+					tolSI[2] = 100.0*(ubTempSI-tempSI)/tempSI;
+				}
+			} else {
+				if (!textArray[i][0].getText().equals(initTol[i])) {
+					updateReplacements = true;
+					tolSI[i] = Double.parseDouble((textArray[i][0].getText()));
+				}
+			}
+
 		}
 		activeState.setPScale(scale.getSelection());
+		
+	}
+	
+	private void blankoutTolerances() {
+		for (int i=0; i<7; i++) {
+			textArray[i][0].setText("");
+		}
 	}
 	
 	private void loadProperties(State activeState) throws Exception {
@@ -814,14 +864,39 @@ public class Screen2 extends Screen {
 		Units unit = activeState.getSystemUnit();
 		
 		if (desiredVals == null) return;
-		desiredVals[0] = Units.massConvertFrom(Double.parseDouble(textArray[0][2].getText()), unit);
-		desiredVals[1] = Units.densityConvertFrom(Double.parseDouble(textArray[1][2].getText()), unit);
-		desiredVals[2] = Units.tempConvertFrom(Double.parseDouble(textArray[2][2].getText()), unit);
-		desiredVals[3] = Units.pressureConvertFrom(Double.parseDouble(textArray[3][2].getText()), unit);
-		desiredVals[4] = Units.surfaceTensionConvertFrom(Double.parseDouble(textArray[4][2].getText()), unit);
-		desiredVals[5] = Units.viscosityConvertFrom(Double.parseDouble(textArray[5][2].getText()), unit);
-		desiredVals[6] = Units.thermalConductivityConvertFrom(Double.parseDouble(textArray[6][2].getText()), unit);
-		desiredVals[7] = Units.tempConvertFrom(Double.parseDouble(textArray[7][1].getText()), unit);
+
+		if (!textArray[0][2].getText().equals(initProp[0])) {
+			updateReplacements = true;
+			desiredVals[0] = Units.massConvertFrom(Double.parseDouble(textArray[0][2].getText()), unit);
+		}
+		if (!textArray[1][2].getText().equals(initProp[1])) {
+			updateReplacements = true;
+			desiredVals[1] = Units.densityConvertFrom(Double.parseDouble(textArray[1][2].getText()), unit);
+		}
+		if (!textArray[2][2].getText().equals(initProp[2])) {
+			updateReplacements = true;
+			desiredVals[2] = Units.tempConvertFrom(Double.parseDouble(textArray[2][2].getText()), unit);
+		}
+		if (!textArray[3][2].getText().equals(initProp[3])) {
+			updateReplacements = true;
+			desiredVals[3] = Units.pressureConvertFrom(Double.parseDouble(textArray[3][2].getText()), unit);
+		}
+		if (!textArray[4][2].getText().equals(initProp[4])) {
+			updateReplacements = true;
+			desiredVals[4] = Units.surfaceTensionConvertFrom(Double.parseDouble(textArray[4][2].getText()), unit);
+		}
+		if (!textArray[5][2].getText().equals(initProp[5])) {
+			updateReplacements = true;
+			desiredVals[5] = Units.viscosityConvertFrom(Double.parseDouble(textArray[5][2].getText()), unit);
+		}
+		if (!textArray[6][2].getText().equals(initProp[6])) {
+			updateReplacements = true;
+			desiredVals[6] = Units.thermalConductivityConvertFrom(Double.parseDouble(textArray[6][2].getText()), unit);
+		}
+		if (!textArray[7][1].getText().equals(initProp[7])) {
+			updateReplacements = true;
+			desiredVals[7] = Units.tempConvertFrom(Double.parseDouble(textArray[7][1].getText()), unit);
+		}
 	}
 	
 	private void blankoutProperties() {
@@ -921,25 +996,6 @@ public class Screen2 extends Screen {
 		replacementList.select(activeState.getReplacementIndex());
 		
 		replacementList.notifyListeners(SWT.Selection, new Event());
-		
-	}
-	
-	private void saveReplacements(State activeState) {
-		
-		if (replacements==null || replacements.size()==0) return;
-		
-		replacements.bubbleSort();
-		
-//		int index = replacementList.getSelectionIndex();
-//		String name = replacementList.getItem(index);
-//		replacementList.setItems(replacements.getNames());
-//		
-//		if (name.equals(replacementList.getItem(index))) {
-//			replacementList.select(replacementList.indexOf(name));
-//			replacementList.showSelection();
-//			activeState.setReplacementTopIndex(replacementList.getTopIndex());
-//			activeState.setReplacementIndex(replacementList.getSelectionIndex());
-//		}
 		
 	}
 	
@@ -1066,7 +1122,12 @@ public class Screen2 extends Screen {
 	}
 	
 	private String[] generateMixtureNames(Vector<Mixture> bestMixtures) {
-		String[] names = new String[bestMixtures.size()];
+		String[] names = null;
+		if (bestMixtures==null) {
+			names = new String[0];
+		} else {
+			names = new String[bestMixtures.size()];
+		}
 		for (int i=0; i<names.length; i++) {
 			names[i] = bestMixtures.get(i).getMixtureName();
 		}

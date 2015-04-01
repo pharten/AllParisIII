@@ -84,7 +84,7 @@ public class ParisReferenceGUITest {
 	@Test
 	public void testReference() {
 		
-		Button btn = screen0.getBtn();
+		Button btn = screen0.getBtn3();
 		Assert.assertNotNull(btn);
 		
 		btn.notifyListeners(SWT.Selection, new Event());

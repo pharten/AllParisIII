@@ -81,12 +81,12 @@ public class StateTest {
 		state1.setAScale(10);
 		state1.setPScale(20);
 		state1.setOpenScreen(3);
-		state1.setScreen0StackOption(2);
+		state1.setScreen0StackOption(1);
 		state1.setScreen0TableHeader("Mol%");
 		
 		String fileName = "src/data/state.xml";
 		state1.setFileName(fileName);
-		state1.writeToFile(fileName);
+		state1.writeToFile();
 		State state2 = State.readFromFile(fileName);
 
 		Assert.assertEquals("aScale's are not equal", state1.getAScale(), state2.getAScale());

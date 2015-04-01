@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Hashtable;
@@ -47,22 +48,16 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 	
 	public Chemicals filterForVaporPressure() {
 		Chemicals chemicals = new Chemicals();
-		Chemical chemical;
 
 		for (int i=0; i<this.elementCount; i++) {
-			chemical = this.get(i);
+			Chemical chemical = this.get(i);
 
-			boolean haveAntoineConstants=true;
-			
-			if (chemical.getAntoineConstantA()==0 || chemical.getAntoineConstantB()==0|| chemical.getAntoineConstantC()==0) {
-				haveAntoineConstants=false;
-			}
-			//TODO: add check for critical constants (needed for alternate method to calculate vapor pressure)
-			
-			if (haveAntoineConstants) {
+			if (chemical.canCalculateVaporPressure()) {
 				chemicals.add(chemical);
 			}
 		}
+		
+//		System.out.println(chemicals.size());
 		return chemicals;
 	}
 	
@@ -84,7 +79,8 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 			value[0] = chemical.getAP();
 			value[1] = chemical.getAquaticTox();
 			value[2] = chemical.getGWP();
-			value[3] = chemical.getHtoxDermal();
+//			value[3] = chemical.getHtoxDermal();
+			value[3] = chemical.getTerrestrialTox();
 			value[4] = chemical.getHtoxIngestion();
 			value[5] = chemical.getHtoxInhalation();
 			value[6] = chemical.getODP();
@@ -115,7 +111,8 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 			value[0] = chemical.getAP();
 			value[1] = chemical.getAquaticTox();
 			value[2] = chemical.getGWP();
-			value[3] = chemical.getHtoxDermal();
+//			value[3] = chemical.getHtoxDermal();
+			value[3] = chemical.getTerrestrialTox();
 			value[4] = chemical.getHtoxIngestion();
 			value[5] = chemical.getHtoxInhalation();
 			value[6] = chemical.getODP();
@@ -128,7 +125,8 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 			chemical.setAP(value[0]);
 			chemical.setAquaticTox(value[1]);
 			chemical.setGWP(value[2]);
-			chemical.setHtoxDermal(value[3]);
+//			chemical.setHtoxDermal(value[3]);
+			chemical.setTerrestrialTox(value[3]);
 			chemical.setHtoxIngestion(value[4]);
 			chemical.setHtoxInhalation(value[5]);
 			chemical.setODP(value[6]);
@@ -380,10 +378,11 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 	 */
 	public static Chemicals readByTxt2(String filePath) throws IOException, Exception {
 
-		filePath = ClassLoader.getSystemResource(filePath).getPath();
+//		filePath = ClassLoader.getSystemResource(filePath).getPath();
 		
 		String nameCAS="CAS";
 		String nameName="Systematic Name";
+//		String nameName="Chemical Name";
 		String nameFormula="Formula";
 		String nameSynonyms="Synonyms";
 		String nameMolecularWeight="Molecular Weight in kg/kmol";
@@ -442,6 +441,12 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 		String nameAntoineTmax="antoineTmax";
 		String nameAntoineSource="antoineSource";
 
+		String nameTc="Est Tc in K";
+		String namePc="Est Pc in bar";
+		String nameOmega="Est omega";
+
+		
+
 		//store header names in an array so can determine column numbers in a loop later:
 		String[] names = { nameCAS, nameName, nameFormula, nameSynonyms,
 				nameMolecularWeight, nameMeltingPoint,nameBoilingPoint, nameViscosity,
@@ -458,7 +463,7 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 				nameInfDilActCoef_n_heptadecane,
 				nameInfDilActCoef_n_propylamine,
 				nameInfDilActCoef_dimethyl_disulfide, nameAntoineConstantA,
-				nameAntoineConstantB, nameAntoineConstantC,nameAntoineTmin,nameAntoineTmax,nameAntoineSource };		
+				nameAntoineConstantB, nameAntoineConstantC,nameAntoineTmin,nameAntoineTmax,nameAntoineSource,nameTc,namePc,nameOmega };		
 
 		String line, lineSplit[];
 
@@ -466,10 +471,8 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 
 		Chemicals chemicals = new Chemicals();
 
-		File file = new File(filePath);
-		//	System.out.println(file.getAbsolutePath());
-		FileReader fileReader = new FileReader(file);
-		BufferedReader buf = new BufferedReader(fileReader);
+		InputStreamReader reader = new InputStreamReader(ClassLoader.getSystemResourceAsStream(filePath));
+		BufferedReader buf = new BufferedReader(reader);
 
 		String header = buf.readLine();	// read the column header line
 		fieldNames=header.split("\t");
@@ -485,6 +488,7 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 
 		while ((line = buf.readLine()) != null) {
 			lineno++;
+			
 			
 			//		values = line.split("\t");//wont work if have series of blank fields at the end!
 			values=Parse(line,"\t");
@@ -550,11 +554,18 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 			if (!isEmpty(nameAntoineTmax))chemical.setAntoineTmax(getDoubleValue(nameAntoineTmax));
 			chemical.setAntoineSource(getStringValue(nameAntoineSource));
 
+			
+			if (!isEmpty(nameTc)) chemical.setTc(getDoubleValue(nameTc));
+			if (!isEmpty(namePc))chemical.setPc(getDoubleValue(namePc));
+			if (!isEmpty(nameOmega))chemical.setOmega(getDoubleValue(nameOmega));
+
+			
 			//**************************************************************************
 			//WAR categories:
 			double value = 0.0;
 			if (!isEmpty(nameOralRatLD50)) value = getDoubleValue(nameOralRatLD50);
 			if (value!=0.0) chemical.setHtoxIngestion(1.0/value);
+			if (value!=0.0) chemical.setTerrestrialTox(1.0/value);
 			value = 0.0;
 			if (!isEmpty(nameFatheadMinnowLC50)) value = getDoubleValue(nameFatheadMinnowLC50);
 			if (value!=0.0) chemical.setAquaticTox(1.0/value);
@@ -915,7 +926,8 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 				if (!lineSplit[0].trim().isEmpty()) dipprid = Integer.parseInt(lineSplit[0].trim());
 				if (!lineSplit[1].trim().isEmpty()) chemical.setHtoxIngestion(Double.parseDouble(lineSplit[1]));
 				if (!lineSplit[2].trim().isEmpty()) chemical.setHtoxInhalation(Double.parseDouble(lineSplit[2]));
-				if (!lineSplit[3].trim().isEmpty()) chemical.setHtoxDermal(Double.parseDouble(lineSplit[3]));
+//				if (!lineSplit[3].trim().isEmpty()) chemical.setHtoxDermal(Double.parseDouble(lineSplit[3]));
+				if (!lineSplit[3].trim().isEmpty()) chemical.setTerrestrialTox(Double.parseDouble(lineSplit[3]));
 				if (!lineSplit[4].trim().isEmpty()) chemical.setAquaticTox(Double.parseDouble(lineSplit[4]));
 				if (!lineSplit[5].trim().isEmpty()) chemical.setGWP(Double.parseDouble(lineSplit[5]));
 				if (!lineSplit[6].trim().isEmpty()) chemical.setODP(Double.parseDouble(lineSplit[6]));
@@ -1060,13 +1072,36 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 //		
 //	}
 	
+	private void testVP(Chemicals allChemicals) {
+		double tempK=298.15;
+		
+		for (int i=0;i<allChemicals.size();i++) {
+			Chemical chemicali=allChemicals.get(i);
+			
+			double VPA=-9999;
+			double VPLK=-9999;
+			
+			if(chemicali.haveAntoineConstants()) {
+				VPA=chemicali.calculateAntoineVaporPressure(tempK);
+			}
+			if (chemicali.haveCriticalParameters()) {
+				VPLK=chemicali.calculateLeeKeslerVaporPressure(tempK);
+			}
+			
+			if (VPA!=-9999 && VPLK!=-9999) {
+				System.out.println(chemicali.getCAS()+"\t"+VPA+"\t"+VPLK);	
+			}
+		}
+		
+	}
+	
+	
 	private void convertTxtDBtoXML() {
 		Chemicals allChemicals=null;
 		
 		try {
-			allChemicals=readByTxt2("./src/data/Chemicals.txt");
-			
-			allChemicals.writeByXML("./src/data/Chemicals.xml");
+			allChemicals=readByTxt2("data/Chemicals.txt");
+			allChemicals.writeByXML("data/Chemicals.xml");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1076,7 +1111,7 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 		//Test read in from xml file
 		long t1=System.currentTimeMillis();
 		//read from xml:
-		Chemicals allChemicals = Chemicals.readFromFile(getClass().getResource("/data/Chemicals.xml").getFile());
+		Chemicals allChemicals = Chemicals.readFromFile("data/Chemicals.xml");
 		long t2=System.currentTimeMillis();
 		
 		double timeForXMLRead=(t2-t1)/1000.0;
@@ -1085,7 +1120,7 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 		
 		//*****************************************************************
 		//Test read in from text file
-		allChemicals = Chemicals.readFromFile(getClass().getResource("/data/Chemicals.txt").getFile());
+		allChemicals = Chemicals.readFromFile("data/Chemicals.txt");
 		long t3=System.currentTimeMillis();
 		double timeForTxtRead=(t3-t2)/1000.0;
 

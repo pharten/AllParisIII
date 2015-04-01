@@ -56,6 +56,7 @@ public class Screen4 extends Screen {
 	private ProgressBar progressBar;
 	private ButtonSetListener[] listener = new ButtonSetListener[3];
 	private Label lblBestMixtures;
+	private Button btnMiscibility;
 	private static final Logger logger = Logger.getAnonymousLogger();
 	private boolean mixtureRunning = false;
 	
@@ -75,10 +76,38 @@ public class Screen4 extends Screen {
 		
 		SashForm sashForm_1 = new SashForm(this, SWT.VERTICAL);
 		
-		Label lblNewLabel = new Label(sashForm_1, SWT.NONE);
+		SashForm sashForm = new SashForm(sashForm_1, SWT.NONE);
+		
+		Composite composite = new Composite(sashForm, SWT.NONE);
+		
+		Label lblNewLabel = new Label(sashForm, SWT.NONE);
 		lblNewLabel.setFont(SWTResourceManager.getFont("Tahoma", 18, SWT.NORMAL));
 		lblNewLabel.setAlignment(SWT.CENTER);
 		lblNewLabel.setText("Solvent Mixtures ");
+		
+		btnMiscibility = new Button(sashForm, SWT.RADIO);
+		btnMiscibility.setFont(SWTResourceManager.getFont("Segoe UI", 8, SWT.NORMAL));
+		btnMiscibility.setEnabled(false);
+		btnMiscibility.setText("Miscibility Test");
+		btnMiscibility.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+			}
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				Button radioButton = (Button)arg0.widget;
+				State state = states.getActiveState();
+				state.setIncludeMiscibility(!state.includeMiscibility());
+				state.setReplacementIndex(0);
+				state.setReplacementTopIndex(0);
+				radioButton.setSelection(state.includeMiscibility());
+				bestMixtures =  null;
+				loadBestMixturesList(state);
+			}
+		});
+		
+		sashForm.setWeights(new int[] {1, 2, 1});
 		
 		SashForm sashForm_2 = new SashForm(sashForm_1, SWT.NONE);
 		
@@ -191,6 +220,9 @@ public class Screen4 extends Screen {
 				radioButtonFlag_3 = true;
 				radioButton_3.notifyListeners(SWT.Selection, new Event());
 				radioButton_3.setEnabled(radioButtonFlag_2);
+				
+				btnMiscibility.setEnabled(radioButtonFlag_2);
+				btnMiscibility.setSelection(states.getActiveState().includeMiscibility());
 				
 				buttonSet[1][0].setEnabled(radioButtonFlag_2);
 				buttonSet[1][1].setEnabled(radioButtonFlag_2);

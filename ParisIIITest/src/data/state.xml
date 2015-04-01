@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.7.0_45" class="java.beans.XMLDecoder">
+<java version="1.8.0_20" class="java.beans.XMLDecoder">
  <object class="parisInit.State">
   <void property="PScale">
    <int>20</int>
-  </void>
-  <void property="fileName">
-   <string>src/data/state.xml</string>
   </void>
   <void property="mixture">
    <object class="parisWork.Mixture"/>

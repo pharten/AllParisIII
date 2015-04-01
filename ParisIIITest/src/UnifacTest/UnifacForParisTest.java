@@ -109,7 +109,7 @@ public class UnifacForParisTest {
 			meanAbsPercentError/=(double)count;
 			
 			
-			System.out.println(meanAbsPercentError);
+//			System.out.println(meanAbsPercentError);
 			
 			br.close();
 			

@@ -8,8 +8,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Vector;
+
+import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.printing.Printer;
 
 import parisWork.Chemical;
 import parisWork.Mixture;
@@ -25,9 +32,9 @@ public class State extends Object implements Serializable, Cloneable {
 	private int openScreen = 0;
 	private String systemName = null;
 	private Units systemUnit = Units.SI;
-	private String systemTemp = "25";//TODO if default units is SI wouldn't you store in SI?
+	private String systemTemp = "25.0";//TODO if default units is SI wouldn't you store in SI?
 	private String systemPres = "1.0";//TODO if default units is SI wouldn't you store in SI?
-	private int screen0StackOption = 2;
+	private int screen0StackOption = 1;
 	private String screen0TableHeader = "Wt%";
 	private Mixture mixture = null;
 	private int[] impactFactors = {5, 5, 5, 5, 5, 5, 5, 5};
@@ -40,6 +47,7 @@ public class State extends Object implements Serializable, Cloneable {
 	private boolean single = true;
 	private int replacementIndex = 0;
 	private int replacementTopIndex = 0;
+	private boolean includeMiscibility = true;
 
 	public State() {
 		super();
@@ -59,12 +67,15 @@ public class State extends Object implements Serializable, Cloneable {
 			ois.close();
 		}
 		fis.close();
+		state.setFileName(filename);
 		
 		return state;
 	}
 	
-	public void writeToFile(String filename) throws IOException, ClassNotFoundException {
+	public void writeToFile() throws IOException, ClassNotFoundException {
 		
+		String filename = this.getFileName();
+		this.setFileName(null);
 		FileOutputStream fos = new FileOutputStream(filename);
 		if (filename.endsWith(".xml")) {
 			XMLEncoder encoder = new XMLEncoder(fos);
@@ -78,82 +89,242 @@ public class State extends Object implements Serializable, Cloneable {
 			oos.close();
 		}
 		fos.close();
+		this.setFileName(filename);
 		
 	}
 	
-	@Override
+	public boolean equals(State other) { // deep equals
+
+		if (this==other) return true;
+		if (other==null) return false;
+		if (!(other instanceof State)) return false;
+		
+		// compare primitives
+		if (this.screen0StackOption!=other.screen0StackOption) return false;
+		if (this.pScale!=other.pScale) return false;
+		if (this.aScale!=other.aScale) return false;
+		if (this.single!=other.single) return false;
+		if (this.replacementIndex!=other.replacementIndex) return false;
+		if (this.replacementTopIndex!=other.replacementTopIndex) return false;
+		
+		// compare strings
+		if (this.fileName==null && other.fileName!=null) return false;
+		if (this.fileName!=null && !this.fileName.equals(other.fileName)) return false;
+		if (this.screen0TableHeader==null && other.screen0TableHeader!=null) return false;
+		if (this.screen0TableHeader!=null && !this.screen0TableHeader.equals(other.screen0TableHeader)) return false;
+		if (this.systemName==null && other.systemName!=null) return false;
+		if (this.systemName!=null && !this.systemName.equals(other.systemName)) return false;
+		if (this.systemPres==null && other.systemPres!=null) return false;
+		if (this.systemPres!=null && !this.systemPres.equals(other.systemPres)) return false;
+		if (this.systemTemp==null && other.systemTemp!=null) return false;
+		if (this.systemTemp!=null && !this.systemTemp.equals(other.systemTemp)) return false;
+		
+		// compare arrays of primitives
+		if (!Arrays.equals(this.impactFactors, other.impactFactors)) return false; 
+		if (!Arrays.equals(this.pTolerances, other.pTolerances)) return false;
+		if (!Arrays.equals(this.pDesiredVals, other.pDesiredVals)) return false;
+		if (!Arrays.equals(this.aTolerances, other.aTolerances)) return false;
+		if (!Arrays.equals(this.aDesiredVals, other.aDesiredVals)) return false;
+		
+		// compare user defined classes
+		if (this.systemUnit==null && other.systemUnit!=null) return false;
+		if (this.systemUnit!=null && !this.systemUnit.equals(other.systemUnit)) return false;
+		if (this.mixture==null && other.mixture!=null) return false;
+		if (this.mixture!=null && !this.mixture.equals(other.mixture)) return false;
+
+		return true;
+	}
+	
+	public boolean equalsForReplacements(State other) { // deep equals for replacements
+
+		if (this==other) return true;
+		if (other==null) return false;
+		if (!(other instanceof State)) return false;
+		
+		// compare primitives
+//		if (this.screen0StackOption!=other.screen0StackOption) return false;
+		if (this.pScale!=other.pScale) return false;
+		if (this.aScale!=other.aScale) return false;
+		if (this.single!=other.single) return false;
+//		if (this.replacementIndex!=other.replacementIndex) return false;
+//		if (this.replacementTopIndex!=other.replacementTopIndex) return false;
+		
+		// compare strings
+//		if (this.fileName==null && other.fileName!=null) return false;
+//		if (this.fileName!=null && !this.fileName.equals(other.fileName)) return false;
+//		if (this.screen0TableHeader==null && other.screen0TableHeader!=null) return false;
+//		if (this.screen0TableHeader!=null && !this.screen0TableHeader.equals(other.screen0TableHeader)) return false;
+//		if (this.systemName==null && other.systemName!=null) return false;
+//		if (this.systemName!=null && !this.systemName.equals(other.systemName)) return false;
+		if (this.systemPres==null && other.systemPres!=null) return false;
+		if (this.systemPres!=null && !this.systemPres.equals(other.systemPres)) return false;
+		if (this.systemTemp==null && other.systemTemp!=null) return false;
+		if (this.systemTemp!=null && !this.systemTemp.equals(other.systemTemp)) return false;
+		
+		// compare arrays of primitives
+		if (!Arrays.equals(this.impactFactors, other.impactFactors)) return false; 
+		if (!Arrays.equals(this.pTolerances, other.pTolerances)) return false;
+		if (!Arrays.equals(this.pDesiredVals, other.pDesiredVals)) return false;
+		if (!Arrays.equals(this.aTolerances, other.aTolerances)) return false;
+		if (!Arrays.equals(this.aDesiredVals, other.aDesiredVals)) return false;
+		
+		// compare user defined classes
+//		if (this.systemUnit==null && other.systemUnit!=null) return false;
+//		if (this.systemUnit!=null && !this.systemUnit.equals(other.systemUnit)) return false;
+		if (this.mixture==null && other.mixture!=null) return false;
+		if (this.mixture!=null && !this.mixture.deepEquals(other.mixture)) return false;
+
+		return true;
+	}
+	
 	public State clone() { // deep copy
 		
-		State state = null;
+		State clone = null;
 		try {
-			state = (State) super.clone();
+			clone = (State) super.clone();
+
+			if (this.fileName!=null) clone.fileName = new String(this.fileName);
+			clone.screen0StackOption = this.screen0StackOption;
+			clone.screen0TableHeader = new String(this.screen0TableHeader);
+			clone.systemName = new String(this.systemName);
+			clone.systemPres = new String(this.systemPres);
+			clone.systemTemp = new String(this.systemTemp);
+			clone.systemUnit = this.systemUnit;
+			if (this.mixture!=null)	clone.mixture = this.mixture.clone();
+			clone.impactFactors = this.impactFactors.clone();
+			clone.pTolerances = this.pTolerances.clone();
+			if (this.pDesiredVals!=null) clone.pDesiredVals = this.pDesiredVals.clone();
+			clone.pScale = this.pScale;
+			clone.aTolerances = this.aTolerances.clone();
+			if (this.aDesiredVals!=null) clone.aDesiredVals = this.aDesiredVals.clone();
+			clone.aScale = this.aScale;
+			clone.single = this.single;
+			clone.replacementIndex = this.replacementIndex;
+			clone.replacementTopIndex = this.replacementTopIndex;
+			clone.includeMiscibility = this.includeMiscibility;
+
 		} catch (CloneNotSupportedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		state.fileName = new String(this.fileName);
-		state.screen0StackOption = this.screen0StackOption;
-		state.screen0TableHeader = new String(this.screen0TableHeader);
-		state.systemName = new String(this.systemName);
-		state.systemPres = new String(this.systemPres);
-		state.systemTemp = new String(this.systemTemp);
-		state.systemUnit = this.systemUnit;
-		if (this.mixture!=null) state.mixture = this.mixture.clone();
-		state.impactFactors = this.impactFactors.clone();
-		state.pTolerances = this.pTolerances.clone();
-		if (this.pDesiredVals!=null) state.pDesiredVals = this.pDesiredVals.clone();
-		state.pScale = this.pScale;
-		state.aTolerances = this.aTolerances.clone();
-		if (this.aDesiredVals!=null) state.aDesiredVals = this.aDesiredVals.clone();
-		state.aScale = this.aScale;
-		state.single = this.single;
-		state.replacementIndex = this.replacementIndex;
-		state.replacementTopIndex = this.replacementTopIndex;
 		
-		return state;
+		return clone;
 	}
 	
-	public boolean equals(State otherState) { // deep equals
+	public boolean deepEquals(State other) { // deep equals
 
-		if (this==otherState) return true;
-		if (otherState==null) return false;
-		if (!(otherState instanceof State)) return false;
+		if (this==other) return true;
+		if (other==null) return false;
+		if (!(other instanceof State)) return false;
 		
 		// compare primitives
-		if (this.screen0StackOption!=otherState.screen0StackOption) return false;
-		if (this.pScale!=otherState.pScale) return false;
-		if (this.aScale!=otherState.aScale) return false;
-		if (this.single!=otherState.single) return false;
-		if (this.replacementIndex!=otherState.replacementIndex) return false;
-		if (this.replacementTopIndex!=otherState.replacementTopIndex) return false;
+		if (this.screen0StackOption!=other.screen0StackOption) return false;
+		if (this.pScale!=other.pScale) return false;
+		if (this.aScale!=other.aScale) return false;
+		if (this.single!=other.single) return false;
+		if (this.replacementIndex!=other.replacementIndex) return false;
+		if (this.replacementTopIndex!=other.replacementTopIndex) return false;
 		
 		// compare strings
-		if (this.fileName==null && otherState.fileName!=null) return false;
-		if (this.fileName!=null && !this.fileName.equals(otherState.fileName)) return false;
-		if (this.screen0TableHeader==null && otherState.screen0TableHeader!=null) return false;
-		if (this.screen0TableHeader!=null && !this.screen0TableHeader.equals(otherState.screen0TableHeader)) return false;
-		if (this.systemName==null && otherState.systemName!=null) return false;
-		if (this.systemName!=null && !this.systemName.equals(otherState.systemName)) return false;
-		if (this.systemPres==null && otherState.systemPres!=null) return false;
-		if (this.systemPres!=null && !this.systemPres.equals(otherState.systemPres)) return false;
-		if (this.systemTemp==null && otherState.systemTemp!=null) return false;
-		if (this.systemTemp!=null && !this.systemTemp.equals(otherState.systemTemp)) return false;
+		if ((this.fileName==null ? other.fileName!=null : !this.fileName.equals(other.fileName))) return false;
+		if (this.screen0TableHeader==null ? other.screen0TableHeader!=null : !this.screen0TableHeader.equals(other.screen0TableHeader)) return false;
+		if (this.systemName==null ? other.systemName!=null : !this.systemName.equals(other.systemName)) return false;
+		if (this.systemPres==null ? other.systemPres!=null : !this.systemPres.equals(other.systemPres)) return false;
+		if (this.systemTemp==null ? other.systemTemp!=null : !this.systemTemp.equals(other.systemTemp)) return false;
 		
 		// compare arrays of primitives
-		if (!Arrays.equals(this.impactFactors, otherState.impactFactors)) return false; 
-		if (!Arrays.equals(this.pTolerances, otherState.pTolerances)) return false;
-		if (!Arrays.equals(this.pDesiredVals, otherState.pDesiredVals)) return false;
-		if (!Arrays.equals(this.aTolerances, otherState.aTolerances)) return false;
-		if (!Arrays.equals(this.aDesiredVals, otherState.aDesiredVals)) return false;
+		if (!Arrays.equals(this.impactFactors, other.impactFactors)) return false; 
+		if (!Arrays.equals(this.pTolerances, other.pTolerances)) return false;
+		if (!Arrays.equals(this.pDesiredVals, other.pDesiredVals)) return false;
+		if (!Arrays.equals(this.aTolerances, other.aTolerances)) return false;
+		if (!Arrays.equals(this.aDesiredVals, other.aDesiredVals)) return false;
 		
 		// compare user defined classes
-		if (this.systemUnit==null && otherState.systemUnit!=null) return false;
-		if (this.systemUnit!=null && !this.systemUnit.equals(otherState.systemUnit)) return false;
-		if (this.mixture==null && otherState.mixture!=null) return false;
-		if (this.mixture!=null && !this.mixture.equals(otherState.mixture)) return false;
+		if (this.systemUnit==null ? other.systemUnit!=null : !this.systemUnit.equals(other.systemUnit)) return false;
+		if (this.mixture==null ? other.mixture!=null : !this.mixture.deepEquals(other.mixture)) return false;
 
 		return true;
+	}
+	
+	public void print(Printer p, int[] line, int[] page) {
+		DecimalFormat df = new DecimalFormat("0.0000");
+		String output = null;
+		
+		Rectangle trim = p.computeTrim(0, 0, 0, 0);
+		Point dpi = p.getDPI();
+		int leftMargin = dpi.x + trim.x;
+		int topMargin = dpi.y / 2 + trim.y;
+		GC gc = new GC(p);
+		FontMetrics metrics = gc.getFontMetrics();
+		int lineHeight = metrics.getHeight();
+		int linesPerPage = (p.getBounds().height-2*topMargin)/lineHeight;
+		
+		Mixture initialMixture = this.getMixture();
+		Vector<Double> wghtFractions = initialMixture.getWghtFractions();
+		Vector<Chemical> chemicals = initialMixture.getChemicals();
+		
+		if (line[0]>=linesPerPage-1) {  // new page
+			if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) p.endPage();
+			line[0]=0;
+			page[0]++;
+			if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) p.startPage();
+		}
+
+		line[0]++;
+		if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) {
+			output = "Solvent replacements for "+this.systemName+" at "+this.getSystemTemp()+" C and "+this.systemPres+" Atm";
+			gc.drawString(output, leftMargin, topMargin+(line[0]-1)*lineHeight);
+		}
+		
+		if (line[0]>=linesPerPage-wghtFractions.size()-1) {  // new page
+			if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) p.endPage();
+			line[0]=0;
+			page[0]++;
+			if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) p.startPage();
+		}
+
+		line[0]++;
+		if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) {
+			output = "Initial Mixture: Environmental Index = "+df.format(initialMixture.getEnvironmentalIndex())+
+					", Air Index = "+df.format(initialMixture.getAirIndex());
+			gc.drawString(output, leftMargin, topMargin+(line[0]-1)*lineHeight);
+		}
+
+		for (int i=0; i<wghtFractions.size(); i++) {
+			line[0]++;
+			if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) {
+				output = df.format(wghtFractions.get(i))+": "+chemicals.get(i).getCAS()+
+						", "+chemicals.get(i).getName();
+				gc.drawString(output, leftMargin, topMargin+(line[0]-1)*lineHeight);
+			}
+		}
+		
+		if (line[0]>=linesPerPage-4) {  // new page
+			if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) p.endPage();
+			line[0]=0;
+			page[0]++;
+			if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) p.startPage();
+		}
+
+		line[0]++;
+		if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) {
+			output = "Environmental Impact weights: Ingestion = "+this.impactFactors[0]+", Inhalation = "+this.impactFactors[1]+", Acid Rain = "+this.impactFactors[7]+",";
+			gc.drawString(output, leftMargin, topMargin+(line[0]-1)*lineHeight);
+		}
+		
+		line[0]++;
+		if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) {
+			output = "Terrrestrial Toxicity = "+this.impactFactors[2]+", Aquatic Toxicity = "+this.impactFactors[3]+", Global Warming Potential = "+this.impactFactors[4]+",";
+			gc.drawString(output, leftMargin, topMargin+(line[0]-1)*lineHeight);
+		}
+		
+		line[0]++;
+		if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) {
+			output = "Ozone Depletion Potential = "+this.impactFactors[5]+", Photochemical Oxidation Potential = "+this.impactFactors[6];
+			gc.drawString(output, leftMargin, topMargin+(line[0]-1)*lineHeight);
+		}
+		
+		gc.dispose();
 	}
 	
 	public void calculateEnvironmentalIndexes() {
@@ -369,6 +540,20 @@ public class State extends Object implements Serializable, Cloneable {
 
 	public void setReplacementTopIndex(int topIndex) {
 		this.replacementTopIndex = topIndex;	
+	}
+
+	/**
+	 * @return includeMiscibility
+	 */
+	public boolean includeMiscibility() {
+		return includeMiscibility;
+	}
+
+	/**
+	 * @param includeMiscibility the includeMiscibility to set
+	 */
+	public void setIncludeMiscibility(boolean includeMiscibility) {
+		this.includeMiscibility = includeMiscibility;
 	}
 	
 }

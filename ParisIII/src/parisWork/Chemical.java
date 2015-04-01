@@ -1,6 +1,8 @@
 package parisWork;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.Vector;
 
 import parisInit.State;
@@ -59,6 +61,11 @@ public class Chemical extends Object implements Serializable, Cloneable {
 	private double antoineTmax;//maximum temperature for which antoineEquation should be used
 	private String antoineSource = "";//depending on the source the input units and output units for antoine equation may change
 	
+	private double Tc;//critical temperature in K
+	private double Pc;//critical pressure in bar
+
+	private double omega;//eccentric factor, dimensionless
+	
 	//Infinite dilution activity coefficients
 	private double infDilActCoef_ethanol;//64-17-5
 	private double infDilActCoef_diethyl_ether;//60-29-7
@@ -82,7 +89,8 @@ public class Chemical extends Object implements Serializable, Cloneable {
 	//WAR properties
 	private double HtoxIngestion = 0;
 	private double HtoxInhalation = 0;
-	private double HtoxDermal = 0;
+//	private double HtoxDermal = 0;
+	private double TerrestrialTox = 0;
 	private double AquaticTox = 0;
 	private double GWP = 0;
 	private double ODP = 0;
@@ -104,19 +112,21 @@ public class Chemical extends Object implements Serializable, Cloneable {
 	public Chemical() {
 		super();
 	}
-
+	
 	@Override
-	public Chemical clone() { // deep copy
-		Chemical clone = new Chemical();
-		clone.Name = this.Name.substring(0);
-		clone.CAS = this.CAS.substring(0);
-		clone.formula = this.formula.substring(0);
-		clone.structure = this.structure.substring(0);
-		clone.Smiles = this.Smiles.substring(0);
+	public Chemical clone() throws CloneNotSupportedException { // deep copy (not strings)
+		Chemical clone = (Chemical)super.clone();
+		
+		clone.Name = this.Name;
+		clone.CAS = this.CAS;
+		clone.formula = this.formula;
+		clone.structure = this.structure;
+		clone.Smiles = this.Smiles;
 		clone.Synonyms = new Vector<String>();
 		for (int i=0; i<this.Synonyms.size(); i++) {
-			clone.Synonyms.add(this.Synonyms.get(i).substring(0));
+			clone.Synonyms.add(this.Synonyms.get(i));
 		}
+		
 		clone.ChemicalFamilyID = this.ChemicalFamilyID;
 
 		clone.molecularWeight = this.molecularWeight;
@@ -129,24 +139,28 @@ public class Chemical extends Object implements Serializable, Cloneable {
 		clone.viscosity = this.viscosity;
 		clone.surfaceTension = this.surfaceTension;
 		clone.vaporPressure = this.vaporPressure;
-
-		clone.meltingPointSource = this.meltingPointSource.substring(0);
-		clone.boilingPointSource = this.boilingPointSource.substring(0);
-		clone.solubilitySource = this.solubilitySource.substring(0);
-		clone.flashPointSource = this.flashPointSource.substring(0);
-		clone.densitySource = this.densitySource.substring(0);
-		clone.thermalConductivitySource = this.thermalConductivitySource.substring(0);
-		clone.viscositySource = this.viscositySource.substring(0);
-		clone.surfaceTensionSource = this.surfaceTensionSource.substring(0);
-		clone.vaporPressureSource = this.vaporPressureSource.substring(0);
-		clone.heatCapacitySource = this.heatCapacitySource.substring(0);
-
+		clone.heatCapacity = this.heatCapacity;
+		
+		clone.LFlamLimit = this.LFlamLimit;
+		clone.UFlamLimit = this.LFlamLimit;
+		clone.AutoIgnitTemp = this.AutoIgnitTemp;
 		clone.antoineConstantA = this.antoineConstantA;
 		clone.antoineConstantB = this.antoineConstantB;
 		clone.antoineConstantC = this.antoineConstantC;
 		clone.antoineTmax = this.antoineTmax;
 		clone.antoineTmin = this.antoineTmin;
-		clone.antoineSource = this.antoineSource.substring(0);
+
+		clone.meltingPointSource = this.meltingPointSource;
+		clone.boilingPointSource = this.boilingPointSource;
+		clone.solubilitySource = this.solubilitySource;
+		clone.flashPointSource = this.flashPointSource;
+		clone.densitySource = this.densitySource;
+		clone.thermalConductivitySource = this.thermalConductivitySource;
+		clone.viscositySource = this.viscositySource;
+		clone.surfaceTensionSource = this.surfaceTensionSource;
+		clone.vaporPressureSource = this.vaporPressureSource;
+		clone.heatCapacitySource = this.heatCapacitySource;
+		clone.antoineSource = this.antoineSource;
 
 		clone.infDilActCoef_ethanol = this.infDilActCoef_ethanol;
 		clone.infDilActCoef_diethyl_ether = this.infDilActCoef_diethyl_ether;
@@ -159,34 +173,111 @@ public class Chemical extends Object implements Serializable, Cloneable {
 		clone.infDilActCoef_n_propylamine = this.infDilActCoef_n_propylamine;
 		clone.infDilActCoef_dimethyl_disulfide = this.infDilActCoef_dimethyl_disulfide;
 		
-
-		clone.meltingPoint = this.meltingPoint;
-		clone.boilingPoint = this.boilingPoint;
-		clone.molecularWeight = this.molecularWeight;
-		clone.solubility = this.solubility;
-		clone.flashPoint = this.flashPoint;
-		clone.LFlamLimit = this.LFlamLimit;
-		clone.UFlamLimit = this.LFlamLimit;
-		clone.AutoIgnitTemp = this.AutoIgnitTemp;
-		
 		clone.HtoxIngestion = this.HtoxIngestion;
 		clone.HtoxInhalation = this.HtoxInhalation;
-		clone.HtoxDermal = this.HtoxDermal;
+//		clone.HtoxDermal = this.HtoxDermal;
+		clone.TerrestrialTox = this.TerrestrialTox;
 		clone.AquaticTox = this.AquaticTox;
 		clone.GWP = this.GWP;
 		clone.ODP = this.ODP;
 		clone.PCOP = this.PCOP;
 		clone.AP = this.AP;
 		
-		clone.LFlamLimit = this.LFlamLimit;
-		clone.UFlamLimit = this.LFlamLimit;
-		clone.AutoIgnitTemp = this.AutoIgnitTemp;
-		
 		clone.airIndex = this.airIndex;
 		clone.environmentalIndex = this.environmentalIndex;
+		clone.replacementScore = this.replacementScore;
 
 		return clone;
 	}
+	
+	public boolean equals(Chemical other) {
+		
+		if (this==other) return true;
+		if (other==null) return false;
+		if (!(other instanceof Chemical)) return false;
+
+		// compare primitives
+		if (this.ChemicalFamilyID!=other.ChemicalFamilyID) return false;
+		if (this.molecularWeight!=other.molecularWeight) return false;
+		if (this.meltingPoint!=other.meltingPoint) return false;
+		if (this.boilingPoint!=other.boilingPoint) return false;
+		if (this.solubility!=other.solubility) return false;
+		if (this.flashPoint!=other.flashPoint) return false;
+		if (this.density!=other.density) return false;
+		if (this.thermalConductivity!=other.thermalConductivity) return false;
+		if (this.viscosity!=other.viscosity) return false;
+		if (this.surfaceTension!=other.surfaceTension) return false;
+		if (this.vaporPressure!=other.vaporPressure) return false;
+		if (this.LFlamLimit!=other.LFlamLimit) return false;
+		if (this.UFlamLimit!=other.UFlamLimit) return false;
+		if (this.AutoIgnitTemp!=other.AutoIgnitTemp) return false;
+		
+		if (this.infDilActCoef_ethanol!=other.infDilActCoef_ethanol) return false;
+		if (this.infDilActCoef_diethyl_ether!=other.infDilActCoef_diethyl_ether) return false;
+		if (this.infDilActCoef_acetone!=other.infDilActCoef_acetone) return false;
+		if (this.infDilActCoef_water!=other.infDilActCoef_water) return false;
+		if (this.infDilActCoef_benzene!=other.infDilActCoef_benzene) return false;
+		if (this.infDilActCoef_cis_2_heptene!=other.infDilActCoef_cis_2_heptene) return false;
+		if (this.infDilActCoef_n_propyl_chloride!=other.infDilActCoef_n_propyl_chloride) return false;
+		if (this.infDilActCoef_n_heptadecane!=other.infDilActCoef_n_heptadecane) return false;
+		if (this.infDilActCoef_n_propylamine!=other.infDilActCoef_n_propylamine) return false;
+		if (this.infDilActCoef_dimethyl_disulfide!=other.infDilActCoef_dimethyl_disulfide) return false;
+		
+		if (this.HtoxIngestion!=other.HtoxIngestion) return false;
+		if (this.HtoxInhalation!=other.HtoxInhalation) return false;
+//		if (this.HtoxDermal!=other.HtoxDermal) return false;
+		if (this.TerrestrialTox!=other.TerrestrialTox) return false;
+		if (this.AquaticTox!=other.AquaticTox) return false;
+		if (this.GWP!=other.GWP) return false;
+		if (this.ODP!=other.ODP) return false;
+		if (this.PCOP!=other.PCOP) return false;
+		if (this.AP!=other.AP) return false;
+		
+		if (this.airIndex!=other.airIndex) return false;
+		if (this.environmentalIndex!=other.environmentalIndex) return false;
+		if (this.replacementScore!=other.replacementScore) return false;
+
+		if (this.antoineConstantA!=other.antoineConstantA) return false;
+		if (this.antoineConstantB!=other.antoineConstantB) return false;
+		if (this.antoineConstantC!=other.antoineConstantC) return false;
+		if (this.antoineTmax!=other.antoineTmax) return false;
+		if (this.antoineTmin!=other.antoineTmin) return false;
+		
+		// compare strings
+		if (this.antoineSource!=null ? other.antoineSource==null : !this.antoineSource.equals(other.antoineSource)) return false;
+		if (this.Name!=null ? other.Name==null : !this.Name.equals(other.Name)) return false;
+		if (this.CAS!=null ? other.CAS==null : !this.CAS.equals(other.CAS)) return false;
+		if (this.formula!=null ? other.formula==null : !this.formula.equals(other.formula)) return false;
+		if (this.structure!=null ? other.structure==null : !this.structure.equals(other.structure)) return false;
+		if (this.Smiles!=null ? other.Smiles==null : !this.Smiles.equals(other.Smiles)) return false;
+		
+		if (this.Synonyms==null && other.Synonyms!=null) return false;
+		if (this.Synonyms!=null && other.Synonyms==null) return false;
+		if (this.Synonyms!=null && other.Synonyms!=null) {
+			if (this.Synonyms.size()!=other.Synonyms.size()) return false;
+			else {
+				for (int i=0; i<this.Synonyms.size(); i++) {
+					String syn1 = this.Synonyms.get(i);
+					String syn2 = other.Synonyms.get(i);
+					if (!syn1.equals(syn2)) return false;
+				}
+			}
+		}
+		
+		if (this.meltingPointSource==null ? other.meltingPointSource!=null : !this.meltingPointSource.equals(other.meltingPointSource)) return false;
+		if (this.boilingPointSource==null ? other.boilingPointSource!=null : !this.boilingPointSource.equals(other.boilingPointSource)) return false;
+		if (this.solubilitySource==null ? other.solubilitySource!=null : !this.solubilitySource.equals(other.solubilitySource)) return false;
+		if (this.flashPointSource==null ? other.flashPointSource!=null : !this.flashPointSource.equals(other.flashPointSource)) return false;
+		if (this.densitySource==null ? other.densitySource!=null : !this.densitySource.equals(other.densitySource)) return false;
+		if (this.thermalConductivitySource==null ? other.thermalConductivitySource!=null : !this.thermalConductivitySource.equals(other.thermalConductivitySource)) return false;
+		if (this.viscositySource==null ? other.viscositySource!=null : !this.viscositySource.equals(other.viscositySource)) return false;
+		if (this.surfaceTensionSource==null ? other.surfaceTensionSource!=null : !this.surfaceTensionSource.equals(other.surfaceTensionSource)) return false;
+		if (this.vaporPressureSource==null ? other.vaporPressureSource!=null : !this.vaporPressureSource.equals(other.vaporPressureSource)) return false;
+		if (this.heatCapacitySource==null ? other.heatCapacitySource!=null : !this.heatCapacitySource.equals(other.heatCapacitySource)) return false;
+
+		return true;
+	}
+
 	
 	//*********************************************************************
 	//Getter/setters:
@@ -471,6 +562,31 @@ public class Chemical extends Object implements Serializable, Cloneable {
 		this.density = density;
 	}
 
+	public double getTc() {
+		return Tc;
+	}
+
+	public void setTc(double tc) {
+		Tc = tc;
+	}
+
+	public double getPc() {
+		return Pc;
+	}
+
+	public void setPc(double pc) {
+		Pc = pc;
+	}
+
+	public double getOmega() {
+		return omega;
+	}
+
+	public void setOmega(double omega) {
+		this.omega = omega;
+	}
+
+	
 	public double getAntoineConstantA() {
 		return antoineConstantA;
 	}
@@ -642,12 +758,20 @@ public class Chemical extends Object implements Serializable, Cloneable {
 		this.HtoxInhalation = htoxInhalation;
 	}
 
-	public double getHtoxDermal() {
-		return HtoxDermal;
+//	public double getHtoxDermal() {
+//		return HtoxDermal;
+//	}
+//
+//	public void setHtoxDermal(double htoxDermal) {
+//		this.HtoxDermal = htoxDermal;
+//	}
+	
+	public double getTerrestrialTox() {
+		return TerrestrialTox;
 	}
 
-	public void setHtoxDermal(double htoxDermal) {
-		this.HtoxDermal = htoxDermal;
+	public void setTerrestrialTox(double terrestrialTox) {
+		this.TerrestrialTox = terrestrialTox;
 	}
 
 	public double getAquaticTox() {
@@ -741,9 +865,35 @@ public class Chemical extends Object implements Serializable, Cloneable {
 //		}
 		
 		//Database has been updated so that all antoine equations will yield vapor pressure in kpa and T is in K:
+		
+		if (haveAntoineConstants()) {
+			return calculateAntoineVaporPressure(tempK);
+		} else if (haveCriticalParameters()) {
+			return calculateLeeKeslerVaporPressure(tempK);
+		} else {
+			return -9999;
+		}
+		
+	}
+	
+	public double calculateLeeKeslerVaporPressure(double tempK) {
+		
+		double Tr=tempK/Tc;
+		
+		double f0=5.92714-6.09648/Tr-1.28862*Math.log(Tr)+0.169347*Math.pow(Tr,6);
+		double f1=15.2518-15.6875/Tr-13.4721*Math.log(Tr)+0.43577*Math.pow(Tr, 6);
+		
+		double VP=(Math.exp(f0+(omega*f1)))*Pc;
+		VP*=100.0;// convert to kPa
+		
+		return VP;
+		
+	}
+	public double calculateAntoineVaporPressure(double tempK) {
 		double VP_kpa=Math.pow(10,(antoineConstantA-antoineConstantB/(tempK+antoineConstantC)));
 		return VP_kpa;
 	}
+	
 	
 
 	public void eliminateSynonymRepeats() {
@@ -762,13 +912,35 @@ public class Chemical extends Object implements Serializable, Cloneable {
 		}
 		
 	}
+
+	public boolean haveCriticalParameters() {
+		if (Tc==0 || Pc==0 || omega==0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public boolean haveAntoineConstants() {
+		if (antoineConstantA==0 || antoineConstantB==0|| antoineConstantC==0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public boolean canCalculateVaporPressure() {
+		if (haveAntoineConstants() || haveCriticalParameters()) return true;
+		else return false;
+	}
 	
 	public void calculateEnvironmentalIndexes(int[] impacts, double systemPressure) {
 		double psi;
 		
 		psi = impacts[0]*this.getHtoxIngestion();
 		psi += impacts[1]*this.getHtoxInhalation();
-		psi += impacts[2]*this.getHtoxDermal();
+//		psi += impacts[2]*this.getHtoxDermal();
+		psi += impacts[2]*this.getTerrestrialTox();
 		psi += impacts[3]*this.getAquaticTox();
 		psi += impacts[4]*this.getGWP();
 		psi += impacts[5]*this.getODP();
@@ -780,41 +952,47 @@ public class Chemical extends Object implements Serializable, Cloneable {
 	}
 	
 	public double calculateReplacementScore(State activeState) {
+		
+		final DecimalFormat df = new DecimalFormat("0.0##");
+		final DecimalFormat ef = new DecimalFormat("0.00E0");
 
 		double[] tolerance = activeState.getPTolerances();
 		double[] desired = activeState.getPDesiredVals();
 		
-		double score = numberOfDeviationsWithOffset(desired[0], this.molecularWeight, tolerance[0]);
-		score += numberOfDeviationsWithOffset(desired[1], this.density, tolerance[1]);
-		score += numberOfDeviationsWithOffset(desired[2], this.boilingPoint, tolerance[2]);
-		score += numberOfDeviationsWithOffset(desired[3], this.vaporPressure, tolerance[3]);
-		score += numberOfDeviationsWithOffset(desired[4], this.surfaceTension, tolerance[4]);
-		score += numberOfDeviationsWithOffset(desired[5], this.viscosity, tolerance[5]);
-		score += numberOfDeviationsWithOffset(desired[6], this.thermalConductivity, tolerance[6]);
+		double score = numberOfDeviationsWithOffset(desired[0], this.molecularWeight, tolerance[0], df);
+		score += numberOfDeviationsWithOffset(desired[1], this.density, tolerance[1], ef);
+		score += numberOfDeviationsWithOffset(desired[2], this.boilingPoint, tolerance[2], df);
+		score += numberOfDeviationsWithOffset(desired[3], this.vaporPressure, tolerance[3], ef);
+		score += numberOfDeviationsWithOffset(desired[4], this.surfaceTension, tolerance[4], ef);
+		score += numberOfDeviationsWithOffset(desired[5], this.viscosity, tolerance[5], ef);
+		score += numberOfDeviationsWithOffset(desired[6], this.thermalConductivity, tolerance[6], ef);
 		score += flashPointScore(desired[7], this.flashPoint);
 		
 		tolerance = activeState.getATolerances();
 		desired = activeState.getADesiredVals();
 		
-		score += numberOfDeviationsWithOffset(desired[0], this.infDilActCoef_ethanol, tolerance[0]);
-		score += numberOfDeviationsWithOffset(desired[1], this.infDilActCoef_diethyl_ether, tolerance[1]);
-		score += numberOfDeviationsWithOffset(desired[2], this.infDilActCoef_acetone, tolerance[2]);
-		score += numberOfDeviationsWithOffset(desired[3], this.infDilActCoef_water, tolerance[3]);
-		score += numberOfDeviationsWithOffset(desired[4], this.infDilActCoef_benzene, tolerance[4]);
-		score += numberOfDeviationsWithOffset(desired[5], this.infDilActCoef_cis_2_heptene, tolerance[5]);
-		score += numberOfDeviationsWithOffset(desired[6], this.infDilActCoef_n_propyl_chloride, tolerance[6]);
-		score += numberOfDeviationsWithOffset(desired[7], this.infDilActCoef_n_heptadecane, tolerance[7]);
-		score += numberOfDeviationsWithOffset(desired[8], this.infDilActCoef_n_propylamine, tolerance[8]);
-		score += numberOfDeviationsWithOffset(desired[9], this.infDilActCoef_dimethyl_disulfide, tolerance[9]);
+		score += numberOfDeviationsWithOffset(desired[0], this.infDilActCoef_ethanol, tolerance[0], ef);
+		score += numberOfDeviationsWithOffset(desired[1], this.infDilActCoef_diethyl_ether, tolerance[1], ef);
+		score += numberOfDeviationsWithOffset(desired[2], this.infDilActCoef_acetone, tolerance[2], ef);
+		score += numberOfDeviationsWithOffset(desired[3], this.infDilActCoef_water, tolerance[3], ef);
+		score += numberOfDeviationsWithOffset(desired[4], this.infDilActCoef_benzene, tolerance[4], ef);
+		score += numberOfDeviationsWithOffset(desired[5], this.infDilActCoef_cis_2_heptene, tolerance[5], ef);
+		score += numberOfDeviationsWithOffset(desired[6], this.infDilActCoef_n_propyl_chloride, tolerance[6], ef);
+		score += numberOfDeviationsWithOffset(desired[7], this.infDilActCoef_n_heptadecane, tolerance[7], ef);
+		score += numberOfDeviationsWithOffset(desired[8], this.infDilActCoef_n_propylamine, tolerance[8], ef);
+		score += numberOfDeviationsWithOffset(desired[9], this.infDilActCoef_dimethyl_disulfide, tolerance[9], ef);
 
 		this.replacementScore = score;
 		
 		return score;
 	}
 	
-	private double numberOfDeviationsWithOffset(double desired, double actual, double tol) {
-		double upperBound = desired*(1.0+0.01*tol);
-		double lowerBound = desired*(1.0-0.01*tol);
+	private double numberOfDeviationsWithOffset(double desired, double actual, double tol, DecimalFormat df) {
+		
+		actual = Double.parseDouble(df.format(actual));
+		double upperBound = Double.parseDouble(df.format(desired*(1.0+0.01*tol)));
+		double lowerBound = Double.parseDouble(df.format(desired*(1.0-0.01*tol)));	
+		
 		if (lowerBound < 0.0) lowerBound = 0.0;
 
 		double offset = 0.0;

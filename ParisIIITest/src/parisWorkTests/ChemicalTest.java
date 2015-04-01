@@ -16,6 +16,7 @@ public class ChemicalTest {
 
 	@Test
 	public void testClone() throws CloneNotSupportedException {
+		
 		Chemical chemical = new Chemical();
 		chemical.setName("test");
 		chemical.setCAS("xx-xxx-xxx");
@@ -35,26 +36,12 @@ public class ChemicalTest {
 		chemical.setVaporPressureSource("source9");
 		chemical.setHeatCapacitySource("source10");
 		
-		Chemical clone = (Chemical) chemical.clone();
-		Assert.assertEquals(chemical.getName(),clone.getName());
-		Assert.assertEquals(chemical.getCAS(),clone.getCAS());
-		Assert.assertEquals(chemical.getFormula(),clone.getFormula());
-		Assert.assertEquals(chemical.getSmiles(),clone.getSmiles());
-		Assert.assertEquals(chemical.getStructure(),clone.getStructure());
-		for (int i=0; i<chemical.getSynonyms().size(); i++) {
-			Assert.assertEquals(chemical.getSynonyms().get(i),clone.getSynonyms().get(i));
-		}
+		chemical.setEnvironmentalIndex(5.0);
+		Chemical clone = chemical.clone();
+		Assert.assertTrue(chemical.equals(clone));
 		
-		Assert.assertEquals(chemical.getMeltingPointSource(),clone.getMeltingPointSource());
-		Assert.assertEquals(chemical.getBoilingPointSource(),clone.getBoilingPointSource());
-		Assert.assertEquals(chemical.getSolubilitySource(),clone.getSolubilitySource());
-		Assert.assertEquals(chemical.getFlashPointSource(),clone.getFlashPointSource());
-		Assert.assertEquals(chemical.getDensitySource(),clone.getDensitySource());
-		Assert.assertEquals(chemical.getThermalConductivitySource(),clone.getThermalConductivitySource());
-		Assert.assertEquals(chemical.getViscositySource(),clone.getViscositySource());
-		Assert.assertEquals(chemical.getSurfaceTensionSource(),clone.getSurfaceTensionSource());
-		Assert.assertEquals(chemical.getVaporPressureSource(),clone.getVaporPressureSource());
-		Assert.assertEquals(chemical.getHeatCapacitySource(),clone.getHeatCapacitySource());
+		chemical.setEnvironmentalIndex(1.0);
+		Assert.assertFalse(chemical.equals(clone));
 		
 	}
 

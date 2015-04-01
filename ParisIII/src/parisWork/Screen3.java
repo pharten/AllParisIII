@@ -46,6 +46,10 @@ public class Screen3 extends Screen {
 	private static DecimalFormat pf = new DecimalFormat("#0.0#");
 	private Table table;
 	private Composite composite_32;
+	
+	private String[] initTol = new String[10];
+	private String[] initProp = new String[10];
+	boolean updateReplacements = false;
 
 	public Screen3(Composite parent, int style) {
 		super(parent, style);
@@ -394,9 +398,11 @@ public class Screen3 extends Screen {
 		lblScaleFactor.setText("Tolerance\r\nScale Factor");
 
 		scale = new Scale(composite_15, SWT.NONE);
-		scale.setMaximum(40);
-		scale.setSelection(10);
 		scale.setToolTipText("1.0");
+		scale.setMaximum(40);
+		scale.setMinimum(0);
+		scale.setIncrement(10);
+		scale.setSelection(10);
 		scale.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -487,8 +493,6 @@ public class Screen3 extends Screen {
 				List list = (List)arg0.widget;
 				int index = list.getSelectionIndex();
 				State activeState = states.getActiveState();
-				double[] tolerances = activeState.getATolerances();
-				double[] desired = activeState.getADesiredVals();
 				
 				if (index>=0) {
 					activeState.setSingle(true);
@@ -500,62 +504,62 @@ public class Screen3 extends Screen {
 					Color swtGreen = SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN);
 					
 					double value = replacement.getInfDilActCoef_ethanol();
-					ub = getUb(desired[0], tolerances[0]);
-					lb = getLb(desired[0], tolerances[0]);
+					lb = Double.parseDouble(textArray[0][1].getText());
+					ub = Double.parseDouble(textArray[0][3].getText());
 					textArray[0][4].setText(ef.format(value));
 					textArray[0][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
 					value = replacement.getInfDilActCoef_diethyl_ether();
-					ub = getUb(desired[1], tolerances[1]);
-					lb = getLb(desired[1], tolerances[1]);
+					lb = Double.parseDouble(textArray[1][1].getText());
+					ub = Double.parseDouble(textArray[1][3].getText());
 					textArray[1][4].setText(ef.format(value));
 					textArray[1][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
 					value = replacement.getInfDilActCoef_acetone();
-					ub = getUb(desired[2], tolerances[2]);
-					lb = getLb(desired[2], tolerances[2]);
+					lb = Double.parseDouble(textArray[2][1].getText());
+					ub = Double.parseDouble(textArray[2][3].getText());
 					textArray[2][4].setText(ef.format(value));
 					textArray[2][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
 					value = replacement.getInfDilActCoef_water();
-					ub = getUb(desired[3], tolerances[3]);
-					lb = getLb(desired[3], tolerances[3]);
+					lb = Double.parseDouble(textArray[3][1].getText());
+					ub = Double.parseDouble(textArray[3][3].getText());
 					textArray[3][4].setText(ef.format(value));
 					textArray[3][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
 					value = replacement.getInfDilActCoef_benzene();
-					ub = getUb(desired[4], tolerances[4]);
-					lb = getLb(desired[4], tolerances[4]);
+					lb = Double.parseDouble(textArray[4][1].getText());
+					ub = Double.parseDouble(textArray[4][3].getText());
 					textArray[4][4].setText(ef.format(value));
 					textArray[4][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
 					value = replacement.getInfDilActCoef_cis_2_heptene();
-					ub = getUb(desired[5], tolerances[5]);
-					lb = getLb(desired[5], tolerances[5]);
+					lb = Double.parseDouble(textArray[5][1].getText());
+					ub = Double.parseDouble(textArray[5][3].getText());
 					textArray[5][4].setText(ef.format(value));
 					textArray[5][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
 					value = replacement.getInfDilActCoef_n_propyl_chloride();
-					ub = getUb(desired[6], tolerances[6]);
-					lb = getLb(desired[6], tolerances[6]);
+					lb = Double.parseDouble(textArray[6][1].getText());
+					ub = Double.parseDouble(textArray[6][3].getText());
 					textArray[6][4].setText(ef.format(value));
 					textArray[6][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
 					value = replacement.getInfDilActCoef_n_heptadecane();
-					ub = getUb(desired[7], tolerances[7]);
-					lb = getLb(desired[7], tolerances[7]);
+					lb = Double.parseDouble(textArray[7][1].getText());
+					ub = Double.parseDouble(textArray[7][3].getText());
 					textArray[7][4].setText(ef.format(value));
 					textArray[7][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
 					value = replacement.getInfDilActCoef_n_propylamine();
-					ub = getUb(desired[8], tolerances[8]);
-					lb = getLb(desired[8], tolerances[8]);
+					lb = Double.parseDouble(textArray[8][1].getText());
+					ub = Double.parseDouble(textArray[8][3].getText());
 					textArray[8][4].setText(ef.format(value));
 					textArray[8][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
 					value = replacement.getInfDilActCoef_dimethyl_disulfide();
-					ub = getUb(desired[9], tolerances[9]);
-					lb = getLb(desired[9], tolerances[9]);
+					lb = Double.parseDouble(textArray[9][1].getText());
+					ub = Double.parseDouble(textArray[9][3].getText());
 					textArray[9][4].setText(ef.format(value));
 					textArray[9][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 				}
@@ -576,9 +580,6 @@ public class Screen3 extends Screen {
 				List list = (List)arg0.widget;
 				int index = list.getSelectionIndex();
 				State activeState = states.getActiveState();
-				Units unit = activeState.getSystemUnit();
-				double[] tolerances = activeState.getATolerances();
-				double[] desired = activeState.getADesiredVals();
 				
 				if (index>=0) {
 					activeState.setSingle(false);
@@ -599,62 +600,62 @@ public class Screen3 extends Screen {
 					
 					// then update the replacement values
 					double value = mixture.getInfDilActCoef_ethanol();
-					ub = getUb(desired[0], tolerances[0]);
-					lb = getLb(desired[0], tolerances[0]);
+					lb = Double.parseDouble(textArray[0][1].getText());
+					ub = Double.parseDouble(textArray[0][3].getText());
 					textArray[0][4].setText(ef.format(value));
 					textArray[0][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
 					value = mixture.getInfDilActCoef_diethyl_ether();
-					ub = getUb(desired[1], tolerances[1]);
-					lb = getLb(desired[1], tolerances[1]);
+					lb = Double.parseDouble(textArray[1][1].getText());
+					ub = Double.parseDouble(textArray[1][3].getText());
 					textArray[1][4].setText(ef.format(value));
 					textArray[1][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
 					value = mixture.getInfDilActCoef_acetone();
-					ub = getUb(desired[2], tolerances[2]);
-					lb = getLb(desired[2], tolerances[2]);
+					lb = Double.parseDouble(textArray[2][1].getText());
+					ub = Double.parseDouble(textArray[2][3].getText());
 					textArray[2][4].setText(ef.format(value));
 					textArray[2][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
 					value = mixture.getInfDilActCoef_water();
-					ub = getUb(desired[3], tolerances[3]);
-					lb = getLb(desired[3], tolerances[3]);
+					lb = Double.parseDouble(textArray[3][1].getText());
+					ub = Double.parseDouble(textArray[3][3].getText());
 					textArray[3][4].setText(ef.format(value));
 					textArray[3][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
 					value = mixture.getInfDilActCoef_benzene();
-					ub = getUb(desired[4], tolerances[4]);
-					lb = getLb(desired[4], tolerances[4]);
+					lb = Double.parseDouble(textArray[4][1].getText());
+					ub = Double.parseDouble(textArray[4][3].getText());
 					textArray[4][4].setText(ef.format(value));
 					textArray[4][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
 					value = mixture.getInfDilActCoef_cis_2_heptene();
-					ub = getUb(desired[5], tolerances[5]);
-					lb = getLb(desired[5], tolerances[5]);
+					lb = Double.parseDouble(textArray[5][1].getText());
+					ub = Double.parseDouble(textArray[5][3].getText());
 					textArray[5][4].setText(ef.format(value));
 					textArray[5][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
 					value = mixture.getInfDilActCoef_n_propyl_chloride();
-					ub = getUb(desired[6], tolerances[6]);
-					lb = getLb(desired[6], tolerances[6]);
+					lb = Double.parseDouble(textArray[6][1].getText());
+					ub = Double.parseDouble(textArray[6][3].getText());
 					textArray[6][4].setText(ef.format(value));
 					textArray[6][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
 					value = mixture.getInfDilActCoef_n_heptadecane();
-					ub = getUb(desired[7], tolerances[7]);
-					lb = getLb(desired[7], tolerances[7]);
+					lb = Double.parseDouble(textArray[7][1].getText());
+					ub = Double.parseDouble(textArray[7][3].getText());
 					textArray[7][4].setText(ef.format(value));
 					textArray[7][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
 					value = mixture.getInfDilActCoef_n_propylamine();
-					ub = getUb(desired[8], tolerances[8]);
-					lb = getLb(desired[8], tolerances[8]);
+					lb = Double.parseDouble(textArray[8][1].getText());
+					ub = Double.parseDouble(textArray[8][3].getText());
 					textArray[8][4].setText(ef.format(value));
 					textArray[8][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 					
 					value = mixture.getInfDilActCoef_dimethyl_disulfide();
-					ub = getUb(desired[9], tolerances[9]);
-					lb = getLb(desired[9], tolerances[9]);
+					lb = Double.parseDouble(textArray[9][1].getText());
+					ub = Double.parseDouble(textArray[9][3].getText());
 					textArray[9][4].setText(ef.format(value));
 					textArray[9][4].setForeground((lb <= value && value <= ub) ? swtGreen : swtRed);
 				}
@@ -689,7 +690,6 @@ public class Screen3 extends Screen {
 	@Override
 	public void begin() throws Exception {
 		restore();
-		addFocusListeners(states.getActiveState());
 		int screenNum = Integer.parseInt(this.getClass().getSimpleName().substring(6));
 		states.getActiveState().setOpenScreen(screenNum);
 //		System.out.println("at Screen"+screenNum);
@@ -698,21 +698,19 @@ public class Screen3 extends Screen {
 	@Override
 	public boolean finishUp() throws Exception {
 		updateShared();
-		removeFocusListeners();
 		return true;
 	}
 
 	@Override
 	public void updateShared() throws Exception {
+		
+		removeFocusListeners();
+		
 		saveTolerances(states.getActiveState());
 		saveProperties(states.getActiveState());
-		saveReplacements(states.getActiveState());
-//		if (states.getActiveState().isSingle()) {
-//			saveReplacements(states.getActiveState());
-//			loadReplacements(states.getActiveState());
-//		} else {
-//			loadMixtures(states.getActiveState());
-//		}
+		
+		if (updateReplacements && replacements!=null) replacements.bubbleSort();
+
 		ParisWork.states = states;
 		ParisWork.chemicals = chemicals;
 		ParisWork.replacements = replacements;
@@ -740,10 +738,26 @@ public class Screen3 extends Screen {
 			radioButton_1.setSelection(false);
 		}
 		
+		for (int i=1; i<initTol.length; i++) {
+			initTol[i] = textArray[i][0].getText();
+			initProp[i] = textArray[i][2].getText();
+		}
+		
+		addFocusListeners(states.getActiveState());
+		
+		updateReplacements = false;
+		
 	}
 	
 	private void loadTolerances(State activeState) {
+		
+		blankoutTolerances();
+		
+		Mixture mixture = activeState.getMixture();
+		if (mixture==null || mixture.getChemicals().size()==0) return;
+		
 		double[] tolerances = activeState.getATolerances();
+		
 		for (int i=0; i<10; i++) {
 			textArray[i][0].setText(pf.format(tolerances[i]));
 		}
@@ -755,11 +769,26 @@ public class Screen3 extends Screen {
 	}
 	
 	private void saveTolerances(State activeState) {
+		
+		Mixture mixture = activeState.getMixture();
+		if (mixture==null || mixture.getChemicals().size()==0) return;
+		
 		double[] tolerances = activeState.getATolerances();
+		
 		for (int i=0; i<10; i++) {
-			tolerances[i] = Double.parseDouble(textArray[i][0].getText());
+			if (!textArray[i][0].equals(initTol[i])) {
+				updateReplacements = true;
+				tolerances[i] = Double.parseDouble(textArray[i][0].getText());
+			}
 		}
 		activeState.setAScale(scale.getSelection());
+		
+	}
+	
+	private void blankoutTolerances() {
+		for (int i=0; i<10; i++) {
+			textArray[i][0].setText("");
+		}
 	}
 	
 	private void loadProperties(State activeState) throws Exception {
@@ -778,7 +807,10 @@ public class Screen3 extends Screen {
 		double[] desiredVals = activeState.getADesiredVals();
 		if (desiredVals == null) return;
 		for (int i=0; i<10; i++) {
-			desiredVals[i] = Double.parseDouble(textArray[i][2].getText());
+			if (!textArray[i][2].equals(initProp[i])) {
+				updateReplacements = true;
+				desiredVals[i] = Double.parseDouble(textArray[i][2].getText());
+			}
 		}
 	}
 	
@@ -845,25 +877,6 @@ public class Screen3 extends Screen {
 		
 		replacementList.notifyListeners(SWT.Selection, new Event());
 
-	}
-	
-	private void saveReplacements(State activeState) {
-		
-		if (replacements==null || replacements.size()==0) return;
-		
-		replacements.bubbleSort();
-		
-//		int index = replacementList.getSelectionIndex();
-//		String name = replacementList.getItem(index);
-//		replacementList.setItems(replacements.getNames());
-//		
-//		if (name.equals(replacementList.getItem(index))) {
-//			replacementList.select(replacementList.indexOf(name));
-//			replacementList.showSelection();
-//			activeState.setReplacementTopIndex(replacementList.getTopIndex());
-//			activeState.setReplacementIndex(replacementList.getSelectionIndex());
-//		}
-		
 	}
 	
 	private void loadMixtures(State activeState) throws Exception {

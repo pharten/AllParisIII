@@ -58,17 +58,12 @@ public class FocusListenerAdapter extends FocusAdapter {
 				if (lb <= rep) vText[4].setForeground(swtGreen);
 				else vText[4].setForeground(swtRed);
 			} else {
-				if (unit==null) {
-					lb = Double.parseDouble(vText[1].getText());
-					val = Double.parseDouble(vText[2].getText());
-					ub = Double.parseDouble(vText[3].getText());
-					rep = Double.parseDouble(vText[4].getText());
-				} else {
-					lb = Units.tempConvertFrom(Double.parseDouble(vText[1].getText()), unit);
-					val = Units.tempConvertFrom(Double.parseDouble(vText[2].getText()), unit);
-					ub = Units.tempConvertFrom(Double.parseDouble(vText[3].getText()), unit);
-					rep = Units.tempConvertFrom(Double.parseDouble(vText[4].getText()), unit);
-				}
+				
+				lb = Double.parseDouble(vText[1].getText());
+				val = Double.parseDouble(vText[2].getText());
+				ub = Double.parseDouble(vText[3].getText());
+				rep = Double.parseDouble(vText[4].getText());
+
 				if (focusText==vText[0] || focusText==vText[2]) {// tolerance or desired fields
 					tol = Double.parseDouble(vText[0].getText())/100.0;
 				} else if (focusText==vText[1] || focusText==vText[3]) { // bounds fields
@@ -76,25 +71,17 @@ public class FocusListenerAdapter extends FocusAdapter {
 				} else {
 					throw new Exception("Error: Incorrect Text Field");
 				}
+
 				lb = val*(1.0-tol);
 				ub = val*(1.0+tol);
-				if (lb < 0.0) lb = 0.0;
-				if (unit==null) {
-					vText[0].setText(pf.format(tol*100.0));
-					vText[1].setText(df.format(lb));
-					vText[2].setText(df.format(val));
-					vText[3].setText(df.format(ub));
-					if (lb <= rep && rep <= ub) vText[4].setForeground(swtGreen);
-					else vText[4].setForeground(swtRed);
-				} else {
-					vText[0].setText(pf.format(tol*100.0));
-					vText[1].setText(df.format(Units.tempConvertTo(lb, unit)));
-					vText[2].setText(df.format(Units.tempConvertTo(val, unit)));
-					vText[3].setText(df.format(Units.tempConvertTo(ub, unit)));
-					if (lb <= rep && rep <= ub) vText[4].setForeground(swtGreen);
-					else vText[4].setForeground(swtRed);
-				}
-				tolerance[row] = 100.0*tol;
+				if (unit==null && lb < 0.0) lb = 0.0;  // change this from unit==null to negativeIsAllowed()
+
+				vText[0].setText(pf.format(tol*100.0));
+				vText[1].setText(df.format(lb));
+				vText[2].setText(df.format(val));
+				vText[3].setText(df.format(ub));
+				if (lb <= rep && rep <= ub) vText[4].setForeground(swtGreen);
+				else vText[4].setForeground(swtRed);
 
 			}
 		} catch (NumberFormatException e) {

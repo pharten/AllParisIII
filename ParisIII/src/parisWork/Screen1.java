@@ -21,7 +21,6 @@ import org.eclipse.swt.custom.SashForm;
 
 public class Screen1 extends Screen {
 
-	private Text text_9;
 	private Text text_10;
 	private Text text_11;
 	private Text text_12;
@@ -31,7 +30,7 @@ public class Screen1 extends Screen {
 	private Text text_16;
 	private Text text_17;
 	private Text text_18;
-	private Text text_20;
+
 	private Text text_21;
 	private Text text_22;
 	private Text text_23;
@@ -41,7 +40,7 @@ public class Screen1 extends Screen {
 	private Text text_27;
 	private Text text_28;
 	private Text text_29;
-	private Text text_31;
+
 	private Text text_32;
 	private Text text_33;
 	private Text text_34;
@@ -50,7 +49,7 @@ public class Screen1 extends Screen {
 	private Text text_38;
 	private Text text_39;
 	private Text text_40;
-	private Text text_42;
+
 	private Text text_43;
 	private Text text_44;
 	private Text text_45;
@@ -75,10 +74,8 @@ public class Screen1 extends Screen {
 	private Composite composite_8;
 	private Label lblImpactFactors;
 	private Label label_22;
-	private Text text_8;
-	private Text text_19;
-	private Text text_30;
-	private Text text_41;
+	private Text[] chemicalName = new Text[4];
+	private Text[] chemicalWght = new Text[4];
 	private Label label_23;
 	private Composite composite_0;
 	private Text text_0;
@@ -146,13 +143,9 @@ public class Screen1 extends Screen {
 		label_22.setFont(SWTResourceManager.getFont("Tahoma", 7, SWT.NORMAL));
 		label_22.setAlignment(SWT.CENTER);
 		
-		text_8 = new Text(composite_8, SWT.BORDER);
-		
-		text_19 = new Text(composite_8, SWT.BORDER);
-		
-		text_30 = new Text(composite_8, SWT.BORDER);
-		
-		text_41 = new Text(composite_8, SWT.BORDER);
+		for (int i=0; i<chemicalName.length; i++) {
+			chemicalName[i] = new Text(composite_8, SWT.BORDER);
+		}
 		
 		Composite composite_25 = new Composite(composite_8, SWT.NONE);
 		
@@ -199,13 +192,9 @@ public class Screen1 extends Screen {
 		lblNewLabel_4.setAlignment(SWT.CENTER);
 		lblNewLabel_4.setText("\r\nWt%");
 		
-		text_9 = new Text(composite_9, SWT.BORDER);
-		
-		text_20 = new Text(composite_9, SWT.BORDER);
-		
-		text_31 = new Text(composite_9, SWT.BORDER);
-		
-		text_42 = new Text(composite_9, SWT.BORDER);
+		for (int i=0; i<chemicalWght.length; i++) {
+			chemicalWght[i] = new Text(composite_9, SWT.BORDER);
+		}
 		
 		Composite composite_19 = new Composite(composite_9, SWT.NONE);
 		
@@ -303,10 +292,10 @@ public class Screen1 extends Screen {
 		Composite composite_12 = new Composite(composite_23, SWT.NONE);
 		composite_12.setLayout(new FillLayout(SWT.VERTICAL));
 		
-		Label lblDermal = new Label(composite_12, SWT.NONE);
-		lblDermal.setFont(SWTResourceManager.getFont("Tahoma", 7, SWT.NORMAL));
-		lblDermal.setText("\r\nDermal");
-		lblDermal.setAlignment(SWT.CENTER);
+		Label lblTerrestialTox = new Label(composite_12, SWT.NONE);
+		lblTerrestialTox.setFont(SWTResourceManager.getFont("Tahoma", 7, SWT.NORMAL));
+		lblTerrestialTox.setText("\r\nTerrestrial Toxicity");
+		lblTerrestialTox.setAlignment(SWT.CENTER);
 		
 		composite_2 = new Composite(composite_12, SWT.NONE);
 		composite_2.setLayout(new FillLayout(SWT.HORIZONTAL));
@@ -598,6 +587,14 @@ public class Screen1 extends Screen {
 		composite_21.setLayout(new FillLayout(SWT.HORIZONTAL));
 		sashForm_1.setWeights(new int[] {1, 6, 1});
 
+		for (int i=0; i<chemicalName.length; i++) {
+			chemicalName[i].setEditable(false);
+		}
+		
+		for (int i=0; i<chemicalWght.length; i++) {
+			chemicalWght[i].setEditable(false);
+		}
+		
 		text_0.setEditable(false);
 		text_1.setEditable(false);
 		text_2.setEditable(false);
@@ -606,8 +603,7 @@ public class Screen1 extends Screen {
 		text_5.setEditable(false);
 		text_6.setEditable(false);
 		text_7.setEditable(false);
-		text_8.setEditable(false);
-		text_9.setEditable(false);
+
 		text_10.setEditable(false);
 		text_11.setEditable(false);
 		text_12.setEditable(false);
@@ -617,8 +613,7 @@ public class Screen1 extends Screen {
 		text_16.setEditable(false);
 		text_17.setEditable(false);
 		text_18.setEditable(false);
-		text_19.setEditable(false);
-		text_20.setEditable(false);
+
 		text_21.setEditable(false);
 		text_22.setEditable(false);
 		text_23.setEditable(false);
@@ -628,8 +623,7 @@ public class Screen1 extends Screen {
 		text_27.setEditable(false);
 		text_28.setEditable(false);
 		text_29.setEditable(false);
-		text_30.setEditable(false);
-		text_31.setEditable(false);
+
 		text_32.setEditable(false);
 		text_33.setEditable(false);
 		text_34.setEditable(false);
@@ -639,8 +633,7 @@ public class Screen1 extends Screen {
 		text_38.setEditable(false);
 		text_39.setEditable(false);
 		text_40.setEditable(false);
-		text_41.setEditable(false);
-		text_42.setEditable(false);
+
 		text_43.setEditable(false);
 		text_44.setEditable(false);
 		text_45.setEditable(false);
@@ -690,6 +683,7 @@ public class Screen1 extends Screen {
 		states = ParisWork.states;
 		chemicals = ParisWork.chemicals;
 		replacements = ParisWork.replacements;
+		bestMixtures = ParisWork.bestMixtures;
 		loadImpactFactors(states.getActiveState());
 		loadFixedValues(states.getActiveState());
 		loadDynamicValues(states.getActiveState());
@@ -701,11 +695,14 @@ public class Screen1 extends Screen {
 		if (anyChanges(newImpactFactors)) {
 			states.getActiveState().setImpactFactors(newImpactFactors);
 			states.getActiveState().calculateEnvironmentalIndexes();
+			states.getActiveState().setSingle(true);
 			replacements = null;
+			bestMixtures = null;
 		}
 		ParisWork.states = states;
 		ParisWork.chemicals = chemicals;
 		ParisWork.replacements = replacements;
+		ParisWork.bestMixtures = bestMixtures;
 	}
 	
 	private void loadImpactFactors(State activeState) {
@@ -734,7 +731,6 @@ public class Screen1 extends Screen {
 	
 	private void loadFixedValues(State activeState) {
 		
-		double wght;
 		Chemical solvent = null;
 		
 		blankoutFixedValues();
@@ -743,15 +739,16 @@ public class Screen1 extends Screen {
 	
 		Vector<Chemical> solvents = activeState.getMixture().getChemicals();
 		Vector<Double> wghts = activeState.getMixture().getWghtFractions();
+		
 		if (solvents.size()>0) {
 			solvent = solvents.get(0);
-			wght = wghts.get(0);
 			
-			text_8.setText(solvent.getName());
-			text_9.setText(Double.toString(wght*100.0));
+			chemicalName[0].setText(solvent.getName());
+			chemicalWght[0].setText(String.valueOf(Math.round(wghts.get(0)*10000.0)*0.01));
+
 			text_10.setText(ef.format(solvent.getHtoxIngestion()));
 			text_11.setText(ef.format(solvent.getHtoxInhalation()));
-			text_12.setText(ef.format(solvent.getHtoxDermal()));
+			text_12.setText(ef.format(solvent.getTerrestrialTox()));
 			text_13.setText(ef.format(solvent.getAquaticTox()));
 			text_14.setText(ef.format(solvent.getGWP()));
 			text_15.setText(ef.format(solvent.getODP()));
@@ -760,13 +757,13 @@ public class Screen1 extends Screen {
 		}
 		if (solvents.size()>1) {
 			solvent = solvents.get(1);
-			wght = wghts.get(1);
 
-			text_19.setText(solvent.getName());
-			text_20.setText(Double.toString(wght*100.0));
+			chemicalName[1].setText(solvent.getName());
+			chemicalWght[1].setText(String.valueOf(Math.round(wghts.get(1)*10000.0)*0.01));
+			
 			text_21.setText(ef.format(solvent.getHtoxIngestion()));
 			text_22.setText(ef.format(solvent.getHtoxInhalation()));
-			text_23.setText(ef.format(solvent.getHtoxDermal()));
+			text_23.setText(ef.format(solvent.getTerrestrialTox()));
 			text_24.setText(ef.format(solvent.getAquaticTox()));
 			text_25.setText(ef.format(solvent.getGWP()));
 			text_26.setText(ef.format(solvent.getODP()));
@@ -775,13 +772,13 @@ public class Screen1 extends Screen {
 		}
 		if (solvents.size()>2) {
 			solvent = solvents.get(2);
-			wght = wghts.get(2);
 			
-			text_30.setText(solvent.getName());
-			text_31.setText(Double.toString(wght*100.0));
+			chemicalName[2].setText(solvent.getName());
+			chemicalWght[2].setText(String.valueOf(Math.round(wghts.get(2)*10000.0)*0.01));
+			
 			text_32.setText(ef.format(solvent.getHtoxIngestion()));
 			text_33.setText(ef.format(solvent.getHtoxInhalation()));
-			text_34.setText(ef.format(solvent.getHtoxDermal()));
+			text_34.setText(ef.format(solvent.getTerrestrialTox()));
 			text_35.setText(ef.format(solvent.getAquaticTox()));
 			text_36.setText(ef.format(solvent.getGWP()));
 			text_37.setText(ef.format(solvent.getODP()));
@@ -790,13 +787,13 @@ public class Screen1 extends Screen {
 		}
 		if (solvents.size()>3) {
 			solvent = solvents.get(3);
-			wght = wghts.get(3);
 			
-			text_41.setText(solvent.getName());
-			text_42.setText(Double.toString(wght*100.0));
+			chemicalName[3].setText(solvent.getName());
+			chemicalWght[3].setText(String.valueOf(Math.round(wghts.get(3)*10000.0)*0.01));
+			
 			text_43.setText(ef.format(solvent.getHtoxIngestion()));
 			text_44.setText(ef.format(solvent.getHtoxInhalation()));
-			text_45.setText(ef.format(solvent.getHtoxDermal()));
+			text_45.setText(ef.format(solvent.getTerrestrialTox()));
 			text_46.setText(ef.format(solvent.getAquaticTox()));
 			text_47.setText(ef.format(solvent.getGWP()));
 			text_48.setText(ef.format(solvent.getODP()));
@@ -853,7 +850,7 @@ public class Screen1 extends Screen {
 			sumh += value;
 			sumv[1] = value;
 			
-			value = wght*normIF[2]*solvent.getHtoxDermal();
+			value = wght*normIF[2]*solvent.getTerrestrialTox();
 			sumh += value;
 			sumv[2] = value;
 			
@@ -892,7 +889,7 @@ public class Screen1 extends Screen {
 			sumh += value;
 			sumv[1] += value;
 			
-			value = wght*normIF[2]*solvent.getHtoxDermal();
+			value = wght*normIF[2]*solvent.getTerrestrialTox();
 			sumh += value;
 			sumv[2] += value;
 			
@@ -931,7 +928,7 @@ public class Screen1 extends Screen {
 			sumh += value;
 			sumv[1] += value;
 			
-			value = wght*normIF[2]*solvent.getHtoxDermal();
+			value = wght*normIF[2]*solvent.getTerrestrialTox();
 			sumh += value;
 			sumv[2] += value;
 			
@@ -970,7 +967,7 @@ public class Screen1 extends Screen {
 			sumh += value;
 			sumv[1] += value;
 			
-			value = wght*normIF[2]*solvent.getHtoxDermal();
+			value = wght*normIF[2]*solvent.getTerrestrialTox();
 			sumh += value;
 			sumv[2] += value;
 			
@@ -1027,8 +1024,14 @@ public class Screen1 extends Screen {
 	}
 	
 	private void blankoutFixedValues() {
-		text_8.setText("");
-		text_9.setText("");
+		
+		for (int i=0; i<chemicalName.length; i++) {
+			chemicalName[i].setText("");
+		}
+		for (int i=0; i<chemicalWght.length; i++) {
+			chemicalWght[i].setText("");
+		}
+
 		text_10.setText("");
 		text_11.setText("");
 		text_12.setText("");
@@ -1037,8 +1040,7 @@ public class Screen1 extends Screen {
 		text_15.setText("");
 		text_16.setText("");
 		text_17.setText("");			
-		text_19.setText("");
-		text_20.setText("");
+
 		text_21.setText("");
 		text_22.setText("");
 		text_23.setText("");
@@ -1047,8 +1049,7 @@ public class Screen1 extends Screen {
 		text_26.setText("");
 		text_27.setText("");
 		text_28.setText("");			
-		text_30.setText("");
-		text_31.setText("");
+
 		text_32.setText("");
 		text_33.setText("");
 		text_34.setText("");
@@ -1057,8 +1058,7 @@ public class Screen1 extends Screen {
 		text_37.setText("");
 		text_38.setText("");
 		text_39.setText("");			
-		text_41.setText("");
-		text_42.setText("");
+
 		text_43.setText("");
 		text_44.setText("");
 		text_45.setText("");
@@ -1115,4 +1115,13 @@ public class Screen1 extends Screen {
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
 	}
+
+	public Text[] getChemicalName() {
+		return chemicalName;
+	}
+
+	public Text[] getChemicalWght() {
+		return chemicalWght;
+	}
+
 }

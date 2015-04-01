@@ -96,7 +96,7 @@ public class UNIFACforPARIS {
 		soluteNames.add("n_propyl_chloride");//540-54-5
 		soluteNames.add("n_heptadecane");//629-78-7
 		soluteNames.add("n_propylamine");//107-10-8
-		soluteNames.add("dimethyl_sulfide");//624-92-0
+		soluteNames.add("dimethyl disulfide");//624-92-0
 		
 		
 //		Define parameters
@@ -261,6 +261,51 @@ public class UNIFACforPARIS {
 			compounds.add(chemicals[i].getCAS());
 		}
 		return calculateActivityCoefficients (molefracs,compounds, tempK);
+	}
+	
+	public int getMissingInteractionParameterCount(Chemical[] chemicals) {
+
+		Vector<String>compounds=new Vector<String>();
+		for (int i=0;i<chemicals.length;i++) {
+			compounds.add(chemicals[i].getCAS());
+		}
+		int numSubGroups [][] = this.prepareSubGroupMatrix(compounds);
+		Vector<Integer> activeSubGroup = new Vector<Integer> ();
+		Vector<Integer> activeMainGroup = new Vector<Integer> ();
+		
+		int numComps=compounds.size();
+		
+		UNIFACGroupCodesforPARIS ugc = new UNIFACGroupCodesforPARIS();
+		
+		
+//		Initialize summations and Calculate molecular information ri & qi
+		for (int i = 0; i < numComps; i++) {
+			for (int j = 0; j < maxNumSubGroups; j++) {
+				if (numSubGroups[i][j] == 0) continue;
+				activeSubGroup.add(j);
+			}
+		}
+		
+//		Remove duplicates and re-order groups
+		activeSubGroup = this.findDuplicateGroups(activeSubGroup);
+		activeSubGroup = this.orderGroups(activeSubGroup);
+		activeMainGroup = ugc.mainGroupID(activeSubGroup);
+		
+//		Define tau values
+//		deltau = aij + bij*(temp - tref)
+//		tau = exp(-deltau/temp)
+		
+		
+		int missingCount=0;
+		for (int i = 0; i < activeMainGroup.size(); i++) {
+			for (int j = 0; j < activeMainGroup.size(); j++) {
+				
+				if (ud.ipa[activeMainGroup.get(i)][activeMainGroup.get(j)]==0) {
+					missingCount++;
+				}
+			}
+		}
+		return missingCount;
 	}
 	
 	private void writeResults (FileWriter fw, double gamma [],Vector<String>compounds) throws Exception {
@@ -655,7 +700,9 @@ public class UNIFACforPARIS {
 	
 	
 	public static void main(String[] args) {
-
+		UNIFACforPARIS u=new UNIFACforPARIS();
+		u.runUNIFACInfDilutionCalculations(298.15);
+		
 			
 	}
 	

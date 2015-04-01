@@ -1,11 +1,17 @@
 package parisWork;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Vector;
+
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.printing.Printer;
+import org.eclipse.swt.graphics.FontMetrics;
 
 import parisInit.State;
 import parisInit.Units;
-
 import unifac.UNIFACforPARIS;
 
 public class Mixture extends Chemical implements Serializable, Cloneable {
@@ -111,68 +117,207 @@ public class Mixture extends Chemical implements Serializable, Cloneable {
 		
 		calculateEnvironmentalIndexesOfMixture();
 	}
-
-	public Mixture clone() { // deep copy
+	
+	public boolean equals(Mixture other) {
 		
-		Mixture clone = new Mixture(this.tempK);
+		if (this==other) return true;
+		if (other==null) return false;
+		if (!(other instanceof Mixture)) return false;
+		
+		if (this.tempK!=other.tempK) return false;
+		if (this.mixtureScore!=other.mixtureScore) return false;
+		if (this.massRatios==null && other.massRatios!=null) return false;
+		if (this.massRatios!=null && !this.massRatios.equals(other.massRatios))return false;
+
+		if (this.chemicals!=null && other.chemicals!=null) {
+			if (this.chemicals.length!=other.chemicals.length) return false;
+			if (this.wghtFractions.size()!=other.wghtFractions.size()) return false;
+			for (int i=0; i<this.chemicals.length; i++) {
+				if (!this.chemicals[i].equals(other.chemicals[i])) return false;
+				if (!this.wghtFractions.get(i).equals(other.wghtFractions.get(i))) return false;
+			}
+		} else if (this.chemicals!=other.chemicals)  return false;
+		
+		if (this.unifac!=other.unifac) return false;
+
+		if (this.getSurfaceTension()!=other.getSurfaceTension()) return false;
+		if (this.getDensity()!=other.getDensity()) return false;
+		if (this.getFlashPoint()!=other.getFlashPoint()) return false;
+		if (this.getHeatCapacity()!=other.getHeatCapacity()) return false;
+		if (this.getMolecularWeight()!=other.getMolecularWeight()) return false;
+		if (this.getBoilingPoint()!=other.getBoilingPoint()) return false;
+		if (this.getThermalConductivity()!=other.getThermalConductivity()) return false;
+		if (this.getMeltingPoint()!=other.getMeltingPoint()) return false;
+		if (this.getViscosity()!=other.getViscosity()) return false;
+		if (this.getVaporPressure()!=other.getVaporPressure()) return false;
+		
+		if (this.getInfDilActCoef_acetone()!=other.getInfDilActCoef_acetone()) return false;
+		if (this.getInfDilActCoef_benzene()!=other.getInfDilActCoef_benzene()) return false;
+		if (this.getInfDilActCoef_cis_2_heptene()!=other.getInfDilActCoef_cis_2_heptene()) return false;
+		if (this.getInfDilActCoef_diethyl_ether()!=other.getInfDilActCoef_diethyl_ether()) return false;
+		if (this.getInfDilActCoef_dimethyl_disulfide()!=other.getInfDilActCoef_dimethyl_disulfide()) return false;
+		if (this.getInfDilActCoef_ethanol()!=other.getInfDilActCoef_ethanol()) return false;
+		if (this.getInfDilActCoef_n_heptadecane()!=other.getInfDilActCoef_n_heptadecane()) return false;
+		if (this.getInfDilActCoef_n_propyl_chloride()!=other.getInfDilActCoef_n_propyl_chloride()) return false;
+		if (this.getInfDilActCoef_n_propylamine()!=other.getInfDilActCoef_n_propylamine()) return false;
+		if (this.getInfDilActCoef_water()!=other.getInfDilActCoef_water()) return false;
+
+		if (this.getMixtureScore()!=other.getMixtureScore()) return false;
+		if (this.getAirIndex()!=other.getAirIndex()) return false;
+		if (this.getEnvironmentalIndex()!=other.getEnvironmentalIndex()) return false;
+		
+		return true;
+	}
+
+	@Override
+	public Mixture clone() throws CloneNotSupportedException { // deep copy
+		
+		Mixture clone = (Mixture) super.clone(); // most of the properties are cloned here
 		
 		if (this.chemicals!=null) {
 			clone.chemicals = new Chemical[this.chemicals.length];
+			clone.wghtFractions = new Vector<Double>();
 			for (int i=0; i<this.chemicals.length; i++) {
 				clone.chemicals[i] = this.chemicals[i].clone();
-				clone.wghtFractions.add(this.wghtFractions.get(i).doubleValue());
+				clone.wghtFractions.add(this.wghtFractions.get(i));
 			}
 		}
+		
 		clone.setUnifac(getUnifac());
-		clone.setAntoineConstantA(getAntoineConstantA());
-		clone.setAntoineConstantB(getAntoineConstantB());
-		clone.setAntoineConstantC(getAntoineConstantC());
-		clone.setAP(getAP());
-		clone.setAutoIgnitTemp(getAutoIgnitTemp());
-		clone.setDensity(getDensity());
-		clone.setFlashPoint(getFlashPoint());
-		clone.setGWP(getGWP());
-		clone.setHeatCapacity(getHeatCapacity());
-		clone.setHtoxDermal(getHtoxDermal());
-		clone.setHtoxIngestion(getHtoxIngestion());
-		clone.setHtoxInhalation(getHtoxInhalation());
-		clone.setInfDilActCoef_acetone(getInfDilActCoef_acetone());
-		clone.setInfDilActCoef_benzene(getInfDilActCoef_benzene());
-		clone.setInfDilActCoef_cis_2_heptene(getInfDilActCoef_cis_2_heptene());
-		clone.setInfDilActCoef_diethyl_ether(getInfDilActCoef_diethyl_ether());
-		clone.setInfDilActCoef_dimethyl_disulfide(getInfDilActCoef_dimethyl_disulfide());
-		clone.setInfDilActCoef_ethanol(getInfDilActCoef_ethanol());
-		clone.setInfDilActCoef_n_heptadecane(getInfDilActCoef_n_heptadecane());
-		clone.setInfDilActCoef_n_propyl_chloride(getInfDilActCoef_n_propyl_chloride());
-		clone.setInfDilActCoef_n_propylamine(getInfDilActCoef_n_propylamine());
-		clone.setInfDilActCoef_water(getInfDilActCoef_water());
-		clone.setLFlamLimit(getLFlamLimit());
-		clone.setMolecularWeight(getMolecularWeight());
-		clone.setODP(getODP());
-		clone.setPCOP(getPCOP());
-		clone.setSolubility(getSolubility());
-		clone.setBoilingPoint(getBoilingPoint());
-		clone.setThermalConductivity(getThermalConductivity());
-		clone.setMeltingPoint(getMeltingPoint());
-		clone.setViscosity(getViscosity());
-		clone.setVaporPressure(getVaporPressure());
+		
 		clone.setMixtureScore(getMixtureScore());
-		clone.setMassRatios(getMassRatios());
 		clone.setAirIndex(getAirIndex());
 		clone.setEnvironmentalIndex(getEnvironmentalIndex());
 		
+		if (this.getMassRatios()!=null) clone.setMassRatios(new String(getMassRatios()));
+		
 		return clone;
+	}
+	
+	public boolean deepEquals(Mixture other) { // deep copy
+		
+		if (this==other) return true;
+		if (other==null) return false;
+		if (!(other instanceof Mixture)) return false;
+		
+		if (this.unifac!=other.unifac) return false;
+		
+		// compare primitives
+		if (this.tempK!=other.tempK) return false;
+		if (this.getAntoineConstantA()!=other.getAntoineConstantA()) return false;
+		if (this.getAntoineConstantB()!=other.getAntoineConstantB()) return false;
+		if (this.getAntoineConstantC()!=other.getAntoineConstantC()) return false;
+		if (this.getAP()!=other.getAP()) return false;
+		if (this.getAutoIgnitTemp()!=other.getAutoIgnitTemp()) return false;
+		if (this.getDensity()!=other.getDensity()) return false;
+		if (this.getFlashPoint()!=other.getFlashPoint()) return false;
+		if (this.getGWP()!=other.getGWP()) return false;
+		if (this.getHeatCapacity()!=other.getHeatCapacity()) return false;
+//		if (this.getHtoxDermal()!=other.getHtoxDermal()) return false;
+		if (this.getTerrestrialTox()!=other.getTerrestrialTox()) return false;
+		if (this.getHtoxIngestion()!=other.getHtoxIngestion()) return false;
+		if (this.getHtoxInhalation()!=other.getHtoxInhalation()) return false;
+		if (this.getInfDilActCoef_acetone()!=other.getInfDilActCoef_acetone()) return false;
+		if (this.getInfDilActCoef_benzene()!=other.getInfDilActCoef_benzene()) return false;
+		if (this.getInfDilActCoef_cis_2_heptene()!=other.getInfDilActCoef_cis_2_heptene()) return false;
+		if (this.getInfDilActCoef_diethyl_ether()!=other.getInfDilActCoef_diethyl_ether()) return false;
+		if (this.getInfDilActCoef_dimethyl_disulfide()!=other.getInfDilActCoef_dimethyl_disulfide()) return false;
+		if (this.getInfDilActCoef_ethanol()!=other.getInfDilActCoef_ethanol()) return false;
+		if (this.getInfDilActCoef_n_heptadecane()!=other.getInfDilActCoef_n_heptadecane()) return false;
+		if (this.getInfDilActCoef_n_propyl_chloride()!=other.getInfDilActCoef_n_propyl_chloride()) return false;
+		if (this.getInfDilActCoef_n_propylamine()!=other.getInfDilActCoef_n_propylamine()) return false;
+		if (this.getInfDilActCoef_water()!=other.getInfDilActCoef_water()) return false;
+		if (this.getLFlamLimit()!=other.getLFlamLimit()) return false;
+		if (this.getMolecularWeight()!=other.getMolecularWeight()) return false;
+		if (this.getODP()!=other.getODP()) return false;
+		if (this.getPCOP()!=other.getPCOP()) return false;
+		if (this.getSolubility()!=other.getSolubility()) return false;
+		if (this.getBoilingPoint()!=other.getBoilingPoint()) return false;
+		if (this.getThermalConductivity()!=other.getThermalConductivity()) return false;
+		if (this.getMeltingPoint()!=other.getMeltingPoint()) return false;
+		if (this.getViscosity()!=other.getViscosity()) return false;
+		if (this.getVaporPressure()!=other.getVaporPressure()) return false;
+
+		if (this.getMixtureScore()!=other.getMixtureScore()) return false;
+		if (this.getEnvironmentalIndex()!=other.getEnvironmentalIndex()) return false;
+		if (this.getAirIndex()!=other.getAirIndex()) return false;
+		
+		// compare strings
+		if (this.getMassRatios()==null ? other.getMassRatios()!=null : !this.getMassRatios().equals(other.getMassRatios())) return false;
+
+		// compare arrays of primitives
+		if (this.wghtFractions==null ? other.wghtFractions!=null : !this.wghtFractions.equals(other.wghtFractions)) return false;
+		
+		//compare mixture chemicals by CAS# only
+		if (this.chemicals==other.chemicals) return true;
+		if (this.chemicals==null || other.chemicals==null) return false;
+		if (this.chemicals.length != other.chemicals.length) return false;
+		else {
+			for (int i=0; i<this.chemicals.length; i++) {
+				String CAS1 = this.chemicals[i].getCAS();
+				String CAS2 = other.chemicals[i].getCAS();
+				if (CAS1==null ? CAS2!=null : !CAS1.equals(CAS2)) return false;
+			}
+		}
+
+		return true;
+	}
+	
+	public void print(Printer p, int replacementNumber, int[] line, int[] page) {
+		DecimalFormat df = new DecimalFormat("0.0000");
+		String output = null;
+		
+		Rectangle trim = p.computeTrim(0, 0, 0, 0);
+		Point dpi = p.getDPI();
+		int leftMargin = dpi.x + trim.x;
+		int topMargin = dpi.y / 2 + trim.y;
+		GC gc = new GC(p);
+		FontMetrics metrics = gc.getFontMetrics();
+		int lineHeight = metrics.getHeight();
+		int linesPerPage = (p.getBounds().height-2*topMargin)/lineHeight;
+		
+		if (line[0]>=linesPerPage-this.wghtFractions.size()-1) {
+			if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) p.endPage();
+			line[0]=0;
+			page[0]++;
+			if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) p.startPage();
+		}
+				
+		line[0]++;
+		if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) {
+			int flags =(int)(this.getMixtureScore()*(1.0e-9));
+			double mixtureScore = this.getMixtureScore()-flags*(1.0e9);
+			output = replacementNumber+": Environmental Index = "+df.format(this.getEnvironmentalIndex())+
+					", Air Index = "+df.format(this.getAirIndex())+
+					", #flags = "+flags+
+					", Score = "+df.format(mixtureScore);
+			gc.drawString(output, leftMargin, topMargin+(line[0]-1)*lineHeight);
+		}
+		
+		for (int i=0; i<this.wghtFractions.size(); i++) {
+			line[0]++;
+			if (p.getPrinterData().startPage<=page[0] && page[0]<=p.getPrinterData().endPage) {
+				output = df.format(wghtFractions.get(i))+": "+this.chemicals[i].getCAS()+
+						", "+this.chemicals[i].getName();
+				gc.drawString(output, leftMargin, topMargin+(line[0]-1)*lineHeight);
+			}
+		}
+		
+		gc.dispose();
 	}
 	
 	public double calculateMixtureScore(State activeState) throws Exception {
 
 		this.mixtureScore = Double.MAX_VALUE;
+		this.tempK = activeState.tempConvertToSI();
+		
+		if(activeState.includeMiscibility() && !this.isOnePhase(tempK)) return mixtureScore;
 		
 		double[] tolerance = activeState.getPTolerances();
 		double[] desired = activeState.getPDesiredVals();
 
 //		Properties.calculate(this, UNIFACforPARIS.getInstance(), activeState.tempConvertToSI());
-		this.calculateMixtureProperties(activeState.tempConvertToSI());
+		this.calculateMixtureProperties(tempK);
 		if (getBoilingPoint()==-9999) return this.mixtureScore;
 		
 		double score = numberOfDeviationsWithOffset(desired[0], this.getMolecularWeight(), tolerance[0]);
@@ -259,17 +404,14 @@ public class Mixture extends Chemical implements Serializable, Cloneable {
 		
 	}
 
-	/**
-	 * Calculates all the physical properties of the mixture
-	 * @param tempK
-	 * @param unifac
-	 */
 	public void calculatePhysicalPropertiesOfMixture(double tempK) {
 //		this.tempK = tempK;
 		this.unifac = UNIFACforPARIS.getInstance();
 		
+		
+		
 		if (chemicals.length==1) {
-			
+		
 			setMolecularWeight(chemicals[0].getMolecularWeight());
 			setThermalConductivity(chemicals[0].getThermalConductivity());
 			setDensity(chemicals[0].getDensity());
@@ -288,11 +430,17 @@ public class Mixture extends Chemical implements Serializable, Cloneable {
 
 			for (int i=0;i<wghtFractions.size();i++) {
 				double xmassi=wghtFractions.get(i);
+				
+				
+				
 				if (xmassi>0) {
 					numNonZero++;
 					nonZeroIndex=i;
 				}
 			}
+			
+			
+			
 			if (numNonZero==1) {
 				setMolecularWeight(chemicals[nonZeroIndex].getMolecularWeight());
 				setThermalConductivity(chemicals[nonZeroIndex].getThermalConductivity());
@@ -315,11 +463,24 @@ public class Mixture extends Chemical implements Serializable, Cloneable {
 
 				setMolecularWeight(calculateMixtureMW(molFractions));
 
+				
 				setThermalConductivity(calculateMixtureTC(volumeFractions));
 				setDensity(calculateMixtureDensity(wghtFractions));
 
 				setViscosity(calculateMixtureViscosity(wghtFractions, getDensity()));
+				Double visc=new Double(getViscosity());
+				if (visc.isNaN()) {
+//					System.out.println("Cant calculate viscosity!");
+					//Sometimes if the viscosity of any component is less than 0.2 cP, then the mixture
+					//calculation will fail since ln(ln(v+0.8)) is taking the ln of negative number!
+					// so use simple empirical calculation based on mole fraction:
+					setViscosity(calculateMixtureViscositySimple(molFractions));	
+				}
+				
+				//for testing purposes:
+//				setViscosity(calculateMixtureViscositySimple(molFractions));
 
+				
 				//Use volume fractions since much faster and probably about as 
 				// accurate (and also can be applied to any number of components):
 				setSurfaceTension(calculateMixtureST(volumeFractions));
@@ -332,23 +493,18 @@ public class Mixture extends Chemical implements Serializable, Cloneable {
 
 				//****************************************************************
 				//following is for convenience until I can add antoine constants:
-				boolean haveAntoineConstants=true;
 
-				for (int i=0;i<chemicals.length;i++) {
-
-					if (chemicals[i].getAntoineConstantA()==0 || chemicals[i].getAntoineConstantB()==0|| chemicals[i].getAntoineConstantC()==0) {
-						haveAntoineConstants=false;
-					}
-				}
-
-				if (!haveAntoineConstants) {
-					//				System.out.println("Missing antoine constants!");
+				if (!this.canCalculateVaporPressure()) {
+//					System.out.println("Missing antoine constants and critical constants- can't calculate vapor pressure");
 					return;
 				}
 				//****************************************************************
 
 				long tBP1=System.currentTimeMillis();
+				
 				setBoilingPoint(calculateNormalMixtureBP(molFractions));
+				
+				
 				long tBP2=System.currentTimeMillis();
 
 				//			if (debug) {
@@ -384,6 +540,52 @@ public class Mixture extends Chemical implements Serializable, Cloneable {
 		
 		
 		
+	}
+	
+	
+	/**
+	 * Calculate viscosity using volume fractions
+	 * @param volFractions
+	 * @return
+	 */
+	public double calculateMixtureViscositySimple(Vector<Double> molFractions) {
+		
+		double VmixVol=0;
+
+		//////////////////////////////////////////////////
+		//equation 1: simply weight by mol fractions
+//		for (int i=0;i<chemicals.length;i++) {
+//			VmixVol+=molFractions.get(i)*chemicals[i].getViscosity();
+//		}
+		
+		/////////////////////////////////////////////////////////
+		//equation 2: weight by mol fracs but use ln of viscosities when combining:
+//		for (int i=0;i<chemicals.length;i++) {
+//			VmixVol+=molFractions.get(i)*Math.log(chemicals[i].getViscosity());
+//		}
+//		VmixVol=Math.exp(VmixVol);
+	/////////////////////////////////////////////////////////////
+		//equation 3: use approach similar to wikipedia approach but without the complicated double ln function:
+		//equation 3 gives best MAE for chemicals in MixtureTextViscosity
+		
+		for (int i=0;i<molFractions.size();i++) {
+			double v_i=chemicals[i].getViscosity()/chemicals[i].getDensity();
+			VmixVol+=molFractions.get(i)*Math.log(v_i);
+		}
+		VmixVol=Math.exp(VmixVol);
+		VmixVol*=getDensity();
+		
+		return VmixVol;
+	}
+	
+	
+	public boolean canCalculateVaporPressure() {
+		for (int i=0;i<chemicals.length;i++) {
+			if (!chemicals[i].canCalculateVaporPressure()) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public void calculateActivityCoefficientsOfMixture(double tempK) {
@@ -495,6 +697,824 @@ public class Mixture extends Chemical implements Serializable, Cloneable {
 		return MWmix;
 	}
 	
+	private double solveForXa2(double Xa1, double Xa2init,double tempK,double desiredFx,double smallFrac,double fracMin) {
+		// check for change of sign of fx function (see if there's a root:
+
+		//				System.out.println("");
+		//				double [] concs={1e-8,1e-7,1e-6,1e-5,1e-4,1e-3,1e-2,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,0.95,0.99,0.999};
+		//				for (int i=0;i<concs.length;i++) {
+		//					double fx=this.calculateFxLLE_2(tempK, Xa1, concs[i]);
+		//					System.out.println(concs[i]+"\t"+fx);
+		//				}
+
+		int totalIterations=0;
+		//				int maxIterations=1000;
+
+		//For initial guess use mol frac weighted average of pure component values:
+
+		//				double small=1e-8;
+
+		double frac=0.5;
+
+		while (true) {
+
+			double Xa2=Xa2init;//nearly pure component B
+
+			int maxIterations=(int)(100/frac);
+
+			for (int i = 0; i < maxIterations; i++) {
+
+				totalIterations++;
+				double fx=this.calculateFxLLE_2(tempK, Xa1, Xa2);
+				double fx2= this.calculateFxLLE_2(tempK, Xa1, Xa2*(1-smallFrac));
+
+				double fprime = (fx2 - fx) / (-Xa2*smallFrac); // estimate derivative using numerical method
+
+				double dx = fx / fprime;
+
+				double deltax= (frac*(Xa2-dx) + (1-frac)*Xa2)-Xa2; //only take partial step towards new value
+
+				//						double deltax=0.001*fx;
+
+				while (Xa2+deltax<0) {
+					deltax/=2.0;
+				}
+
+				while (Xa2+deltax>1) {
+					deltax/=2.0;
+				}
+
+				//						System.out.println("before XAa:"+i+"\t"+Xa2+"\t"+fx);
+
+				Xa2+=deltax;
+
+				//						System.out.println("after XAa:"+i+"\t"+Xa2+"\t"+fx);
+				//						System.out.println(frac+"\t"+i+"\t"+Xa2+"\t"+fx);
+
+				if (Xa2<0 || Xa2>1) break;
+
+				if (Math.abs(Xa1-Xa2)<0.1) {
+					//							System.out.println("trivial soln");
+					break;//trivial solution!
+				}
+
+
+				//						if (Math.abs(deltax)/Xa2 < bob) {
+				if (Math.abs(fx) < desiredFx) {
+					//							System.out.println("After "+totalIterations+" iterations, Xa2="+Xa2);
+					return Xa2;
+				}
+
+			}
+
+			frac /= 10;//make step smaller
+			//		          System.out.println(frac);
+			if (frac<fracMin) break;
+
+		}
+
+		//				System.out.println(BPmix);
+		return -9999;
+	}
+
+
+	private double solveForXa2_simple(double Xa1, double Xa2init,double tempK,double bob1,double bob2) {
+		// check for change of sign of fx function (see if there's a root:
+
+		//				System.out.println("");
+		//				double [] concs={1e-8,1e-7,1e-6,1e-5,1e-4,1e-3,1e-2,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,0.95,0.99,0.999};
+		//				for (int i=0;i<concs.length;i++) {
+		//					double fx=this.calculateFxLLE_2(tempK, Xa1, concs[i]);
+		//					System.out.println(concs[i]+"\t"+fx);
+		//				}
+
+		int totalIterations=0;
+
+
+		//For initial guess use mol frac weighted average of pure component values:
+
+		//				double frac=0.5;
+
+		int maxIterations=(int)(10/bob2);
+
+		double Xa2=Xa2init;//nearly pure component B
+
+		double fxold=9999;
+
+		for (int i = 0; i < maxIterations; i++) {
+
+			totalIterations++;
+			double fx=this.calculateFxLLE_2(tempK, Xa1, Xa2);
+
+			//					if (fxold!=9999) {
+			//						if (fx*fxold<0 && bob2>1e-5) {
+			//							bob2/=2;//decrease bob2 to avoid bad oscillations
+			//						}
+			//					}
+			//					fxold=fx;
+
+			double deltax=bob2*fx;
+
+			while (Xa2+deltax<0) {
+				deltax/=2.0;
+			}
+
+			while (Xa2+deltax>1) {
+				deltax/=2.0;
+			}
+
+
+			Xa2+=deltax;
+
+			//					System.out.println("XA2:"+i+"\t"+bob2+"\t"+Xa2+"\t"+fx);
+			//					System.out.println(frac+"\t"+i+"\t"+Xa2+"\t"+fx);
+
+			if (Xa2<0 || Xa2>1) break;
+
+			//						if (Math.abs(Xa1-Xa2)<0.1) break;//trivial solution!
+
+
+			//						if (Math.abs(deltax)/Xa2 < bob) {
+			if (Math.abs(fx) < bob1) {
+				//							System.out.println("After "+totalIterations+" iterations, Xa2="+Xa2);
+				return Xa2;
+			}
+
+		}
+
+
+		//				System.out.println(BPmix);
+		return -9999;
+	}
+
+	//			private double solveForXa2_Simple(double Xa1, double Xa2init,double tempK) {
+	//
+	//				Vector<Double>xmolI=new Vector<Double>();//compositions of phase I
+	//				xmolI.add(Xa1);
+	//				xmolI.add(1-Xa1);
+	//				
+	//				Vector<Double>xmolII=new Vector<Double>();//compositions of phase II
+	//				xmolII.add(Xa2init);
+	//				xmolII.add(1-Xa2init);
+	//				
+	//				double [] gammasI=unifac.calculateActivityCoefficients2(xmolI,chemicals, tempK);
+	//				double [] gammasII=unifac.calculateActivityCoefficients2(xmolII,chemicals, tempK);
+	//
+	//				double Xa2=Xa1*gammasI[0]/(gammasII[0]);
+	//				
+	//				return Xa2;
+	//			}
+
+	/*
+	 * Determines if mixture is one phase, already given mass fractions
+	 */
+	public boolean isOnePhase(double tempK) throws Exception {
+		
+		Vector<Double> xmol = this.calculateMoleFractions();
+		
+		return isOnePhase(xmol, tempK);
+
+	}
+	
+	/*
+	 * Determines if mixture is one phase
+	 */
+	public boolean isOnePhase(Vector<Double> xmol, double tempK) throws Exception {
+		if (xmol.size()==1) { //one component so one liquid phase
+			
+			return true;
+		
+		} else if (xmol.size()==2) { // binary calculations
+			
+			return isMiscibleBinary(xmol, tempK);
+
+		} else if (xmol.size()==3) { // ternary calculations
+			 
+			return isMiscibleTernary(xmol, tempK);
+
+		} else if (xmol.size()<=4) { // test all combinations of binary mixtures
+			
+			Mixture mixtureTemp = new Mixture(tempK);
+			Chemical[] chemicals = new Chemical[2];
+			mixtureTemp.setChemicals(chemicals);
+			Vector<Double> xmolTemp = new Vector<Double>(2);
+			xmolTemp.add(xmol.get(0));
+			xmolTemp.add(xmol.get(1));
+			for (int j=0; j<xmol.size()-1; j++) {
+				chemicals[0] = this.getChemicals2()[j];
+				for (int i=j+1; i<xmol.size(); i++) {
+					double totMolFrac = xmol.get(j)+xmol.get(i);
+					xmolTemp.set(0, xmol.get(j)/totMolFrac);
+					xmolTemp.set(1, xmol.get(i)/totMolFrac);
+					chemicals[1] = this.getChemicals2()[i];
+					if (!mixtureTemp.isMiscibleBinary(xmolTemp, tempK)) return false;
+				}
+			}
+			return true;
+
+		} else  {
+			
+			throw new Exception("Too many componets in solvent mixture");
+			
+		}
+
+
+	}
+			
+	/**
+	 * This calculates compositions of two liquid phases in equlibrium for a binary mixture
+	 * 
+	 * @param xmol
+	 * @param Pressure_kPa
+	 * @return compositions of component 1 in each phase- if no phase split then returns null
+	 */
+	public double [] calculateLLE(double tempK) {
+
+		
+//		double [] initialGuess=this.findInitialGuess(tempK);
+//		
+//		if (initialGuess==null) return null;
+		
+//		System.out.println(initialGuess[0]+"\t"+initialGuess[1]);
+		
+		long t1=System.currentTimeMillis();
+		
+		int totalIterations=0;
+//		int maxIterations=1000;
+
+		//For initial guess use mol frac weighted average of pure component values:
+		
+		double desiredFx=1e-4;
+		double fracMax=0.5;
+		double fracMin=1e-4;
+		double smallFrac=1e-4;
+		
+		double frac=fracMax;
+		
+		while (true) {
+
+			
+//			double Xa1=initialGuess[0];//nearly pure component A
+//			double Xa2=initialGuess[1];//nearly pure component B
+			
+			double Xa1=0.9999;//nearly pure component A
+			double Xa2=0.0001;//nearly pure component B
+
+
+			int maxIterations=(int)(100/frac);
+			
+//			System.out.println(frac);
+			
+			for (int i = 0; i < maxIterations; i++) {
+				totalIterations++;
+				
+				Xa2=this.solveForXa2(Xa1,Xa2,tempK,desiredFx,smallFrac,fracMin);//need to iterate to determine change on Xa2
+				if (Xa2==-9999) return null;//much quicker if just quit here instead of trying smaller fracs
+//				if (Xa2==-9999) break;
+				double fx = calculateFxLLE(tempK, Xa1, Xa2);
+				
+				double Xa1_bob=Xa1*(1-smallFrac);//perturb Xa1 slightly (needed to calculate derivative)
+				
+				
+				double Xa2_bob=this.solveForXa2(Xa1_bob,Xa2,tempK,desiredFx,smallFrac,fracMin);//need to iterate to determine change on Xa2
+				
+//				System.out.println(Xa2_bob);
+				double fx2 = calculateFxLLE(tempK, Xa1_bob, Xa2_bob);;//fx at Xa1-small
+				
+				double fprime = (fx2 - fx) / (-Xa1*smallFrac); // estimate derivative using numerical method
+
+				double dx = fx / fprime;
+
+				double deltax = (frac*(Xa1-dx) + (1-frac)*Xa1)-Xa1; //only take partial step towards new value
+
+//				double deltax=bob*fx;//simpler way dont use derivative
+				
+				while (Xa1+deltax>=1) {
+					deltax/=2.0;
+				}
+				
+				while (Xa1+deltax<0) {
+					deltax/=2.0;
+				}
+				
+//				System.out.println(i+"\t"+Xa1+"\t"+Xa2+"\t"+fx);
+				
+//				if (deltax<1e-15 && fx>0.1) break;
+				
+				Xa1+=deltax;	
+
+				
+//				System.out.println(deltax);
+				
+//				System.out.println(Xa1+"\t"+Xa2);
+//				System.out.println(i+"\t"+Xa1+"\t"+Xa2+"\t"+fx);
+//				System.out.println(frac+"\t"+i+"\t"+Xa1+"\t"+Xa2+"\t"+fx);
+				
+				if (Math.abs(Xa1-Xa2)<0.1) {
+//					System.out.println("here1");
+					break;//trival solution
+				}
+
+				if (new Double (Xa1).isNaN()) {
+//					System.out.println("here2");
+					break;
+				}
+				
+				if (Xa1<0 || Xa1>1) {
+//					System.out.println("here3");
+					break;
+				}
+
+//				if (Math.abs(deltax)/Xa1 < 0.0001) {
+				if (Math.abs(fx) < desiredFx) {
+//					 System.out.println("Converged after "+totalIterations+" iterations:"+Xa2);
+
+					long t2=System.currentTimeMillis();
+//					System.out.println((t2-t1)+" millisecs");
+					
+					double []molfracs=new double [2];
+					
+					if (Xa2>Xa1) {
+//						System.out.println("*Xa2>Xa1");
+						molfracs[0]=Xa2;
+						molfracs[1]=Xa1;
+						return molfracs;
+						
+					} else {
+						molfracs[0]=Xa1;
+						molfracs[1]=Xa2;
+//						System.out.println(Xa1+"\t"+Xa2);
+						return molfracs;
+					}
+					
+					
+				}
+
+			}
+			frac /= 10.0;//make step smaller
+//          System.out.println(frac);
+			if (frac<fracMin) break;
+
+		}
+		
+//		 System.out.println("Did not converge after "+totalIterations+" iterations");
+
+//		System.out.println(BPmix);
+		return null;
+	}
+	
+	
+	
+//	public double [] calculateLLE_3(double tempK) {
+//		
+//		double bob2=1e-2;
+//		
+//		
+//		//try 3 different parameters until converges:
+//		for (int i=1;i<=3;i++) {
+//			
+////			System.out.println("bob2:"+bob2);
+//			double []vals=calculateLLE_2(tempK,bob2);
+//			
+//			if (vals==null) {
+//				bob2/=10;
+//			} else {
+//				return vals;
+//			}
+//		}
+//		
+//		return null;
+//		
+//	}
+	
+//	public double [] calculateLLE_2(double tempK) {
+//		return calculateLLE_2(tempK,1e-3);
+//	}
+//	
+//	/**
+//	 * This method iterates by Xn+1=Xn + K*f(x)
+//	 * K determines how agressive the search is
+//	 * 
+//	 * @param tempK
+//	 * @param bob2
+//	 * @return
+//	 */
+//	public double [] calculateLLE_2(double tempK,double K) {
+//
+//		long t1=System.currentTimeMillis();
+//
+//		int totalIterations=0;
+//
+//		//For initial guess use mol frac weighted average of pure component values:
+//
+//		double bob1=1e-2;//used to decide if fx is near zero
+////		double bob2=1e-3;
+//
+//		int maxIterations=(int)(10/K);
+//
+//		double Xa1=0.9999;//nearly pure component A
+//		double Xa2=0.0001;//nearly pure component B
+//
+//		double fxold=9999;
+//		
+//		
+//		for (int i = 0; i < maxIterations; i++) {
+//			totalIterations++;
+//
+//			//				Xa2=this.solveForXa2(Xa1,Xa2,tempK);//need to iterate to determine change on Xa2
+//			Xa2=this.solveForXa2_simple(Xa1,Xa2,tempK,bob1,K);//need to iterate to determine change on Xa2
+//
+//			if (Xa2==-9999) {
+////				System.out.println("return null!");
+//				return null;
+//			}
+//			double fx = calculateFxLLE(tempK, Xa1, Xa2);
+//			
+////			if (fxold!=9999) {
+////				if (fx*fxold<0 && bob2>1e-5) {
+////					bob2/=2;//decrease bob2 to avoid bad oscillations
+////				}
+////			}
+////			fxold=fx;
+//
+//			double deltax=K*fx;//simpler way dont use derivative
+//
+//			while (Xa1+deltax>=1) {
+//				deltax/=2.0;
+//			}
+//
+//			while (Xa1+deltax<0) {
+//				deltax/=2.0;
+//			}
+//
+//			Xa1+=deltax;	
+//
+////							System.out.println(Xa1+"\t"+Xa2);
+////			System.out.println(i+"\t"+bob2+"\t"+Xa1+"\t"+Xa2+"\t"+fx);
+//			//				System.out.println(frac+"\t"+i+"\t"+Xa1+"\t"+Xa2+"\t"+fx);
+//
+//			if (Math.abs(Xa1-Xa2)<0.2) {
+//				//					System.out.println("here1");
+//				return null;//trival solution
+//			}
+//
+//			if (new Double (Xa1).isNaN()) {
+//				//					System.out.println("here2");
+//				break;
+//			}
+//
+//			if (Xa1<0 || Xa1>1) {
+//				//					System.out.println("here3");
+//				break;
+//			}
+//
+//			//				if (Math.abs(deltax)/Xa1 < 0.0001) {
+//			if (Math.abs(fx) < bob1) {
+//				//					 System.out.println("Converged after "+totalIterations+" iterations:"+Xa2);
+//
+//				long t2=System.currentTimeMillis();
+//				//					System.out.println((t2-t1)+" millisecs");
+//
+//				double []molfracs=new double [2];
+//
+//				if (Xa2>Xa1) {
+//					System.out.println("*Xa2>Xa1");
+//					molfracs[0]=Xa2;
+//					molfracs[1]=Xa1;
+//					return molfracs;
+//
+//				} else {
+//					molfracs[0]=Xa1;
+//					molfracs[1]=Xa2;
+//					//						System.out.println(Xa1+"\t"+Xa2);
+//					return molfracs;
+//				}
+//
+//
+//			}
+//
+//		}
+//		//		 System.out.println("Did not converge after "+totalIterations+" iterations");
+//
+//		//		System.out.println(BPmix);
+//		return null;
+//	}
+	/**
+	 * This calculates compositions of two liquid phases in equilibrium 
+	 * for a binary mixture
+	 * 
+	 * This calculation assumes that phase 1 is pure component 1
+	 * 
+	 * @param xmol
+	 * @param Pressure_kPa
+	 * @return composition of component 1 in phase that is mostly component 2
+	 */
+	public double calculateLLE_simple(double tempK) {
+
+		long t1=System.currentTimeMillis();
+		
+		double Xa1=1;//phase 1 is pure component A
+//		double Xa2=0.00001;//nearly pure component B
+		double Xa2=0.0001;//nearly pure component B
+
+		double desiredFx=0.001;
+		double frac=0.5;
+		
+		Xa2=this.solveForXa2(Xa1,Xa2,tempK,desiredFx,1e-4,1e-4);
+//		this.bruteForceSolveForXa2(Xa1, tempK);
+		
+		if (Math.abs(1-Xa2)<0.0001) Xa2=-9999;//we hit trivial solution
+
+		long t2=System.currentTimeMillis();
+//		System.out.println(Xa1+"\t"+Xa2);
+//		System.out.println((t2-t1)+" millisecs");
+		
+		
+		
+		return Xa2;
+	}
+	
+	/**
+	 * Method incomplete but can be used to determine if fx changes signs over a certain concentration range
+	 * @param Xa1
+	 * @param tempK
+	 */
+	void bruteForceSolveForXa2(double Xa1,double tempK) {
+		
+		for (double Xa2=0.00001;Xa2<=0.01;Xa2+=0.00001) {
+//		for (double Xa2=0.001;Xa2<=0.9;Xa2+=0.001) {
+			double fx=this.calculateFxLLE_2(tempK, Xa1, Xa2);
+			System.out.println(Xa2+"\t"+fx);
+		}
+		
+		
+	}
+	
+
+	private double calculateFxLLE(double tempK, double Xa1, double Xa2) {
+		
+		double Xb1=1-Xa1;
+		double Xb2=1-Xa2;
+
+		Vector<Double>xmolI=new Vector<Double>();//compositions of phase I
+		xmolI.add(Xa1);
+		xmolI.add(Xb1);
+		
+		Vector<Double>xmolII=new Vector<Double>();//compositions of phase II
+		xmolII.add(Xa2);
+		xmolII.add(Xb2);
+		
+		double [] gammasI=unifac.calculateActivityCoefficients2(xmolI,chemicals, tempK);
+		double [] gammasII=unifac.calculateActivityCoefficients2(xmolII,chemicals, tempK);
+		
+		double termA=Xa1*gammasI[0];
+		double termB=Xa2*gammasII[0];
+		double termC=Xb1*gammasI[1];
+		double termD=Xb2*gammasII[1];
+		
+//		double fx = termA+termC-(termB+termD);
+		double fx = Math.abs(termA-termB)+Math.abs(termC-termD);
+		return fx;
+	}
+	
+	private double calculateFxLLE_2(double tempK, double Xa1, double Xa2) {
+		
+		double Xb1=1-Xa1;
+		double Xb2=1-Xa2;
+
+		Vector<Double>xmolI=new Vector<Double>();//compositions of phase I
+		xmolI.add(Xa1);
+		xmolI.add(Xb1);
+		
+		Vector<Double>xmolII=new Vector<Double>();//compositions of phase II
+		xmolII.add(Xa2);
+		xmolII.add(Xb2);
+		
+		double [] gammasI=unifac.calculateActivityCoefficients2(xmolI,chemicals, tempK);
+		double [] gammasII=unifac.calculateActivityCoefficients2(xmolII,chemicals, tempK);
+		
+		double termA=Xa1*gammasI[0];
+		double termB=Xa2*gammasII[0];
+		
+		double fx = termA-termB;
+		
+		return fx;
+	}
+	
+	private boolean isMiscibleBinary(Vector<Double> xmol, double tempK) {
+		
+		double x1a, x2a, x1b, x2b;
+		double[] gammaI = new double[2];
+		double[] gammaII = new double[2];
+		double x1bnew, x2bnew, x1anew, x2anew;
+		double molDelta, deltaMax = 1.0e-5;
+		int iter = 0, maxIter = 30;
+		double k1, k2, sum;
+		
+		// start off with components separated, if they mix together then they are miscible
+		x1a = 0.9999;
+		x2a = 0.0001;
+		x2b = x1a;
+		x1b = x2a;
+
+//		System.out.println(xmol.get(0)+", "+xmol.get(1)+", "+x1a+", "+x2a);
+		
+		do {
+			
+			Vector<Double>xmolI=new Vector<Double>();//compositions of phase I
+			xmolI.add(x1a);
+			xmolI.add(x2a); 
+			
+			Vector<Double>xmolII=new Vector<Double>();//compositions of phase II
+			xmolII.add(x1b);
+			xmolII.add(x2b);
+
+			gammaI = unifac.calculateActivityCoefficients2(xmolI, chemicals, tempK);
+			gammaII = unifac.calculateActivityCoefficients2(xmolII, chemicals, tempK);
+			
+			k1 = gammaI[0]/gammaII[0];
+			k2 = gammaI[1]/gammaII[1];
+
+			x1anew = (1-k2)/(k1-k2);
+			x2anew = 1-x1anew;
+			
+			x1bnew = k1*x1anew;
+			x2bnew = k2*x2anew;
+
+			sum = x1bnew + x2bnew;
+			x1bnew = x1bnew/sum;
+			x2bnew = x2bnew/sum;
+			
+			iter++;
+			molDelta = Math.abs(x1anew-x1a)+Math.abs(x2anew-x2a)+Math.abs(x1bnew-x1b)+Math.abs(x2bnew-x2b);
+//			System.out.println(x1anew+", "+x2anew+", "+x1bnew+", "+x2bnew+": "+iter+", "+molDelta);
+			
+			x1a = x1anew;
+			x2a = x2anew;
+			x1b = x1bnew;
+			x2b = x2bnew;
+
+		} while (molDelta > deltaMax && iter <= maxIter);
+		
+		double x1 = xmol.get(0);
+		if (x1a > x1b) {
+			if (x1 < x1a && x1 > x1b) return false;
+		} else {
+			if (x1 < x1b && x1 > x1a) return false;
+		}
+		return true;
+		
+	}
+	
+	private boolean isMiscibleTernary(Vector<Double> xmolIn, double tempK) {
+		
+		double xtemp, x1a, x2a, x3a, x1b, x2b, x3b;
+		double[] gammaI = new double[2];
+		double[] gammaII = new double[2];
+		double x1bnew, x2bnew, x3bnew, x1anew, x2anew, x3anew;
+		double molDelta, deltaMax = 1.0e-4;
+		int iter, maxIter = 60;
+		double k1, k2, k3, sum;
+		Chemical[] chemHold = new Chemical[3];
+		Chemical chemTemp = null;
+		double[] xmolHold = new double[3];
+		
+		chemHold[0] = chemicals[0];
+		chemHold[1] = chemicals[1];
+		chemHold[2] = chemicals[2];
+		xmolHold[0] = xmolIn.get(0);
+		xmolHold[1] = xmolIn.get(1);
+		xmolHold[2] = xmolIn.get(2);
+
+		// order chemical by largest mol fraction first, etc..
+		if (xmolHold[1]>xmolHold[0]) {
+			chemTemp = chemHold[0];
+			chemHold[0] = chemHold[1];
+			chemHold[1] = chemTemp;
+			xtemp = xmolHold[0];
+			xmolHold[0] = xmolHold[1];
+			xmolHold[1] = xtemp;
+		}
+		if (xmolHold[2]>xmolHold[1]) {
+			chemTemp = chemHold[1];
+			chemHold[1] = chemHold[2];
+			chemHold[2] = chemTemp;
+			xtemp = xmolHold[1];
+			xmolHold[1] = xmolHold[2];
+			xmolHold[2] = xtemp;
+		}
+		if (xmolHold[1]>xmolHold[0]) {
+			chemTemp = chemHold[0];
+			chemHold[0] = chemHold[1];
+			chemHold[1] = chemTemp;
+			xtemp = xmolHold[0];
+			xmolHold[0] = xmolHold[1];
+			xmolHold[1] = xtemp;
+		}
+//		System.out.println(chemHold[0].getName()+": "+xmolHold[0]+"; "+
+//				chemHold[1].getName()+": "+xmolHold[1]+"; "+
+//				chemHold[2].getName()+": "+xmolHold[2]);
+		
+		// composition of Phase 1
+		double f = xmolHold[2]/xmolHold[1];
+		x1a = 0.9999;
+		x2a = (1.0-x1a)/(1+f);
+//		x3a = x2a*f;
+		x3a = 1.0-x1a-x2a;
+		
+//		sum = x1a + x2a + x3a;
+//		x1a = x1a/sum;
+//		x2a = x2a/sum;
+//		x3a = x3a/sum;
+		
+		// composition of Phase 2
+		x1b = .0001;
+		x2b = (1.0-x1b)/(1+f);
+		x3b = 1.0-x1b-x2b;
+		
+//		sum = x1b + x2b + x3b;
+//		x1b = x1b/sum;
+//		x2b = x2b/sum;
+//		x3b = x3b/sum;
+		
+//		System.out.println(x1a+", "+x2a+", "+x3a+", "+x1b+", "+x2b+", "+x3b);
+		iter = 0;
+		do {
+			
+			Vector<Double> xmolI=new Vector<Double>();//compositions of phase I
+			xmolI.add(x1a);
+			xmolI.add(x2a);
+			xmolI.add(x3a);
+			gammaI = unifac.calculateActivityCoefficients2(xmolI, chemHold, tempK);
+			
+			Vector<Double> xmolII=new Vector<Double>();//compositions of phase II
+			xmolII.add(x1b);
+			xmolII.add(x2b);
+			xmolII.add(x3b);
+			gammaII = unifac.calculateActivityCoefficients2(xmolII, chemHold, tempK);
+			
+			k1 = gammaI[0]/gammaII[0];
+			k2 = gammaI[1]/gammaII[1];
+			k3 = gammaI[2]/gammaII[2];
+			
+			x1anew = (1-x3a*(k3-k2)-k2)/(k1-k2);
+			x2anew = (1-x1anew)/(1+f);
+//			x3anew = x2anew*f;
+			x3anew = 1.0-x1anew-x2anew;
+			
+//			sum = x1anew + x2anew + x3anew;
+//			x1anew = x1anew/sum;
+//			x2anew = x2anew/sum;
+//			x3anew = x3anew/sum;
+			
+			x1bnew = k1*x1anew;
+			x2bnew = k2*x2anew;
+			x3bnew = k3*x3anew;
+
+			sum = x1bnew + x2bnew + x3bnew;
+			x1bnew = x1bnew/sum;
+			x2bnew = x2bnew/sum;
+			x3bnew = x3bnew/sum;
+			
+			iter++;
+			molDelta = Math.abs(x1anew-x1a)+Math.abs(x2anew-x2a)+Math.abs(x3anew-x3a)+Math.abs(x1bnew-x1b)+Math.abs(x2bnew-x2b)+Math.abs(x3bnew-x3b);
+//			System.out.println(x1anew+", "+x2anew+", "+x3anew+", "+x1bnew+", "+x2bnew+", "+x3bnew+": "+iter+", "+molDelta);
+
+			x1a = x1anew;
+			x2a = x2anew;
+			x3a = x3anew;
+			
+			x1b = x1bnew;
+			x2b = x2bnew;
+			x3b = x3bnew;
+
+		} while (molDelta > deltaMax && iter <= maxIter);
+
+//		System.out.println(x1a+", "+x2a+", "+x3a+", "+x1b+", "+x2b+", "+x3b);
+		
+		double x1 = xmolHold[0];
+		double x2 = xmolHold[1];
+		double x3 = xmolHold[2];		
+		if (x1a > x1b) {
+			if (x1 < x1a && x1 > x1b) {
+				if (x2b > x3b) {
+					if (x2 > x2a && x2 < x2b) return false;
+				} else {
+					if (x3 > x3a && x3 < x3b) return false;
+				}
+			}
+		} else {
+			if (x1 < x1b && x1 > x1a) {
+				if (x2b > x3b) {
+					if (x2 > x2a && x2 < x2b) return false;
+				} else {
+					if (x3 > x3a && x3 < x3b) return false;
+				}
+			}
+		}
+		return true;
+		
+	}
 	
 	/**
 	 * This method calculates the boiling point of a liquid mixture at any given 
@@ -1785,10 +2805,10 @@ public class Mixture extends Chemical implements Serializable, Cloneable {
 		this.wghtFractions = weightFractions;
 	}
 
-//	public double getTempK() {
-//		return tempK;
-//	}
-//
+	public double getTempK() {
+		return tempK;
+	}
+
 //	public void setTempK(double tempK) {
 //		this.tempK = tempK;
 //	}

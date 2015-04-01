@@ -1,0 +1,1005 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_20" class="java.beans.XMLDecoder">
+ <object class="parisInit.State">
+  <void property="ADesiredVals">
+   <array class="double" length="10">
+    <void index="0">
+     <double>2.016649667265168</double>
+    </void>
+    <void index="1">
+     <double>0.8070340896401149</double>
+    </void>
+    <void index="2">
+     <double>0.9353317462928935</double>
+    </void>
+    <void index="3">
+     <double>5.157347128765112</double>
+    </void>
+    <void index="4">
+     <double>1.3633229571104668</double>
+    </void>
+    <void index="5">
+     <double>2.304735157609842</double>
+    </void>
+    <void index="6">
+     <double>1.2683325178389928</double>
+    </void>
+    <void index="7">
+     <double>3.4825183707499656</double>
+    </void>
+    <void index="8">
+     <double>0.49554119969258753</double>
+    </void>
+    <void index="9">
+     <double>0.22666000421478674</double>
+    </void>
+   </array>
+  </void>
+  <void property="PDesiredVals">
+   <array class="double" length="8">
+    <void index="0">
+     <double>79.22678136589266</double>
+    </void>
+    <void index="1">
+     <double>946.7672437543391</double>
+    </void>
+    <void index="2">
+     <double>334.86304839457847</double>
+    </void>
+    <void index="3">
+     <double>25.236094235726345</double>
+    </void>
+    <void index="4">
+     <double>0.02</double>
+    </void>
+    <void index="5">
+     <double>5.628880263771708E-4</double>
+    </void>
+    <void index="6">
+     <double>0.13</double>
+    </void>
+    <void index="7">
+     <double>281.712</double>
+    </void>
+   </array>
+  </void>
+  <void property="mixture">
+   <object class="parisWork.Mixture" id="Mixture0">
+    <void property="airIndex">
+     <double>1.0629862461611048</double>
+    </void>
+    <void property="boilingPoint">
+     <double>334.86304839457847</double>
+    </void>
+    <void id="Vector0" property="chemicals">
+     <void method="add">
+      <object class="parisWork.Chemical" id="Chemical0">
+       <void property="CAS">
+        <string>108-88-3</string>
+       </void>
+       <void property="PCOP">
+        <double>1.3480080652206625</double>
+       </void>
+       <void property="airIndex">
+        <double>0.5402033206635788</double>
+       </void>
+       <void property="antoineConstantA">
+        <double>6.26</double>
+       </void>
+       <void property="antoineConstantB">
+        <double>1457.28</double>
+       </void>
+       <void property="antoineConstantC">
+        <double>-41.32</double>
+       </void>
+       <void property="antoineSource">
+        <string>Yaws</string>
+       </void>
+       <void property="antoineTmax">
+        <double>591.79</double>
+       </void>
+       <void property="antoineTmin">
+        <double>178.18</double>
+       </void>
+       <void property="aquaticTox">
+        <double>0.012362946203617359</double>
+       </void>
+       <void property="boilingPoint">
+        <double>383.75</double>
+       </void>
+       <void property="boilingPointSource">
+        <string>Exp</string>
+       </void>
+       <void property="density">
+        <double>870.0</double>
+       </void>
+       <void property="densitySource">
+        <string>Exp</string>
+       </void>
+       <void property="environmentalIndex">
+        <double>14.480450123343154</double>
+       </void>
+       <void property="flashPoint">
+        <double>283.15</double>
+       </void>
+       <void property="flashPointSource">
+        <string>Exp</string>
+       </void>
+       <void property="formula">
+        <string>C7H8</string>
+       </void>
+       <void property="htoxIngestion">
+        <double>0.7646277981386643</double>
+       </void>
+       <void property="htoxInhalation">
+        <double>0.006463416967021808</double>
+       </void>
+       <void property="infDilActCoef_acetone">
+        <double>1.55</double>
+       </void>
+       <void property="infDilActCoef_benzene">
+        <double>0.99</double>
+       </void>
+       <void property="infDilActCoef_cis_2_heptene">
+        <double>1.54</double>
+       </void>
+       <void property="infDilActCoef_diethyl_ether">
+        <double>0.9</double>
+       </void>
+       <void property="infDilActCoef_dimethyl_disulfide">
+        <double>1.02</double>
+       </void>
+       <void property="infDilActCoef_ethanol">
+        <double>13.4</double>
+       </void>
+       <void property="infDilActCoef_n_heptadecane">
+        <double>1.32</double>
+       </void>
+       <void property="infDilActCoef_n_propyl_chloride">
+        <double>0.92</double>
+       </void>
+       <void property="infDilActCoef_n_propylamine">
+        <double>1.53</double>
+       </void>
+       <void property="infDilActCoef_water">
+        <double>656.22</double>
+       </void>
+       <void property="meltingPoint">
+        <double>178.25</double>
+       </void>
+       <void property="meltingPointSource">
+        <string>Exp</string>
+       </void>
+       <void property="molecularWeight">
+        <double>92.14</double>
+       </void>
+       <void property="name">
+        <string>methylbenzene</string>
+       </void>
+       <void property="omega">
+        <double>0.26</double>
+       </void>
+       <void property="pc">
+        <double>41.77</double>
+       </void>
+       <void property="surfaceTension">
+        <double>0.02</double>
+       </void>
+       <void property="surfaceTensionSource">
+        <string>Exp</string>
+       </void>
+       <void property="synonyms">
+        <void method="add">
+         <string>108-88-3</string>
+        </void>
+        <void method="add">
+         <string>AI3-02261</string>
+        </void>
+        <void method="add">
+         <string>Antisal 1a</string>
+        </void>
+        <void method="add">
+         <string>Benzene, methyl-</string>
+        </void>
+        <void method="add">
+         <string>CCRIS 2366</string>
+        </void>
+        <void method="add">
+         <string>CP 25</string>
+        </void>
+        <void method="add">
+         <string>Caswell No. 859</string>
+        </void>
+        <void method="add">
+         <string>EINECS 203-625-9</string>
+        </void>
+        <void method="add">
+         <string>EPA Pesticide Chemical Code 080601</string>
+        </void>
+        <void method="add">
+         <string>HSDB 131</string>
+        </void>
+        <void method="add">
+         <string>Methacide</string>
+        </void>
+        <void method="add">
+         <string>Methane, phenyl-</string>
+        </void>
+        <void method="add">
+         <string>Methylbenzene</string>
+        </void>
+        <void method="add">
+         <string>Methylbenzol</string>
+        </void>
+        <void method="add">
+         <string>NCI-C07272</string>
+        </void>
+        <void method="add">
+         <string>NSC 406333</string>
+        </void>
+        <void method="add">
+         <string>Phenylmethane</string>
+        </void>
+        <void method="add">
+         <string>RCRA waste no. U220</string>
+        </void>
+        <void method="add">
+         <string>RCRA waste number U220</string>
+        </void>
+        <void method="add">
+         <string>Tolu-Sol</string>
+        </void>
+        <void method="add">
+         <string>Tolueen</string>
+        </void>
+        <void method="add">
+         <string>Tolueen [Dutch]</string>
+        </void>
+        <void method="add">
+         <string>Toluen</string>
+        </void>
+        <void method="add">
+         <string>Toluen [Czech]</string>
+        </void>
+        <void method="add">
+         <string>Toluene</string>
+        </void>
+        <void method="add">
+         <string>Toluene [UN1294]  [Flammable liquid]</string>
+        </void>
+        <void method="add">
+         <string>Tolueno</string>
+        </void>
+        <void method="add">
+         <string>Tolueno [Spanish]</string>
+        </void>
+        <void method="add">
+         <string>Toluol</string>
+        </void>
+        <void method="add">
+         <string>Toluolo</string>
+        </void>
+        <void method="add">
+         <string>Toluolo [Italian]</string>
+        </void>
+        <void method="add">
+         <string>UN 1294</string>
+        </void>
+        <void method="add">
+         <string>UN1294</string>
+        </void>
+        <void method="add">
+         <string>UNII-3FPU23BG52</string>
+        </void>
+       </void>
+       <void property="tc">
+        <double>597.39</double>
+       </void>
+       <void property="terrestrialTox">
+        <double>0.7646277981386643</double>
+       </void>
+       <void property="thermalConductivity">
+        <double>0.13</double>
+       </void>
+       <void property="thermalConductivitySource">
+        <string>Exp</string>
+       </void>
+       <void property="vaporPressure">
+        <double>3.78</double>
+       </void>
+       <void property="vaporPressureSource">
+        <string>Exp</string>
+       </void>
+       <void property="viscosity">
+        <double>5.5E-4</double>
+       </void>
+       <void property="viscositySource">
+        <string>Exp</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="parisWork.Chemical" id="Chemical1">
+       <void property="CAS">
+        <string>75-09-2</string>
+       </void>
+       <void property="GWP">
+        <double>0.004682430850530117</double>
+       </void>
+       <void property="PCOP">
+        <double>0.012254618774733295</double>
+       </void>
+       <void property="airIndex">
+        <double>1.9485695298546577</double>
+       </void>
+       <void property="antoineConstantA">
+        <double>6.23</double>
+       </void>
+       <void property="antoineConstantB">
+        <double>1152.41</double>
+       </void>
+       <void property="antoineConstantC">
+        <double>-40.7</double>
+       </void>
+       <void property="antoineSource">
+        <string>Yaws</string>
+       </void>
+       <void property="antoineTmax">
+        <double>510.0</double>
+       </void>
+       <void property="antoineTmin">
+        <double>178.01</double>
+       </void>
+       <void property="aquaticTox">
+        <double>0.001323124677310219</double>
+       </void>
+       <void property="boilingPoint">
+        <double>313.15</double>
+       </void>
+       <void property="boilingPointSource">
+        <string>Exp</string>
+       </void>
+       <void property="density">
+        <double>1250.0</double>
+       </void>
+       <void property="densitySource">
+        <string>Exp</string>
+       </void>
+       <void property="environmentalIndex">
+        <double>3.409996677245651</double>
+       </void>
+       <void property="flashPoint">
+        <double>312.65</double>
+       </void>
+       <void property="flashPointSource">
+        <string>Exp</string>
+       </void>
+       <void property="formula">
+        <string>CH2Cl2</string>
+       </void>
+       <void property="htoxIngestion">
+        <double>0.3040100246809429</double>
+       </void>
+       <void property="htoxInhalation">
+        <double>0.05571911178467076</double>
+       </void>
+       <void property="infDilActCoef_acetone">
+        <double>0.43</double>
+       </void>
+       <void property="infDilActCoef_benzene">
+        <double>0.87</double>
+       </void>
+       <void property="infDilActCoef_cis_2_heptene">
+        <double>2.41</double>
+       </void>
+       <void property="infDilActCoef_diethyl_ether">
+        <double>0.76</double>
+       </void>
+       <void property="infDilActCoef_dimethyl_disulfide">
+        <double>0.93</double>
+       </void>
+       <void property="infDilActCoef_ethanol">
+        <double>6.27</double>
+       </void>
+       <void property="infDilActCoef_n_heptadecane">
+        <double>3.97</double>
+       </void>
+       <void property="infDilActCoef_n_propyl_chloride">
+        <double>1.21</double>
+       </void>
+       <void property="infDilActCoef_n_propylamine">
+        <double>1.04</double>
+       </void>
+       <void property="infDilActCoef_water">
+        <double>1.77</double>
+       </void>
+       <void property="meltingPoint">
+        <double>178.05</double>
+       </void>
+       <void property="meltingPointSource">
+        <string>Exp</string>
+       </void>
+       <void property="molecularWeight">
+        <double>84.93</double>
+       </void>
+       <void property="name">
+        <string>bis(chloranyl)methane</string>
+       </void>
+       <void property="omega">
+        <double>0.19</double>
+       </void>
+       <void property="pc">
+        <double>57.23</double>
+       </void>
+       <void property="surfaceTension">
+        <double>0.02</double>
+       </void>
+       <void property="surfaceTensionSource">
+        <string>Exp</string>
+       </void>
+       <void property="synonyms">
+        <void method="add">
+         <string>4-01-00-00035 (Beilstein Handbook Reference)</string>
+        </void>
+        <void method="add">
+         <string>75-09-2</string>
+        </void>
+        <void method="add">
+         <string>AI3-01773</string>
+        </void>
+        <void method="add">
+         <string>Aerothene MM</string>
+        </void>
+        <void method="add">
+         <string>BRN 1730800</string>
+        </void>
+        <void method="add">
+         <string>CCRIS 392</string>
+        </void>
+        <void method="add">
+         <string>Caswell No. 568</string>
+        </void>
+        <void method="add">
+         <string>Chlorure de methylene</string>
+        </void>
+        <void method="add">
+         <string>Chlorure de methylene [French]</string>
+        </void>
+        <void method="add">
+         <string>Dichloromethane</string>
+        </void>
+        <void method="add">
+         <string>Dichloromethane [UN1593]  [Poison]</string>
+        </void>
+        <void method="add">
+         <string>EINECS 200-838-9</string>
+        </void>
+        <void method="add">
+         <string>EPA Pesticide Chemical Code 042004</string>
+        </void>
+        <void method="add">
+         <string>F 30</string>
+        </void>
+        <void method="add">
+         <string>F 30 (chlorocarbon)</string>
+        </void>
+        <void method="add">
+         <string>Freon 30</string>
+        </void>
+        <void method="add">
+         <string>HCC 30</string>
+        </void>
+        <void method="add">
+         <string>HSDB 66</string>
+        </void>
+        <void method="add">
+         <string>Khladon 30</string>
+        </void>
+        <void method="add">
+         <string>Metaclen</string>
+        </void>
+        <void method="add">
+         <string>Methane dichloride</string>
+        </void>
+        <void method="add">
+         <string>Methane, dichloro-</string>
+        </void>
+        <void method="add">
+         <string>Methylene bichloride</string>
+        </void>
+        <void method="add">
+         <string>Methylene chloride</string>
+        </void>
+        <void method="add">
+         <string>Methylene dichloride</string>
+        </void>
+        <void method="add">
+         <string>Methylenum chloratum</string>
+        </void>
+        <void method="add">
+         <string>Metylenu chlorek</string>
+        </void>
+        <void method="add">
+         <string>Metylenu chlorek [Polish]</string>
+        </void>
+        <void method="add">
+         <string>NCI-C50102</string>
+        </void>
+        <void method="add">
+         <string>NSC 406122</string>
+        </void>
+        <void method="add">
+         <string>Narkotil</string>
+        </void>
+        <void method="add">
+         <string>R 30</string>
+        </void>
+        <void method="add">
+         <string>R30 (refrigerant)</string>
+        </void>
+        <void method="add">
+         <string>RCRA waste no. U080</string>
+        </void>
+        <void method="add">
+         <string>RCRA waste number U080</string>
+        </void>
+        <void method="add">
+         <string>Solaesthin</string>
+        </void>
+        <void method="add">
+         <string>Soleana VDA</string>
+        </void>
+        <void method="add">
+         <string>Solmethine</string>
+        </void>
+        <void method="add">
+         <string>UN 1593</string>
+        </void>
+        <void method="add">
+         <string>UN1593</string>
+        </void>
+        <void method="add">
+         <string>UNII-588X2YUY0A</string>
+        </void>
+       </void>
+       <void property="tc">
+        <double>517.18</double>
+       </void>
+       <void property="terrestrialTox">
+        <double>0.3040100246809429</double>
+       </void>
+       <void property="thermalConductivity">
+        <double>0.13</double>
+       </void>
+       <void property="thermalConductivitySource">
+        <string>Exp</string>
+       </void>
+       <void property="vaporPressure">
+        <double>57.9</double>
+       </void>
+       <void property="vaporPressureSource">
+        <string>Exp</string>
+       </void>
+       <void property="viscosity">
+        <double>4.1E-4</double>
+       </void>
+       <void property="viscositySource">
+        <string>Exp</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="parisWork.Chemical" id="Chemical2">
+       <void property="CAS">
+        <string>67-63-0</string>
+       </void>
+       <void property="PCOP">
+        <double>0.19607390039573272</double>
+       </void>
+       <void property="airIndex">
+        <double>0.11757546632985409</double>
+       </void>
+       <void property="antoineConstantA">
+        <double>6.95</double>
+       </void>
+       <void property="antoineConstantB">
+        <double>1483.3</double>
+       </void>
+       <void property="antoineConstantC">
+        <double>-55.73</double>
+       </void>
+       <void property="antoineSource">
+        <string>Yaws</string>
+       </void>
+       <void property="antoineTmax">
+        <double>508.31</double>
+       </void>
+       <void property="antoineTmin">
+        <double>185.28</double>
+       </void>
+       <void property="aquaticTox">
+        <double>4.2238563256160894E-5</double>
+       </void>
+       <void property="boilingPoint">
+        <double>355.45</double>
+       </void>
+       <void property="boilingPointSource">
+        <string>Exp</string>
+       </void>
+       <void property="density">
+        <double>790.0</double>
+       </void>
+       <void property="densitySource">
+        <string>Exp</string>
+       </void>
+       <void property="environmentalIndex">
+        <double>1.9691461365078458</double>
+       </void>
+       <void property="flashPoint">
+        <double>284.82</double>
+       </void>
+       <void property="flashPointSource">
+        <string>Exp</string>
+       </void>
+       <void property="formula">
+        <string>C3H8O</string>
+       </void>
+       <void property="htoxIngestion">
+        <double>0.09638329788288895</double>
+       </void>
+       <void property="htoxInhalation">
+        <double>0.004946492576802405</double>
+       </void>
+       <void property="infDilActCoef_acetone">
+        <double>2.24</double>
+       </void>
+       <void property="infDilActCoef_benzene">
+        <double>3.92</double>
+       </void>
+       <void property="infDilActCoef_cis_2_heptene">
+        <double>5.89</double>
+       </void>
+       <void property="infDilActCoef_diethyl_ether">
+        <double>2.64</double>
+       </void>
+       <void property="infDilActCoef_dimethyl_disulfide">
+        <double>0.21</double>
+       </void>
+       <void property="infDilActCoef_ethanol">
+        <double>1.01</double>
+       </void>
+       <void property="infDilActCoef_n_heptadecane">
+        <double>32.08</double>
+       </void>
+       <void property="infDilActCoef_n_propyl_chloride">
+        <double>2.81</double>
+       </void>
+       <void property="infDilActCoef_n_propylamine">
+        <double>0.31</double>
+       </void>
+       <void property="infDilActCoef_water">
+        <double>3.81</double>
+       </void>
+       <void property="meltingPoint">
+        <double>183.65</double>
+       </void>
+       <void property="meltingPointSource">
+        <string>Exp</string>
+       </void>
+       <void property="molecularWeight">
+        <double>60.1</double>
+       </void>
+       <void property="name">
+        <string>propan-2-ol</string>
+       </void>
+       <void property="omega">
+        <double>0.56</double>
+       </void>
+       <void property="pc">
+        <double>48.88</double>
+       </void>
+       <void property="replacementScore">
+        <double>1.200000007490025E10</double>
+       </void>
+       <void property="surfaceTension">
+        <double>0.02</double>
+       </void>
+       <void property="surfaceTensionSource">
+        <string>Exp</string>
+       </void>
+       <void property="synonyms">
+        <void method="add">
+         <string>1-Methylethanol</string>
+        </void>
+        <void method="add">
+         <string>1-Methylethyl alcohol</string>
+        </void>
+        <void method="add">
+         <string>2-Hydroxypropane</string>
+        </void>
+        <void method="add">
+         <string>2-Propanol</string>
+        </void>
+        <void method="add">
+         <string>2-Propyl alcohol</string>
+        </void>
+        <void method="add">
+         <string>4-01-00-01461 (Beilstein Handbook Reference)</string>
+        </void>
+        <void method="add">
+         <string>67-63-0</string>
+        </void>
+        <void method="add">
+         <string>8013-70-5</string>
+        </void>
+        <void method="add">
+         <string>AI3-01636</string>
+        </void>
+        <void method="add">
+         <string>Alcojel</string>
+        </void>
+        <void method="add">
+         <string>Alcolo</string>
+        </void>
+        <void method="add">
+         <string>Alcool isopropilico</string>
+        </void>
+        <void method="add">
+         <string>Alcool isopropilico [Italian]</string>
+        </void>
+        <void method="add">
+         <string>Alcool isopropylique</string>
+        </void>
+        <void method="add">
+         <string>Alcool isopropylique [French]</string>
+        </void>
+        <void method="add">
+         <string>Alcosolve</string>
+        </void>
+        <void method="add">
+         <string>Alcosolve 2</string>
+        </void>
+        <void method="add">
+         <string>Alkolave</string>
+        </void>
+        <void method="add">
+         <string>Arquad DMCB</string>
+        </void>
+        <void method="add">
+         <string>Avantin</string>
+        </void>
+        <void method="add">
+         <string>Avantine</string>
+        </void>
+        <void method="add">
+         <string>BRN 0635639</string>
+        </void>
+        <void method="add">
+         <string>CCRIS 2308</string>
+        </void>
+        <void method="add">
+         <string>Caswell No. 507</string>
+        </void>
+        <void method="add">
+         <string>Combi-schutz</string>
+        </void>
+        <void method="add">
+         <string>Dimethylcarbinol</string>
+        </void>
+        <void method="add">
+         <string>EINECS 200-661-7</string>
+        </void>
+        <void method="add">
+         <string>EPA Pesticide Chemical Code 047601</string>
+        </void>
+        <void method="add">
+         <string>FEMA No. 2929</string>
+        </void>
+        <void method="add">
+         <string>FEMA Number 2929</string>
+        </void>
+        <void method="add">
+         <string>HSDB 116</string>
+        </void>
+        <void method="add">
+         <string>Hartosol</string>
+        </void>
+        <void method="add">
+         <string>Hibistat</string>
+        </void>
+        <void method="add">
+         <string>Imsol A</string>
+        </void>
+        <void method="add">
+         <string>Iso-propyl alcohol</string>
+        </void>
+        <void method="add">
+         <string>Iso-propylalkohol</string>
+        </void>
+        <void method="add">
+         <string>Iso-propylalkohol [German]</string>
+        </void>
+        <void method="add">
+         <string>Isohol</string>
+        </void>
+        <void method="add">
+         <string>Isopropanol</string>
+        </void>
+        <void method="add">
+         <string>Isopropanol or isopropyl alcohol</string>
+        </void>
+        <void method="add">
+         <string>Isopropanol or isopropyl alcohol [UN1219]  [Flammable liquid]</string>
+        </void>
+        <void method="add">
+         <string>Isopropyl alcohol</string>
+        </void>
+        <void method="add">
+         <string>Isopropyl alcohol (manufacture strong-acid process)</string>
+        </void>
+        <void method="add">
+         <string>Isopropyl alcohol (manufacturing-strong acid process only)</string>
+        </void>
+        <void method="add">
+         <string>Isopropyl alcohol (only persons who manufacture by the strong acid process are subject, supplier notification not required)</string>
+        </void>
+        <void method="add">
+         <string>Isopropyl alcohol, rubbing</string>
+        </void>
+        <void method="add">
+         <string>Lavacol</string>
+        </void>
+        <void method="add">
+         <string>Lutosol</string>
+        </void>
+        <void method="add">
+         <string>NSC 135801</string>
+        </void>
+        <void method="add">
+         <string>Petrohol</string>
+        </void>
+        <void method="add">
+         <string>Propol</string>
+        </void>
+        <void method="add">
+         <string>Spectrar</string>
+        </void>
+        <void method="add">
+         <string>Sterisol hand disinfectant</string>
+        </void>
+        <void method="add">
+         <string>Takineocol</string>
+        </void>
+        <void method="add">
+         <string>UN1219</string>
+        </void>
+        <void method="add">
+         <string>UNII-ND2M416302</string>
+        </void>
+        <void method="add">
+         <string>Visco 1152</string>
+        </void>
+        <void method="add">
+         <string>i-Propanol</string>
+        </void>
+        <void method="add">
+         <string>i-Propanol [German]</string>
+        </void>
+        <void method="add">
+         <string>i-Propyl alcohol</string>
+        </void>
+        <void method="add">
+         <string>i-Propylalkohol</string>
+        </void>
+        <void method="add">
+         <string>i-Propylalkohol [German]</string>
+        </void>
+        <void method="add">
+         <string>n-Propan-2-ol</string>
+        </void>
+        <void method="add">
+         <string>sec-Propyl alcohol</string>
+        </void>
+       </void>
+       <void property="tc">
+        <double>496.83</double>
+       </void>
+       <void property="terrestrialTox">
+        <double>0.09638329788288895</double>
+       </void>
+       <void property="thermalConductivity">
+        <double>0.13</double>
+       </void>
+       <void property="thermalConductivitySource">
+        <string>Exp</string>
+       </void>
+       <void property="vaporPressure">
+        <double>6.05</double>
+       </void>
+       <void property="vaporPressureSource">
+        <string>Exp</string>
+       </void>
+       <void property="viscosity">
+        <double>0.00204</double>
+       </void>
+       <void property="viscositySource">
+        <string>Exp</string>
+       </void>
+      </object>
+     </void>
+    </void>
+    <void property="chemicals">
+     <object idref="Vector0"/>
+    </void>
+    <void property="density">
+     <double>946.7672437543391</double>
+    </void>
+    <void property="environmentalIndex">
+     <double>7.477965420500201</double>
+    </void>
+    <void property="flashPoint">
+     <double>281.7117931764871</double>
+    </void>
+    <void property="infDilActCoef_acetone">
+     <double>0.9353317462928935</double>
+    </void>
+    <void property="infDilActCoef_benzene">
+     <double>1.3633229571104668</double>
+    </void>
+    <void property="infDilActCoef_cis_2_heptene">
+     <double>2.304735157609842</double>
+    </void>
+    <void property="infDilActCoef_diethyl_ether">
+     <double>0.8070340896401149</double>
+    </void>
+    <void property="infDilActCoef_dimethyl_disulfide">
+     <double>0.22666000421478674</double>
+    </void>
+    <void property="infDilActCoef_ethanol">
+     <double>2.016649667265168</double>
+    </void>
+    <void property="infDilActCoef_n_heptadecane">
+     <double>3.4825183707499656</double>
+    </void>
+    <void property="infDilActCoef_n_propyl_chloride">
+     <double>1.2683325178389928</double>
+    </void>
+    <void property="infDilActCoef_n_propylamine">
+     <double>0.49554119969258753</double>
+    </void>
+    <void property="infDilActCoef_water">
+     <double>5.157347128765112</double>
+    </void>
+    <void property="molecularWeight">
+     <double>79.22678136589266</double>
+    </void>
+    <void property="surfaceTension">
+     <double>0.02</double>
+    </void>
+    <void property="thermalConductivity">
+     <double>0.13</double>
+    </void>
+    <void property="vaporPressure">
+     <double>25.236094235726345</double>
+    </void>
+    <void property="viscosity">
+     <double>5.628880263771708E-4</double>
+    </void>
+    <void property="wghtFractions">
+     <void method="add">
+      <double>0.4</double>
+     </void>
+     <void method="add">
+      <double>0.35000000000000003</double>
+     </void>
+     <void method="add">
+      <double>0.25</double>
+     </void>
+    </void>
+   </object>
+  </void>
+  <void property="systemName">
+   <string>RollerWash</string>
+  </void>
+ </object>
+</java>

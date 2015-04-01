@@ -6,7 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ParisInitGUITest.class, ParisTabFolderGUITest.class, ParisMenuGUITest.class,
-	ParisReferenceGUITest.class})
+	ParisReferenceGUITest.class, ParisGeneralGUITest.class})
 public class AllParisGUITests {
 
 }

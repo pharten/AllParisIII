@@ -45,7 +45,7 @@ public class Screen0 extends Screen {
 	private StackLayout stack = new StackLayout();
 	private Composite stackComposite, composite_6, composite_7, composite_8;
 	private List list_0, list_3;
-	private Button btn_3;
+	private Button btn_1, btn_2, btn_3;
 	private Table table;
 	private TableEditor tableEditor;
 	private Shell shell;
@@ -76,7 +76,7 @@ public class Screen0 extends Screen {
 		
 		Label label_1a = new Label(composite_1, SWT.NONE);
 		label_1a.setAlignment(SWT.RIGHT);
-		label_1a.setLayoutData(new RowData(62, -1));
+		label_1a.setLayoutData(new RowData(76, -1));
 		label_1a.setText("Name");
 		
 		combo_1 = new Combo(composite_1, SWT.NONE);
@@ -144,7 +144,7 @@ public class Screen0 extends Screen {
 		
 		Label label_2a = new Label(composite_2, SWT.NONE);
 		label_2a.setAlignment(SWT.RIGHT);
-		label_2a.setLayoutData(new RowData(62, -1));
+		label_2a.setLayoutData(new RowData(76, -1));
 		label_2a.setText("Units");
 		
 		combo_2 = new Combo(composite_2, SWT.READ_ONLY);
@@ -175,14 +175,14 @@ public class Screen0 extends Screen {
 		composite_3.setLayout(rl_composite_3);
 		
 		Label label_3a = new Label(composite_3, SWT.NONE);
-		label_3a.setLayoutData(new RowData(62, -1));
+		label_3a.setLayoutData(new RowData(76, -1));
 		label_3a.setAlignment(SWT.RIGHT);
 		label_3a.setText("Temperature");
 		
 		combo_3 = new Combo(composite_3, SWT.READ_ONLY);
 		combo_3.setLayoutData(new RowData(23, SWT.DEFAULT));
 		combo_3.setVisibleItemCount(6);
-		combo_3.setItems(new String[] {"10", "15", "20", "25", "30", "35"});
+		combo_3.setItems(new String[] {"10.0", "15.0", "20.0", "25.0", "30.0", "35.0"});
 		combo_3.select(3);
 		
 		combo_3.addSelectionListener(new SelectionListener() {
@@ -210,7 +210,7 @@ public class Screen0 extends Screen {
 		});
 		
 		Label label_3b = new Label(composite_3, SWT.NONE);
-		label_3b.setText("degrees C");
+		label_3b.setText(" C");
 		
 		Composite composite_4 = new Composite(group_1, SWT.NONE);
 		RowLayout rl_composite_4 = new RowLayout(SWT.HORIZONTAL);
@@ -219,7 +219,7 @@ public class Screen0 extends Screen {
 		
 		Label label_4a = new Label(composite_4, SWT.NONE);
 		label_4a.setAlignment(SWT.RIGHT);
-		label_4a.setLayoutData(new RowData(62, SWT.DEFAULT));
+		label_4a.setLayoutData(new RowData(76, SWT.DEFAULT));
 		label_4a.setText("Pressure");
 		
 		combo_4 = new Combo(composite_4, SWT.READ_ONLY);
@@ -263,7 +263,7 @@ public class Screen0 extends Screen {
 		combo = new Combo(composite_15, SWT.READ_ONLY);
 //		combo.setItems(new String[] {"Show Chemicals by Family", "Search for Chemicals by CAS Number", "Search for Chemicals by Name"});
 		combo.setItems(new String[] {"Search for Chemicals by CAS Number", "Search for Chemicals by Name"});
-		combo.select(1);
+//		combo.select(1);
 		
 		Composite composite_17 = new Composite(composite_15, SWT.NONE);
 		
@@ -299,7 +299,7 @@ public class Screen0 extends Screen {
 					default:
 						new Exception("Abnormal StackLayout Index Request");	
 					}
-					states.getActiveState().setScreen0StackOption(index);
+					states.getActiveState().setScreen0StackOption(index-1);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -442,7 +442,7 @@ public class Screen0 extends Screen {
 		rl_composite_12.center = true;
 		composite_12.setLayout(rl_composite_12);
 		
-		Button btn_1 = new Button(composite_11, SWT.PUSH);
+		btn_1 = new Button(composite_11, SWT.PUSH);
 		btn_1.setText("->");
 		
 		btn_1.addSelectionListener(new SelectionListener() {
@@ -494,7 +494,7 @@ public class Screen0 extends Screen {
 			
 		});
 		
-		Button btn_2 = new Button(composite_11, SWT.PUSH);
+		btn_2 = new Button(composite_11, SWT.PUSH);
 		btn_2.setText("<-");
 		
 		btn_2.addSelectionListener(new SelectionListener() {
@@ -694,12 +694,15 @@ public class Screen0 extends Screen {
 				activeState.setADesiredVals(null);
 			} else {
 				saveTable(activeState);
-				activeState.setPDesiredVals();
-				activeState.setADesiredVals();
-				activeState.calculateEnvironmentalIndexes();
+				if (!activeState.getMixture().equals(initialState.getMixture())) {
+					// recalculate the desired values and indexes
+					activeState.setPDesiredVals();
+					activeState.setADesiredVals();
+					activeState.calculateEnvironmentalIndexes();
+				}
 			}
 
-			if (!activeState.equals(initialState)) {
+			if (!activeState.equalsForReplacements(initialState)) {
 				// reset values
 				replacements = null;
 				bestMixtures = null;
@@ -729,20 +732,25 @@ public class Screen0 extends Screen {
 
 	public void changeState(State state) throws Exception {
 		states.setActiveState(state);
+		int initTempSel = combo_3.getSelectionIndex();
+		int initStackOpt = combo.getSelectionIndex();
 		
 		combo_1.select(combo_1.indexOf(state.getSystemName()));
 		combo_2.select(combo_2.indexOf(state.getSystemUnit().toString()));
 		combo_3.select(combo_3.indexOf(state.getSystemTemp()));
 		combo_4.select(combo_4.indexOf(state.getSystemPres()));
 
-		chemicals = allChemicals.filterForLiquidPhase(state.tempConvertToSI());
-		chemicals = chemicals.filterForVaporPressure();
-		chemicals.normalizeEnvironmentalCategories();
-		
-		combo.select(state.getScreen0StackOption());
-		combo.notifyListeners(SWT.Selection, new Event());
+		if (chemicals == null || initTempSel != combo_3.getSelectionIndex()) {
+			combo_3.notifyListeners(SWT.Selection, new Event());
+		} else if (initStackOpt != state.getScreen0StackOption()) {
+			combo.select(state.getScreen0StackOption());
+			combo.notifyListeners(SWT.Selection, new Event());
+		}
+
 		reBuildTable(state);
+		
 	}
+	
 	public StackLayout getStack() {
 		return stack;
 	}
@@ -751,20 +759,30 @@ public class Screen0 extends Screen {
 		this.stack = stack;
 	}
 	
-	public boolean testTable() {
+	public boolean testTable() throws Exception {
 		TableItem[] tableItem = table.getItems();
+		
+		if (tableItem.length>4) {
+			MessageBox dialog = new MessageBox(table.getShell(), SWT.ICON_ERROR | SWT.CANCEL);
+			dialog.setText("Error");
+			dialog.setMessage("There can be not more than 4 components in a mixture, for now");
+			int returnCode = dialog.open();
+			return false;
+		}
+
 		double sum = 0;
 		for (int i=0; i<tableItem.length; i++) {
-			if (tableItem[i].getText(1)=="") {
+			if (tableItem[i].getText(1)=="" || Double.parseDouble(tableItem[i].getText(1))<=0.0) {
 				MessageBox dialog = new MessageBox(table.getShell(), SWT.ICON_ERROR | SWT.CANCEL);
 				dialog.setText("Error");
-				dialog.setMessage(table.getColumn(1).getText()+" cannot be blank");
+				dialog.setMessage(table.getColumn(1).getText()+" cannot be blank, zero, or negative");
 				int returnCode = dialog.open();
 				return false;
 			} else {
 				sum += Double.parseDouble(tableItem[i].getText(1));
 			}
 		}
+
 		if (tableItem.length!=0 && sum != 100.0) {
 			MessageBox dialog = new MessageBox(table.getShell(), SWT.ICON_ERROR | SWT.CANCEL);
 			dialog.setText("Error");
@@ -772,6 +790,22 @@ public class Screen0 extends Screen {
 			int returnCode = dialog.open();
 			return false;
 		}
+
+		if (!isMiscible()) {
+			MessageBox dialog = new MessageBox(table.getShell(), SWT.ICON_WARNING  | SWT.YES | SWT.NO | SWT.CANCEL);
+			dialog.setText("Warning");
+			dialog.setMessage("Mixture is calculated to be immiscible, continue anyway?");
+			
+			switch (dialog.open()) {
+			case SWT.YES:
+				return true;
+			case SWT.NO:
+			case SWT.CANCEL:
+				return false;
+			}	
+			return false;
+		}
+		
 		return true;
 	}
 	
@@ -789,14 +823,14 @@ public class Screen0 extends Screen {
 				for (int i=0; i<chemicals.size(); i++) {
 					TableItem tableItem = new TableItem(table, SWT.NONE);
 					tableItem.setText(0,chemicals.get(i).getName());
-					tableItem.setText(1, String.valueOf(massFractions.get(i)*100.0));
+					tableItem.setText(1, String.valueOf(Math.round(massFractions.get(i)*10000.0)*0.01));
 				}
 			} else { // translate to Mol%
 				Vector<Double> molFractions = mixture.calculateMoleFractions();
 				for (int i=0; i<chemicals.size(); i++) {
 					TableItem tableItem = new TableItem(table, SWT.NONE);
 					tableItem.setText(0, chemicals.get(i).getName());
-					tableItem.setText(1, String.valueOf((molFractions.get(i))*100.0));
+					tableItem.setText(1, String.valueOf(Math.round(molFractions.get(i)*10000.0)*0.01));
 				}
 			}
 		}
@@ -811,15 +845,41 @@ public class Screen0 extends Screen {
 			Vector<Double> wghtFractions = mixture.getWghtFractions();
 			wghtFractions.clear();
 			for (int i=0; i<tableItem.length; i++) {
-				wghtFractions.add(Double.parseDouble(tableItem[i].getText(1))/100.0);
+				wghtFractions.add(Double.parseDouble(tableItem[i].getText(1))*0.01);
 			}
 		} else { // given in Mol%
 			Vector<Double> molFractions = new Vector<Double>(tableItem.length);
 			for (int i=0; i<tableItem.length; i++) {
-				molFractions.add(Double.parseDouble(tableItem[i].getText(1))/100.0);
+				molFractions.add(Double.parseDouble(tableItem[i].getText(1))*0.01);
 			}
 			mixture.setWghtFractions(mixture.calculateMassFractions(molFractions));
 		}
+		
+	}
+	
+	public Boolean isMiscible() throws Exception {
+		
+		TableItem[] tableItem = table.getItems();
+		if (tableItem.length==0) return true;
+
+		Mixture mixture = new Mixture();
+		mixture.setChemicals(states.getActiveState().getMixture().getChemicals());
+		Vector<Double> xmol = new Vector<Double>();
+		
+		if (table.getColumn(1).getText().equals("Wt%")) {
+			Vector<Double> wghtFractions = mixture.getWghtFractions();
+			wghtFractions.clear();
+			for (int i=0; i<tableItem.length; i++) {
+				wghtFractions.add(Double.parseDouble(tableItem[i].getText(1))*0.01);
+			}
+			xmol = mixture.calculateMoleFractions();
+		} else { // given in Mol%
+			xmol.clear();
+			for (int i=0; i<tableItem.length; i++) {
+				xmol.add(Double.parseDouble(tableItem[i].getText(1))*0.01);
+			}
+		}
+		return mixture.isOnePhase(xmol, states.getActiveState().tempConvertToSI());
 		
 	}
 
@@ -827,8 +887,20 @@ public class Screen0 extends Screen {
 		return list_3;
 	}
 
-	public Button getBtn() {
+	public Button getBtn1() {
+		return btn_1;
+	}
+
+	public Button getBtn2() {
+		return btn_2;
+	}
+
+	public Button getBtn3() {
 		return btn_3;
+	}
+
+	public Table getTable() {
+		return table;
 	}
 
 	public Reference getReference() {

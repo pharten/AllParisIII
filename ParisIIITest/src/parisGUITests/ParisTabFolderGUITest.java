@@ -123,7 +123,7 @@ public class ParisTabFolderGUITest {
 
 				Text text1 = textArray[0][0];
 				
-				Assert.assertEquals("Screen2 textArray[0][0] is wrong", "11.0", text1.getText());
+				Assert.assertEquals("Screen2 textArray[0][0] should be blank", "", text1.getText());
 				Assert.assertFalse("Screen2 textArray should not be Editable", text1.getEditable());
 				
 				tabFolder.setSelection(3);
@@ -141,7 +141,7 @@ public class ParisTabFolderGUITest {
 				
 				text1 = textArray[0][0];
 				
-				Assert.assertEquals("Screen3 textArray[0][0] is wrong", "25.0", text1.getText());
+				Assert.assertEquals("Screen3 textArray[0][0] should be blank", "", text1.getText());
 				Assert.assertFalse("Screen3 textArray should not be Editable", text1.getEditable());
 				
 				tabFolder.setSelection(4);
