@@ -20,7 +20,7 @@ public class MixtureCalculateConcurrent {
 	private State mState;
 	private Vector<Mixture> mMixtures;
 	private static int nprocs = Runtime.getRuntime().availableProcessors();
-	private static int nTasks = 4*nprocs;
+	private static int nTasks = 16*nprocs;
 	private ExecutorService executor = null;
 	private static Vector<Future<Void>> list = null;
 	
@@ -49,21 +49,22 @@ public class MixtureCalculateConcurrent {
 		return;
 	}
 	
-	public void updateProgress(ProgressBar progressBar, int previousMixtureCount, int totalCount) throws InterruptedException {
+	public void updateProgress(ProgressBar progressBar, long previousMixtureCount, long totalCount) throws InterruptedException {
 		double percent = 100.0/totalCount;
-		int progress, previousProgress = 0;
+		long newMixtureCount;
+		int progress;
 
 		int cnt=0;
-		while (!executor.awaitTermination(10, TimeUnit.MILLISECONDS) && cnt < list.size()) {
+		while (!executor.awaitTermination(100, TimeUnit.MILLISECONDS) && cnt < list.size()) {
 			cnt=0;
 			for (int m=0; m<list.size(); m++) {
 				if (list.get(m).isDone()) cnt++;
 			}
-			if (!progressBar.getDisplay().readAndDispatch()) {
-				progress = (int)((previousMixtureCount+((double)cnt/list.size())* mMixtures.size()) * percent);
-				if (progress != previousProgress) {
+			if (!progressBar.isDisposed() && progressBar.getDisplay().readAndDispatch()) {
+				newMixtureCount = previousMixtureCount + cnt * mMixtures.size() / list.size();
+				progress = (int) (newMixtureCount * percent);
+				if (progress > progressBar.getSelection()) {
 					progressBar.setSelection(progress);
-					previousProgress = progress;
 				}
 			}
 		}

@@ -689,14 +689,15 @@ public class Screen4 extends Screen {
 			massRatiosSelected[i] =  list4.getItem(indices[i]);
 		}
 		
-		int unit2 = massRatiosSelected.length;
-		int unit1 = secondarySolvents.size()*unit2;
-		int unit0 = primarySolvents.size()*unit1;
-		int mixtureCount = 0;
-		long startTime, endTime;
+		long unit2 = massRatiosSelected.length;
+		long unit1 = secondarySolvents.size()*unit2;
+		long unit0 = primarySolvents.size()*unit1;
+		long mixtureCount = 0;
+		long startTime;
+		double time;
 		
 		Mixture sample = new Mixture(primarySolvents.get(0), secondarySolvents.get(0), massRatiosSelected[0], tempK);
-		int maxCapacity = estimateMaxCapacity(sample);
+		int maxCapacity = (int) (estimateMaxCapacity(sample)*0.8);
 
 		Vector<Mixture> vMixtures = new Vector<Mixture>(maxCapacity);
 		
@@ -711,7 +712,6 @@ public class Screen4 extends Screen {
 			if (!mixtureRunning) break;
 			Chemical solvent1 = primarySolvents.get(i);
 			boolean ssPS = solventSymmetryPS[i];
-			double value1 = i*unit1;
 			for (int j=0; j<secondarySolvents.size(); j++) {
 				if (!mixtureRunning) break;
 				Chemical solvent2 = secondarySolvents.get(j);
@@ -719,7 +719,6 @@ public class Screen4 extends Screen {
 				Chemical[] solvents = {solvent1, solvent2};
 				boolean ssSP = solventSymmetrySP[j];
 				boolean ssHC = ssPS && ssSP && (solvent1.hashCode()<solvent2.hashCode());
-				double value2 = value1 + j*unit2;
 				for (int k=0; k<massRatiosSelected.length; k++) {
 					if (!mixtureRunning) break;
 					if (massRatiosSymmetry[k]&&ssHC) continue;
@@ -732,6 +731,11 @@ public class Screen4 extends Screen {
 						addToBestMixtures(bestMixtures, vMixtures);
 						mixtureCount += vMixtures.size();
 						vMixtures.clear();
+						if (logger.isLoggable(Level.INFO)) {
+							time = (System.currentTimeMillis()-startTime)/3600000.0;
+//							logger.info("number of mixtures = "+mixtureCount+", runtime = "+time+" hours");
+							System.out.println("number of mixtures = "+mixtureCount+", runtime = "+time+" hours");
+						}
 					}
 				}
 			}
@@ -743,36 +747,13 @@ public class Screen4 extends Screen {
 		addToBestMixtures(bestMixtures, vMixtures);
 		mixtureCount += vMixtures.size();
 		vMixtures.clear();
+		if (logger.isLoggable(Level.INFO)) {
+			time = (System.currentTimeMillis()-startTime)/3600000.0;
+//			logger.info("number of mixtures = "+mixtureCount+", runtime = "+time+" hours");
+			System.out.println("number of mixtures = "+mixtureCount+", runtime = "+time+" hours");
+		}
 
-//		int progress, previousProgress = 0;
-//		double percent = 100.0/unit0;
-//		for (int i=0; i<primarySolvents.size(); i++) {
-//			Chemical solvent1 = primarySolvents.get(i);
-//			boolean ssPS = solventSymmetryPS[i];
-//			double value1 = i*unit1;
-//			for (int j=0; j<secondarySolvents.size(); j++) {
-//				Chemical solvent2 = secondarySolvents.get(j);
-//				if (solvent2==solvent1) continue;
-//				boolean ssSP = solventSymmetrySP[j];
-//				boolean ssHC = ssPS && ssSP && (solvent1.hashCode()<solvent2.hashCode());
-//				double value2 = value1 + j*unit2;
-//				for (int k=0; k<massRatiosSelected.length; k++) {
-//					if (massRatiosSymmetry[k]&&ssHC) continue;
-//					Mixture mixture = new Mixture(solvent1, solvent2, massRatiosSelected[k]);
-//					mixture.calculateMixtureScore(activeState);
-//					addToBestMixtures(bestMixtures, mixture);
-//					double value3 = value2 + k;
-//					if (!progressBar.getDisplay().readAndDispatch()) {
-//						progress = (int)(value3*percent);
-//						if (progress!=previousProgress) progressBar.setSelection(progress);
-//						previousProgress = progress;
-//					}
-//				}
-//			}
-//		}
-		
-		endTime = System.currentTimeMillis();
-		logger.info("Search took " + (endTime - startTime) + " milliseconds.");
+		logger.info("Search took " + (System.currentTimeMillis() - startTime)/1000.0 + " seconds.");
 		
 		return bestMixtures;
 	}
@@ -790,15 +771,16 @@ public class Screen4 extends Screen {
 			massRatiosSelected[i] =  list4.getItem(indices[i]);
 		}
 
-		int unit3 = massRatiosSelected.length;
-		int unit2 = tertiarySolvents.size()*unit3;
-		int unit1 = secondarySolvents.size()*unit2;
-		int unit0 = primarySolvents.size()*unit1;
-		int mixtureCount = 0;
-		long startTime, endTime;
+		long unit3 = massRatiosSelected.length;
+		long unit2 = tertiarySolvents.size()*unit3;
+		long unit1 = secondarySolvents.size()*unit2;
+		long unit0 = primarySolvents.size()*unit1;
+		long mixtureCount = 0;
+		long startTime;
+		double time;
 		
 		Mixture sample = new Mixture(primarySolvents.get(0), secondarySolvents.get(0), tertiarySolvents.get(0), massRatiosSelected[0], tempK);
-		int maxCapacity = estimateMaxCapacity(sample);
+		int maxCapacity = (int) (estimateMaxCapacity(sample)*0.8);
 
 		Vector<Mixture> vMixtures = new Vector<Mixture>(maxCapacity);
 
@@ -816,7 +798,6 @@ public class Screen4 extends Screen {
 			if (!mixtureRunning) break;
 			Chemical solvent1 = primarySolvents.get(i);
 			boolean ssPS = solventSymmetryPS[i];  // primary solvent1 appears in secondary solvents.
-			double value1 = i*unit1;
 			for (int j=0; j<secondarySolvents.size(); j++) {
 				if (!mixtureRunning) break;
 				Chemical solvent2 = secondarySolvents.get(j);
@@ -824,7 +805,6 @@ public class Screen4 extends Screen {
 				boolean ssSP = solventSymmetrySP[j];  // secondary solvent2 appears in primary solvents.
 				boolean ssHC = ssPS && ssSP && (solvent1.hashCode()<solvent2.hashCode());  // if so, set hash code flag
 				boolean ssST = solventSymmetryST[j];  // secondary solvent2 appears in tertiary solvents.
-				double value2 = value1 + j*unit2;
 				for (int k=0; k<tertiarySolvents.size(); k++) {
 					if (!mixtureRunning) break;
 					Chemical solvent3 = tertiarySolvents.get(k);
@@ -832,7 +812,6 @@ public class Screen4 extends Screen {
 					Chemical[] solvents = {solvent1, solvent2, solvent3};
 					boolean ssTS = solventSymmetryTS[k];  // tertiary solvent3 appears in secondary solvents.
 					boolean ssHC2 = ssST && ssTS && (solvent2.hashCode()>solvent3.hashCode());  // if so, set hash code flag
-					double value3 = value2 + k*unit3;
 					for (int l=0; l<massRatiosSelected.length; l++) {
 						if (!mixtureRunning) break;
 						if (massRatiosSymmetryPS[l]&&ssHC) continue;
@@ -846,6 +825,11 @@ public class Screen4 extends Screen {
 							addToBestMixtures(bestMixtures, vMixtures);
 							mixtureCount += vMixtures.size();
 							vMixtures.clear();
+							if (logger.isLoggable(Level.INFO)) {
+								time = (System.currentTimeMillis()-startTime)/3600000.0;
+//								logger.info("number of mixtures = "+mixtureCount+", runtime = "+time+" hours");
+								System.out.println("number of mixtures = "+mixtureCount+", runtime = "+time+" hours");
+							}
 						}
 					}
 				}
@@ -858,45 +842,13 @@ public class Screen4 extends Screen {
 		addToBestMixtures(bestMixtures, vMixtures);
 		mixtureCount += vMixtures.size();
 		vMixtures.clear();
+		if (logger.isLoggable(Level.INFO)) {
+			time = (System.currentTimeMillis()-startTime)/3600000.0;
+//			logger.info("number of mixtures = "+mixtureCount+", runtime = "+time+" hours");
+			System.out.println("number of mixtures = "+mixtureCount+", runtime = "+time+" hours");
+		}
 		
-//		int progress, previousProgress = 0;
-//		double percent = 100.0/unit0;
-//		for (int i=0; i<primarySolvents.size(); i++) {
-//			Chemical solvent1 = primarySolvents.get(i);
-//			boolean ssPS = solventSymmetryPS[i];
-//			double value1 = i*unit1;
-//			for (int j=0; j<secondarySolvents.size(); j++) {
-//				Chemical solvent2 = secondarySolvents.get(j);
-//				if (solvent2==solvent1) continue;
-//				boolean ssSP = solventSymmetrySP[j];
-//				boolean ssHC = ssPS && ssSP && (solvent1.hashCode()<solvent2.hashCode());
-//				boolean ssST = solventSymmetryST[j];
-//				double value2 = value1 + j*unit2;
-//				for (int k=0; k<tertiarySolvents.size(); k++) {
-//					Chemical solvent3 = tertiarySolvents.get(k);
-//					if (solvent3==solvent1 || solvent3==solvent2) continue;
-//					boolean ssTS = solventSymmetryTS[k];
-//					boolean ssHC2 = ssST && ssTS && (solvent2.hashCode()>solvent3.hashCode());
-//					double value3 = value2 + k*unit3;
-//					for (int l=0; l<massRatiosSelected.length; l++) {
-//						if (massRatiosSymmetryPS[l]&&ssHC) continue;
-//						if (massRatiosSymmetryST[l]&&ssHC2) continue;
-//						Mixture mixture = new Mixture(solvent1, solvent2, solvent3, massRatiosSelected[l]);
-//						mixture.calculateMixtureScore(activeState);
-//						addToBestMixtures(bestMixtures, mixture);
-//						double value4 = value3 + l;
-//						if (!progressBar.getDisplay().readAndDispatch()) {
-//							progress = (int)(value4*percent);
-//							if (progress!=previousProgress) progressBar.setSelection(progress);
-//							previousProgress = progress;
-//						}
-//					}
-//				}
-//			}
-//		}
-		
-		endTime = System.currentTimeMillis();
-		logger.info("Search took " + (endTime - startTime) + " milliseconds.");
+		logger.info("Search took " + (System.currentTimeMillis() - startTime)/1000.0 + " seconds.");
 		
 		return bestMixtures;		
 	}

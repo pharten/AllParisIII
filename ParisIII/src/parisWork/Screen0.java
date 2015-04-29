@@ -43,7 +43,7 @@ public class Screen0 extends Screen {
 	private Text text_2;
 	private Combo combo;
 	private StackLayout stack = new StackLayout();
-	private Composite stackComposite, composite_6, composite_7, composite_8;
+	private Composite stackComposite, composite_16, composite_17, composite_18;
 	private List list_0, list_3;
 	private Button btn_1, btn_2, btn_3;
 	private Table table;
@@ -76,11 +76,11 @@ public class Screen0 extends Screen {
 		
 		Label label_1a = new Label(composite_1, SWT.NONE);
 		label_1a.setAlignment(SWT.RIGHT);
-		label_1a.setLayoutData(new RowData(76, -1));
+		label_1a.setLayoutData(new RowData(105, -1));
 		label_1a.setText("Name");
 		
 		combo_1 = new Combo(composite_1, SWT.NONE);
-		combo_1.setLayoutData(new RowData(305, SWT.DEFAULT));
+		combo_1.setLayoutData(new RowData(325, SWT.DEFAULT));
 		combo_1.setVisibleItemCount(10);
 		combo_1.setItems(new String[] {"default"});
 		combo_1.select(0);
@@ -144,11 +144,11 @@ public class Screen0 extends Screen {
 		
 		Label label_2a = new Label(composite_2, SWT.NONE);
 		label_2a.setAlignment(SWT.RIGHT);
-		label_2a.setLayoutData(new RowData(76, -1));
+		label_2a.setLayoutData(new RowData(105, -1));
 		label_2a.setText("Units");
 		
 		combo_2 = new Combo(composite_2, SWT.READ_ONLY);
-		combo_2.setLayoutData(new RowData(45, SWT.DEFAULT));
+		combo_2.setLayoutData(new RowData(42, SWT.DEFAULT));
 		combo_2.setVisibleItemCount(4);
 		combo_2.setItems(new String[] {"SI", "COMMON", "CGS", "US"});
 		combo_2.select(0);
@@ -175,12 +175,12 @@ public class Screen0 extends Screen {
 		composite_3.setLayout(rl_composite_3);
 		
 		Label label_3a = new Label(composite_3, SWT.NONE);
-		label_3a.setLayoutData(new RowData(76, -1));
+		label_3a.setLayoutData(new RowData(105, -1));
 		label_3a.setAlignment(SWT.RIGHT);
 		label_3a.setText("Temperature");
 		
 		combo_3 = new Combo(composite_3, SWT.READ_ONLY);
-		combo_3.setLayoutData(new RowData(23, SWT.DEFAULT));
+		combo_3.setLayoutData(new RowData(44, SWT.DEFAULT));
 		combo_3.setVisibleItemCount(6);
 		combo_3.setItems(new String[] {"10.0", "15.0", "20.0", "25.0", "30.0", "35.0"});
 		combo_3.select(3);
@@ -210,7 +210,7 @@ public class Screen0 extends Screen {
 		});
 		
 		Label label_3b = new Label(composite_3, SWT.NONE);
-		label_3b.setText(" C");
+		label_3b.setText("C");
 		
 		Composite composite_4 = new Composite(group_1, SWT.NONE);
 		RowLayout rl_composite_4 = new RowLayout(SWT.HORIZONTAL);
@@ -219,11 +219,11 @@ public class Screen0 extends Screen {
 		
 		Label label_4a = new Label(composite_4, SWT.NONE);
 		label_4a.setAlignment(SWT.RIGHT);
-		label_4a.setLayoutData(new RowData(76, SWT.DEFAULT));
+		label_4a.setLayoutData(new RowData(105, SWT.DEFAULT));
 		label_4a.setText("Pressure");
 		
 		combo_4 = new Combo(composite_4, SWT.READ_ONLY);
-		combo_4.setLayoutData(new RowData(23, SWT.DEFAULT));
+		combo_4.setLayoutData(new RowData(43, SWT.DEFAULT));
 		combo_4.setVisibleItemCount(1);
 		combo_4.setItems(new String[] {"1.0"});
 		combo_4.select(0);
@@ -249,23 +249,20 @@ public class Screen0 extends Screen {
 		Group group_2 = new Group(sashForm, SWT.NONE);
 		group_2.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
-		SashForm sashForm_1 = new SashForm(group_2, SWT.NONE);
+		SashForm sashForm_1 = new SashForm(group_2, SWT.HORIZONTAL);
 		
-		Composite composite_16 = new Composite(sashForm_1, SWT.NONE);
+		Composite composite = new Composite(sashForm_1, SWT.NONE);
+		composite.setLayout(new FillLayout(SWT.VERTICAL));
 		
-		Composite composite_15 = new Composite(sashForm_1, SWT.NONE);
-		composite_15.setLayout(new FillLayout(SWT.VERTICAL));
+		SashForm sashForm_2 = new SashForm(sashForm_1, SWT.VERTICAL);
 		
-		Label lblNewLabel = new Label(composite_15, SWT.NONE);
+		Label lblNewLabel = new Label(sashForm_2, SWT.CENTER);
 		lblNewLabel.setAlignment(SWT.CENTER);
 		lblNewLabel.setText("\r\nChemical Display Options");
 		
-		combo = new Combo(composite_15, SWT.READ_ONLY);
+		combo = new Combo(sashForm_2, SWT.READ_ONLY);
 //		combo.setItems(new String[] {"Show Chemicals by Family", "Search for Chemicals by CAS Number", "Search for Chemicals by Name"});
 		combo.setItems(new String[] {"Search for Chemicals by CAS Number", "Search for Chemicals by Name"});
-//		combo.select(1);
-		
-		Composite composite_17 = new Composite(composite_15, SWT.NONE);
 		
 		combo.addSelectionListener(new SelectionListener() {
 	        @Override
@@ -275,7 +272,7 @@ public class Screen0 extends Screen {
 	        		int index = combo.getSelectionIndex()+1;
 					switch (index) {
 					case 0:
-						stack.topControl = composite_6;
+						stack.topControl = composite_16;
 						String[] empty = {};
 						list_3.setItems(empty);
 						stackComposite.layout();
@@ -283,14 +280,14 @@ public class Screen0 extends Screen {
 						list_0.select(0);
 						break;
 					case 1:
-						stack.topControl = composite_7;
+						stack.topControl = composite_17;
 						chemicals.sortByCAS();
 						list_3.setItems(chemicals.getAllCAS());
 						stackComposite.layout();
 						text_1.setFocus();
 						break;
 					case 2:
-						stack.topControl = composite_8;
+						stack.topControl = composite_18;
 						chemicals.sortByName();
 						list_3.setItems(chemicals.getAllNames());
 						stackComposite.layout();
@@ -313,44 +310,47 @@ public class Screen0 extends Screen {
 
 		});
 		
-		Composite composite = new Composite(sashForm_1, SWT.NONE);
+		Composite composite_7 = new Composite(sashForm_1, SWT.NONE);
+		composite_7.setLayout(new FillLayout(SWT.VERTICAL));
 		
-		stackComposite = new Composite(sashForm_1, SWT.NONE);
+		stack.topControl = composite_18;
+		
+		stackComposite = new Composite(sashForm_1, SWT.None);
 		stackComposite.setLayout(stack);
 		
-		composite_6 = new Composite(stackComposite, SWT.NONE);
-		composite_6.setLayout(new FillLayout(SWT.VERTICAL));
+		composite_16 = new Composite(stackComposite, SWT.NONE);
 		
-		Label lblNewLabel_0 = new Label(composite_6, SWT.NONE);
+		SashForm sashForm_3 = new SashForm(composite_16, SWT.VERTICAL);
+		sashForm_3.setLocation(0, 0);
+		sashForm_3.setSize(196, 47);
+		
+		Label lblNewLabel_0 = new Label(sashForm_3, SWT.NONE);
 		lblNewLabel_0.setAlignment(SWT.CENTER);
 		lblNewLabel_0.setText("\r\nFamily Name");
 		
 		ChemicalFamilies families = ChemicalFamilies.readFromFile("data/ChemicalFamilies.xml");
 		families.sortByName();
-		list_0 = new List(composite_6, SWT.BORDER | SWT.V_SCROLL);
+		
+		Composite composite_9 = new Composite(sashForm_3, SWT.NONE);
+		list_0 = new List(sashForm_3, SWT.BORDER);
+		list_0.setBounds(0, 0, 200, 25);
 		list_0.setItems(families.getAllNames());
 		
-		Composite composite_9 = new Composite(composite_6, SWT.NONE);
+		Composite composite_19 = new Composite(sashForm_3, SWT.NONE);
 		
-		composite_7 = new Composite(stackComposite, SWT.NONE);
-		composite_7.setLayout(new FillLayout(SWT.VERTICAL));
+		composite_17 = new Composite(stackComposite, SWT.NONE);
+		composite_17.setLayout(new FillLayout(SWT.VERTICAL));
 		
-		Composite composite_22 = new Composite(composite_7, SWT.NONE);
-		composite_22.setLayout(new FillLayout(SWT.HORIZONTAL));
+		SashForm sashForm_4 = new SashForm(composite_17, SWT.VERTICAL);
+		sashForm_4.setLocation(0, 0);
+		sashForm_4.setSize(196, 47);
 		
-		Label lblNewLabel_1 = new Label(composite_22, SWT.NONE);
+		Label lblNewLabel_1 = new Label(sashForm_4, SWT.NONE);
 		lblNewLabel_1.setAlignment(SWT.CENTER);
-		lblNewLabel_1.setText("\r\nInput CAS Number (format: *-xx-x) ");
+		lblNewLabel_1.setText("\r\nCAS Number (format: *-xx-x) ");
 		
-		Composite composite_29 = new Composite(composite_7, SWT.NONE);
-		composite_29.setLayout(new FillLayout(SWT.VERTICAL));
-		
-		text_1 = new Text(composite_29, SWT.BORDER);
-		
-		Composite composite_30 = new Composite(composite_29, SWT.NONE);
-		
+		text_1 = new Text(sashForm_4, SWT.BORDER);
 		text_1.addModifyListener(new ModifyListener() {
-
 			@Override
 			public void modifyText(ModifyEvent arg0) {
 				String text = text_1.getText();
@@ -361,32 +361,23 @@ public class Screen0 extends Screen {
 				}
 				list_3.setTopIndex(index);
 			}
-
 		});
 		
-		Composite composite_21 = new Composite(composite_7, SWT.NONE);
+		Composite composite_7a = new Composite(sashForm_4, SWT.NONE);
 		
-		Composite composite_23 = new Composite(composite_7, SWT.NONE);
+		sashForm_4.setWeights(new int[] {2, 1, 1});
 		
-		composite_8 = new Composite(stackComposite, SWT.NONE);
-		composite_8.setLayout(new FillLayout(SWT.VERTICAL));
+		composite_18 = new Composite(stackComposite, SWT.NONE);
+		composite_18.setLayout(new FillLayout(SWT.VERTICAL));
 		
-		Composite composite_24 = new Composite(composite_8, SWT.NONE);
-		composite_24.setLayout(new FillLayout(SWT.HORIZONTAL));
+		SashForm sashForm_5 = new SashForm(composite_18, SWT.VERTICAL);
 		
-		Label lblNewLabel_2 = new Label(composite_24, SWT.NONE);
+		Label lblNewLabel_2 = new Label(sashForm_5, SWT.NONE);
 		lblNewLabel_2.setAlignment(SWT.CENTER);
-		lblNewLabel_2.setText("\r\nChemical Name Search");
+		lblNewLabel_2.setText("\r\nChemical Name");
 		
-		Composite composite_25 = new Composite(composite_8, SWT.NONE);
-		composite_25.setLayout(new FillLayout(SWT.VERTICAL));
-		
-		text_2 = new Text(composite_25, SWT.BORDER);
-		
-		Composite composite_31 = new Composite(composite_25, SWT.NONE);
-		
+		text_2 = new Text(sashForm_5, SWT.BORDER);
 		text_2.addModifyListener(new ModifyListener() {
-
 			@Override
 			public void modifyText(ModifyEvent arg0) {
 				String text = text_2.getText();
@@ -398,41 +389,40 @@ public class Screen0 extends Screen {
 				}
 				list_3.setTopIndex(index);
 			}
-
 		});
 		
-		stack.topControl = composite_8;
+		Composite composite_8a = new Composite(sashForm_5, SWT.NONE);
 		
-		Composite composite_26 = new Composite(composite_8, SWT.NONE);
+		sashForm_5.setWeights(new int[] {2, 1, 1});
 		
-		Composite composite_27 = new Composite(composite_8, SWT.NONE);
+		Composite composite_8 = new Composite(sashForm_1, SWT.NONE);
+		composite_8.setLayout(new FillLayout(SWT.VERTICAL));
 		
-		Composite composite_18 = new Composite(sashForm_1, SWT.NONE);
-		sashForm_1.setWeights(new int[] {1, 20, 1, 20, 1});
+		sashForm_1.setWeights(new int[] {1, 20, 2, 20, 1});
 		
 		Group group_3 = new Group(sashForm, SWT.NONE);
 		group_3.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
-		SashForm sashForm_2 = new SashForm(group_3, SWT.NONE);
+		SashForm sashForm_6 = new SashForm(group_3, SWT.HORIZONTAL);
 		
-		Composite composite_5 = new Composite(sashForm_2, SWT.NONE);
+		Composite composite_5 = new Composite(sashForm_6, SWT.NONE);
 		
-		Composite composite_10 = new Composite(sashForm_2, SWT.NONE);
+		Composite composite_10 = new Composite(sashForm_6, SWT.NONE);
 		composite_10.setLayout(new FillLayout(SWT.VERTICAL));
 		
-		SashForm sashForm_3 = new SashForm(composite_10, SWT.VERTICAL);
+		SashForm sashForm_7 = new SashForm(composite_10, SWT.VERTICAL);
 		
-		Composite composite_28 = new Composite(sashForm_3, SWT.NONE);
+		Composite composite_28 = new Composite(sashForm_7, SWT.NONE);
 		composite_28.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
 		Label lblNewLabel_3 = new Label(composite_28, SWT.NONE);
 		lblNewLabel_3.setAlignment(SWT.CENTER);
 		lblNewLabel_3.setText("Chemicals");
 		
-		list_3 = new List(sashForm_3, SWT.BORDER | SWT.V_SCROLL);
-		sashForm_3.setWeights(new int[] {1, 8});
+		list_3 = new List(sashForm_7, SWT.BORDER | SWT.V_SCROLL);
+		sashForm_7.setWeights(new int[] {1, 8});
 		
-		Composite composite_11 = new Composite(sashForm_2, SWT.NONE);
+		Composite composite_11 = new Composite(sashForm_6, SWT.NONE);
 		composite_11.setLayout(new FillLayout(SWT.VERTICAL));
 		
 		Composite composite_12 = new Composite(composite_11, SWT.NONE);
@@ -556,7 +546,7 @@ public class Screen0 extends Screen {
 			}
 		});
 		
-		Composite composite_14 = new Composite(sashForm_2, SWT.NONE);
+		Composite composite_14 = new Composite(sashForm_6, SWT.NONE);
 		composite_14.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
 		table = new Table(composite_14, SWT.BORDER | SWT.FULL_SELECTION);
@@ -637,7 +627,9 @@ public class Screen0 extends Screen {
 		tblclmn_2.setWidth(50);
 		tblclmn_2.setText("Wt%");
 		
-		Composite composite_19 = new Composite(sashForm_2, SWT.NONE);
+//		Composite composite_15 = new Composite(sashForm_1, SWT.NONE);
+//		composite_15.setLayout(new FillLayout(SWT.VERTICAL));
+		
 		tblclmn_2.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -655,9 +647,12 @@ public class Screen0 extends Screen {
 			}
 			
 		});
-		sashForm_2.setWeights(new int[] {1, 20, 2, 20, 1});
 		
-		sashForm.setWeights(new int[] {1, 1, 1});
+		Composite composite_6 = new Composite(sashForm_6, SWT.NONE);
+		
+		sashForm_6.setWeights(new int[] {1, 20, 2, 20, 1});
+		
+		sashForm.setWeights(new int[] {3, 2, 4});
 		
 		// the editor must have the same size as the cell and must not be any smaller than 50 pixels
 		tableEditor.horizontalAlignment = SWT.RIGHT;

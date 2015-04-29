@@ -203,8 +203,7 @@ public class ChemicalsTest {
 		for (int i=0; i<chemicals1.size(); i++) {
 			chemical3 = chemicals1.get(i);
 			chemical4 = chemicals2.get(i);
-			Assert.assertEquals("Names are not equal", chemical3.getName(), chemical4.getName());
-			Assert.assertEquals("CAS # are not equal", chemical3.getCAS(), chemical4.getCAS());
+			Assert.assertTrue("Chemicals lists are not equal", chemical3.equals(chemical4));
 		}
 
 	}
