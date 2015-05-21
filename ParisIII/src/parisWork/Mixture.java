@@ -2780,6 +2780,15 @@ public class Mixture extends Chemical implements Serializable, Cloneable {
 
 		return mixName;
 	}
+	
+	public boolean isContained(Chemicals chemicals) {
+		
+		Chemical[] mChemicals = this.chemicals;
+		for (int i=0; i<mChemicals.length; i++) {
+			if (!mChemicals[i].isContained(chemicals)) return false;
+		}
+		return true;
+	}
 
 	public Vector<Chemical> getChemicals() {
 		return convertAV(chemicals);

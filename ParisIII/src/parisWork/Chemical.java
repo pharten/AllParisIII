@@ -894,7 +894,13 @@ public class Chemical extends Object implements Serializable, Cloneable {
 		return VP_kpa;
 	}
 	
-	
+	public boolean isLiquidPhase(double temperature) {
+		if (getMeltingPoint() < temperature && temperature < getBoilingPoint()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	public void eliminateSynonymRepeats() {
 		
@@ -911,6 +917,14 @@ public class Chemical extends Object implements Serializable, Cloneable {
 			}
 		}
 		
+	}
+	
+	public boolean isAntoineReady(double tempK) {
+		if (!haveAntoineConstants() || tempK < antoineTmin || tempK > antoineTmax) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	public boolean haveCriticalParameters() {
@@ -1012,6 +1026,13 @@ public class Chemical extends Object implements Serializable, Cloneable {
 		if (actual < lowerBound) offset += 1.0e9;
 				
 		return offset;
+	}
+
+	public boolean isContained(Chemicals chemicals) {
+		for (Chemical chemical: chemicals) {
+			if (chemical.getCAS().contentEquals(CAS)) return true;
+		}
+		return false;
 	}
 
 }

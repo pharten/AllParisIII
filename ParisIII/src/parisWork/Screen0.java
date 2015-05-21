@@ -198,8 +198,11 @@ public class Screen0 extends Screen {
     			
     			combo.select(state.getScreen0StackOption());
     			combo.notifyListeners(SWT.Selection, new Event());
-    			state.setMixture(null);
-    			reBuildTable(state);
+    			
+    			if (state.getMixture()!= null && !state.getMixture().isContained(chemicals)) {
+    				state.setMixture(null);
+    				reBuildTable(state);
+    			}
 //	        	System.out.println("SystemTemp widgetSelected");
 		    }
 	        
@@ -233,7 +236,7 @@ public class Screen0 extends Screen {
 	    	public void widgetSelected(SelectionEvent event) {
 	        	State state = states.getActiveState();
 	        	state.setSystemPres(combo_4.getText());
-    			state.setMixture(null);
+//    			state.setMixture(null);
 //	        	System.out.println("SystemPress widgetSelected");
 		    }
 	        

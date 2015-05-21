@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.Vector;
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.SWT;
@@ -18,13 +20,11 @@ import org.eclipse.swt.dnd.*;
 import org.eclipse.swt.events.MenuListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.graphics.GCData;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
@@ -60,6 +60,7 @@ public class ParisWork extends java.lang.Object implements Serializable {
 	protected static Chemicals chemicals = null;
 	protected static Replacements replacements = null;
 	protected static Vector<Mixture> bestMixtures = null;
+	private static FutureTask concurrentTask = null;
 //	protected static Logger logger = Logger.getLogger(ParisWork.class);
 	protected static String strUserFolder=System.getProperty("user.home")+File.separator+".ParisIII"+File.separator;
 	int previousIndex = 0;
@@ -91,6 +92,9 @@ public class ParisWork extends java.lang.Object implements Serializable {
 			window.shell.setImage(eiffel);
 			
 			ParisInit parisInit = new ParisInit(window.shell);
+			
+			concurrentTask = new FutureTask<Chemicals>(new ChemicalsConcurrent("data/Chemicals.xml"));
+			concurrentTask.run();
 
 			if (parisInit.open()==SWT.OK) {
 				window.open();
@@ -117,7 +121,12 @@ public class ParisWork extends java.lang.Object implements Serializable {
 		if (state==null) throw new Exception("default state not found");
 //		states.writeByXML(getClass().getResource("/data/defaultStates.xml").getFile());
 
-		allChemicals = Chemicals.readFromFile("data/Chemicals.xml");
+		if (concurrentTask!=null) {
+			allChemicals = (Chemicals) concurrentTask.get();
+		} else {
+//			Chemicals.addWaterSolvent("data/Chemicals.txt");  // test this before using it
+			allChemicals = Chemicals.readFromFile("data/Chemicals.xml");
+		}
 		//		allChemicals.convertFromCommonToSI();
 		//		allChemicals.addSynListDataFromFile("./src/data/synlist.dat");
 		//		allChemicals.addWarScoreDataFromFile("./src/data/war_score.dat");

@@ -358,6 +358,56 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 		return values;
 
 	}
+	
+//	/** parses a delimited string into a list- accounts for the fact that can have quotation marks in comma delimited lines
+//	 * 
+//	 * @param Line - line to be parsed
+//	 * @param Delimiter - character used to separate line into fields
+//	 * @return
+//	 **/
+//
+//	public static String[] Parse3(String Line, String Delimiter) {
+//
+//		Vector<String> myList =  new Vector<String>();
+//		
+//		int tabpos = 1;
+//
+//		while (tabpos > -1) {
+//
+//			tabpos = Line.indexOf(Delimiter);
+//
+//			if (Line.length()<1) break;
+//
+//			if (Line.substring(0,1).equals("\"")) {
+//				Line=Line.substring(1,Line.length()); // kill first " mark
+//
+//				if (Line.length()==0) break;
+//
+//				myList.add(Line.substring(0, Line.indexOf("\"")));
+//
+//				if (Line.indexOf("\"")<Line.length()-1)
+//					Line = Line.substring(Line.indexOf("\"") + 2, Line.length());
+//				else 
+//					break;
+//			} else {
+//
+//				if (tabpos > 0) {
+//					myList.add(Line.substring(0, tabpos));
+//					Line = Line.substring(tabpos + 1, Line.length());
+//				} else if (tabpos == 0) {
+//					myList.add("");
+//					Line = Line.substring(tabpos + 1, Line.length());
+//				} else {
+//					myList.add(Line.trim());
+//				}
+//
+//			}
+//
+//		} // end while loop
+//
+//		return myList.toArray(values);
+//
+//	}
 
 	//used to simplify readByTxt2
 	private static String [] fieldNames;//String of column headers in the text database
@@ -379,10 +429,10 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 	public static Chemicals readByTxt2(String filePath) throws IOException, Exception {
 
 //		filePath = ClassLoader.getSystemResource(filePath).getPath();
-		
+
 		String nameCAS="CAS";
-		String nameName="Systematic Name";
-//		String nameName="Chemical Name";
+//		String nameName="Systematic Name";
+		String nameName="Chemical Name";
 		String nameFormula="Formula";
 		String nameSynonyms="Synonyms";
 		String nameMolecularWeight="Molecular Weight in kg/kmol";
@@ -488,7 +538,6 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 
 		while ((line = buf.readLine()) != null) {
 			lineno++;
-			
 			
 			//		values = line.split("\t");//wont work if have series of blank fields at the end!
 			values=Parse(line,"\t");
@@ -601,6 +650,8 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 
 		return chemicals;
 	}
+	
+
 
 	private static String getStringValue(String fieldName) {
 		return values[colNums.get(fieldName)];
@@ -1101,7 +1152,7 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 		
 		try {
 			allChemicals=readByTxt2("data/Chemicals.txt");
-			allChemicals.writeByXML("data/Chemicals.xml");
+			allChemicals.writeByXML("data/Chemicals3.xml");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1111,7 +1162,7 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 		//Test read in from xml file
 		long t1=System.currentTimeMillis();
 		//read from xml:
-		Chemicals allChemicals = Chemicals.readFromFile("data/Chemicals.xml");
+		Chemicals allChemicals = Chemicals.readFromFile("data/Chemicals3.xml");
 		long t2=System.currentTimeMillis();
 		
 		double timeForXMLRead=(t2-t1)/1000.0;
@@ -1129,15 +1180,15 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 	
 	}
 	
-	public static void main(String[] args) {
-		
-		//Following reads in file in text format and then output to xml:
-		Chemicals chemicals=new Chemicals();
-		chemicals.convertTxtDBtoXML();
-
-		//*****************************************************************
-		chemicals.testReadFromFiles();
-
-	}
+//	public static void main(String[] args) {
+//		
+//		//Following reads in file in text format and then output to xml:
+//		Chemicals chemicals=new Chemicals();
+//		chemicals.convertTxtDBtoXML();
+//
+//		//*****************************************************************
+//		chemicals.testReadFromFiles();
+//
+//	}
 
 }

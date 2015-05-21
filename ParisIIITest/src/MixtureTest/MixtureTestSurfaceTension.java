@@ -122,7 +122,7 @@ public class MixtureTestSurfaceTension {
 		String property="surface tension";
 		
 		DecimalFormat df=new DecimalFormat("0.00");
-		double largestError = 15.0;
+		double largestError = 16.0;
 		
 		Mixture m=new Mixture();
 		
