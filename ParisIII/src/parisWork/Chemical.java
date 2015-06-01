@@ -866,10 +866,12 @@ public class Chemical extends Object implements Serializable, Cloneable {
 		
 		//Database has been updated so that all antoine equations will yield vapor pressure in kpa and T is in K:
 		
-		if (haveAntoineConstants()) {
+		if (isAntoineReady(tempK)) {
 			return calculateAntoineVaporPressure(tempK);
 		} else if (haveCriticalParameters()) {
 			return calculateLeeKeslerVaporPressure(tempK);
+		} else if (haveAntoineConstants()) {
+			return calculateAntoineVaporPressure(tempK);
 		} else {
 			return -9999;
 		}
