@@ -122,7 +122,7 @@ public class StateTest {
 		state1.setScreen0StackOption(1);
 		state1.setScreen0TableHeader("Mol%");
 		
-		String fileName = "bin/data/state.xml";
+		String fileName = "src/data/state.xml";
 		state1.setFileName(fileName);
 		state1.writeToFile();
 		State state2 = State.readFromFile(fileName);
