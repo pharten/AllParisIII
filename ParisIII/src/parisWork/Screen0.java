@@ -192,7 +192,7 @@ public class Screen0 extends Screen {
 	        	state.setSystemTemp(combo_3.getText());
 	        	
     			chemicals = allChemicals.filterForLiquidPhase(state.tempConvertToSI());
-    			chemicals = chemicals.filterForVaporPressure();
+    			chemicals = chemicals.filterForVaporPressure(state.tempConvertToSI());
     			chemicals.normalizeEnvironmentalCategories();
     			ParisWork.chemicals = chemicals;
     			

@@ -244,12 +244,12 @@ public class Chemical extends Object implements Serializable, Cloneable {
 		if (this.antoineTmin!=other.antoineTmin) return false;
 		
 		// compare strings
-		if (this.antoineSource!=null ? other.antoineSource==null : !this.antoineSource.equals(other.antoineSource)) return false;
-		if (this.Name!=null ? other.Name==null : !this.Name.equals(other.Name)) return false;
-		if (this.CAS!=null ? other.CAS==null : !this.CAS.equals(other.CAS)) return false;
-		if (this.formula!=null ? other.formula==null : !this.formula.equals(other.formula)) return false;
-		if (this.structure!=null ? other.structure==null : !this.structure.equals(other.structure)) return false;
-		if (this.Smiles!=null ? other.Smiles==null : !this.Smiles.equals(other.Smiles)) return false;
+		if (this.antoineSource==null ? other.antoineSource!=null : !this.antoineSource.equals(other.antoineSource)) return false;
+		if (this.Name==null ? other.Name!=null : !this.Name.equals(other.Name)) return false;
+		if (this.CAS==null ? other.CAS!=null : !this.CAS.equals(other.CAS)) return false;
+		if (this.formula==null ? other.formula!=null : !this.formula.equals(other.formula)) return false;
+		if (this.structure==null ? other.structure!=null : !this.structure.equals(other.structure)) return false;
+		if (this.Smiles==null ? other.Smiles!=null : !this.Smiles.equals(other.Smiles)) return false;
 		
 		if (this.Synonyms==null && other.Synonyms!=null) return false;
 		if (this.Synonyms!=null && other.Synonyms==null) return false;
@@ -259,7 +259,7 @@ public class Chemical extends Object implements Serializable, Cloneable {
 				for (int i=0; i<this.Synonyms.size(); i++) {
 					String syn1 = this.Synonyms.get(i);
 					String syn2 = other.Synonyms.get(i);
-					if (!syn1.equals(syn2)) return false;
+					if (syn1==null ? syn2!=null : !syn1.equals(syn2)) return false;
 				}
 			}
 		}
@@ -850,30 +850,23 @@ public class Chemical extends Object implements Serializable, Cloneable {
 	 * @param tempK
 	 * @return vapor pressure in SI units (kPa)
 	 */
-	public double calculateVaporPressure(double tempK) {
-//		double VP_kpa=-9999;
-//		System.out.println("antoineSource:"+antoineSource);
-		
-//		if (antoineSource.equals("NIST"))  {
-//			double VP_bar=Math.pow(10,(antoineConstantA-antoineConstantB/(tempK+antoineConstantC)));
-//			//Convert to proper units:
-//			VP_kpa=100*VP_bar;
-//			
-//		} else if (antoineSource.equals("Yaws") || antoineSource.equals("DECHEMA")) {
-//			double VP_mmHg=Math.pow(10,(antoineConstantA-antoineConstantB/(tempK-273.15+antoineConstantC)));
-//			VP_kpa=Units.pressureConvertFrom(VP_mmHg, Units.COMMON);
-//		}
-		
+	public double determineVaporPressure(double tempK) {
+		double stdTemp = 298.15; // given in K
+		double stdPressure = 101.325; // given in kPa;
+	
 		//Database has been updated so that all antoine equations will yield vapor pressure in kpa and T is in K:
-		
-		if (isAntoineReady(tempK)) {
+		if (tempK==stdTemp && this.vaporPressureSource.contentEquals("Exp")) {
+			return vaporPressure;  // by definition
+		} else if (tempK==this.getBoilingPoint() && this.boilingPointSource.contentEquals("Exp")) {
+			return stdPressure;  // by definition
+		} else if (isAntoineReady(tempK)) { // Antoine constants within Tmin, Tmax
 			return calculateAntoineVaporPressure(tempK);
-		} else if (haveCriticalParameters()) {
+		} else if (haveCriticalParameters()) {  // Use Lee Kesler estimations as a last resort
 			return calculateLeeKeslerVaporPressure(tempK);
-		} else if (haveAntoineConstants()) {
+		} else if (haveAntoineConstants()) { // use Antoine Constants for temperatures outside of Tmin and Tmax
 			return calculateAntoineVaporPressure(tempK);
 		} else {
-			return -9999;
+			return calculateClausiusClapeyronVaporPressure(tempK);
 		}
 		
 	}
@@ -892,12 +885,44 @@ public class Chemical extends Object implements Serializable, Cloneable {
 		
 	}
 	public double calculateAntoineVaporPressure(double tempK) {
-		double VP_kpa=Math.pow(10,(antoineConstantA-antoineConstantB/(tempK+antoineConstantC)));
+		double VP_kpa=Math.pow(10.0,(antoineConstantA-antoineConstantB/(tempK+antoineConstantC)));
 		return VP_kpa;
 	}
 	
+	public double calculateClausiusClapeyronVaporPressure(double tempK) {
+		double t1 = 298.15; // standard temperature in K
+		double p1 = this.getVaporPressure(); // vapor pressure in kPa at standard temperature
+		double t2 = this.getBoilingPoint(); // boiling point in K
+		double p2 = 101.325; // standard pressure in kPa
+		
+		if (this.haveCriticalParameters()) {
+			if (this.getVaporPressureSource().contentEquals("Exp")) {
+				if (!this.getBoilingPointSource().contentEquals("Exp")) {
+					t2 = this.getTc();
+					p2 = this.getPc();
+				}
+			} else {
+				if (this.getBoilingPointSource().contentEquals("Exp")) {
+					t1 = this.getTc();
+					p1 = this.getPc();
+				}
+			}
+		}
+		
+		double invt1 = 1.0 / t1; // inverse of standard temperature in K
+		if (tempK==t1) {
+			return p1;
+		} else if (tempK==t2) {
+			return p2;
+		} else {
+			double alpha = (invt1 - 1.0/tempK) / (invt1 - 1.0/t2);
+			return p1 * Math.pow(p2/p1, alpha);
+		}
+		
+	}
+	
 	public boolean isLiquidPhase(double temperature) {
-		if (getMeltingPoint() < temperature && temperature < getBoilingPoint()) {
+		if (getMeltingPoint() <= temperature && temperature < getBoilingPoint()) {
 			return true;
 		} else {
 			return false;
@@ -922,15 +947,15 @@ public class Chemical extends Object implements Serializable, Cloneable {
 	}
 	
 	public boolean isAntoineReady(double tempK) {
-		if (!haveAntoineConstants() || tempK < antoineTmin || tempK > antoineTmax) {
-			return false;
-		} else {
+		if (haveAntoineConstants() && antoineTmin <= tempK && tempK <= antoineTmax) {
 			return true;
+		} else {
+			return false;
 		}
 	}
 
 	public boolean haveCriticalParameters() {
-		if (Tc==0 || Pc==0 || omega==0) {
+		if (Tc==0 || Pc==0 /*|| omega==0*/) {
 			return false;
 		} else {
 			return true;
@@ -938,16 +963,24 @@ public class Chemical extends Object implements Serializable, Cloneable {
 	}
 	
 	public boolean haveAntoineConstants() {
-		if (antoineConstantA==0 || antoineConstantB==0|| antoineConstantC==0) {
+		if (antoineConstantA==0 && antoineConstantB==0 && antoineConstantC==0) {
 			return false;
 		} else {
 			return true;
 		}
 	}
 	
-	public boolean canCalculateVaporPressure() {
-		if (haveAntoineConstants() || haveCriticalParameters()) return true;
-		else return false;
+	public boolean canDetermineVaporPressure(double temperature) {
+		double stdTemp = 298.15;  // standard temperature in K
+		if (temperature==stdTemp || temperature==this.getBoilingPoint()) {
+			return true; // return experimental vapor pressure
+		} else if (haveAntoineConstants() || haveCriticalParameters()) {
+			return true;
+		} else if (this.boilingPoint!=stdTemp) {
+			return true; // use Clausius-Clapeyron
+		} else {
+			return false;
+		}
 	}
 	
 	public void calculateEnvironmentalIndexes(int[] impacts, double systemPressure) {

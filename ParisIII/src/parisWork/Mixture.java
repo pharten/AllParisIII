@@ -494,7 +494,7 @@ public class Mixture extends Chemical implements Serializable, Cloneable {
 				//****************************************************************
 				//following is for convenience until I can add antoine constants:
 
-				if (!this.canCalculateVaporPressure()) {
+				if (!this.canDetermineVaporPressure(tempK)) {
 //					System.out.println("Missing antoine constants and critical constants- can't calculate vapor pressure");
 					return;
 				}
@@ -579,9 +579,9 @@ public class Mixture extends Chemical implements Serializable, Cloneable {
 	}
 	
 	
-	public boolean canCalculateVaporPressure() {
+	public boolean canDetermineVaporPressure(double tempK) {
 		for (int i=0;i<chemicals.length;i++) {
-			if (!chemicals[i].canCalculateVaporPressure()) {
+			if (!chemicals[i].canDetermineVaporPressure(tempK)) {
 				return false;
 			}
 		}
@@ -1599,7 +1599,7 @@ public class Mixture extends Chemical implements Serializable, Cloneable {
 		
 		//y1=x1*g1*P1sat/P
 		for (int i=0;i<molFractions.size();i++) {
-			double Psati=chemicals[i].calculateVaporPressure(BPmixK);
+			double Psati=chemicals[i].determineVaporPressure(BPmixK);
 			y[i]=molFractions.get(i)*gammas[i]*Psati/Pressure;
 		}
 		return y;
@@ -1908,7 +1908,7 @@ public class Mixture extends Chemical implements Serializable, Cloneable {
 
 		double Pcalc=0;
 		for (int i=0;i<xmol.size();i++) {
-			double Psati=chemicals[i].calculateVaporPressure(tempK);
+			double Psati=chemicals[i].determineVaporPressure(tempK);
 			Pcalc+=xmol.get(i)*gammas[i]*Psati;
 		}
 
@@ -2130,8 +2130,8 @@ public class Mixture extends Chemical implements Serializable, Cloneable {
 			
 			if (FPi>1000) continue;
 			
-			double Psat=chemicals[i].calculateVaporPressure(tempK);
-			double PsatFP=chemicals[i].calculateVaporPressure(FPi);
+			double Psat=chemicals[i].determineVaporPressure(tempK);
+			double PsatFP=chemicals[i].determineVaporPressure(FPi);
 			
 			f+=xmol.get(i)*gammas[i]*Psat/PsatFP;
 			
