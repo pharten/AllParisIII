@@ -127,6 +127,7 @@ public class ParisWork extends java.lang.Object implements Serializable {
 //			Chemicals.addWaterSolvent("data/Chemicals.txt");  // test this before using it
 			allChemicals = Chemicals.readFromFile("data/Chemicals.xml");
 		}
+		allChemicals.correctVaporPressureConstants();
 		//		allChemicals.convertFromCommonToSI();
 		//		allChemicals.addSynListDataFromFile("./src/data/synlist.dat");
 		//		allChemicals.addWarScoreDataFromFile("./src/data/war_score.dat");
