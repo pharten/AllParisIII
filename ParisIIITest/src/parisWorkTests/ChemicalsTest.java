@@ -179,12 +179,7 @@ public class ChemicalsTest {
 		for (int i=0; i<chemicals1.size(); i++) {
 			Chemical chemical3 = chemicals1.get(i);
 			Chemical chemical4 = chemicals2.get(i);
-			Assert.assertEquals("Names are not the same", chemical3.getName(), chemical4.getName());
-			Assert.assertEquals("CAS # are not equal", chemical3.getCAS(), chemical4.getCAS());
-			Assert.assertEquals("AntoineConstantA are not the same", chemical3.getAntoineConstantA(), chemical4.getAntoineConstantA(), 0.0);
-			Assert.assertEquals("Boint points are not equal", chemical3.getBoilingPoint(), chemical4.getBoilingPoint(), 0);
-			Assert.assertEquals("Melting points are not equal", chemical3.getMeltingPoint(), chemical4.getMeltingPoint(), 0);
-			Assert.assertTrue("Chemicals are not equal", chemical3.equals(chemical4));
+			Assert.assertTrue("Chemicals lists are not equal", chemical3.equals(chemical4));
 		}
 		
 	}
@@ -212,15 +207,17 @@ public class ChemicalsTest {
 	@Test
 	public void testStdTempVaporPressureCalculate() throws Exception {
 		double tempK = 298.15; // standard temperature in K
-		double ratio, maxRatio = 10.0;
+		double ratio, maxRatio = 100.0;
 		double vp, vpCalc;
-		int cnt0=0, cnt1=0, cnt2=0, cnt3=0, cnt4=0, cnt5=0, cnt6=0, cnt7=0, cnt8=0;
+		int cnt0=0, cnt1=0, cnt2=0, cnt3=0, cnt4=0, cnt5=0, cnt6=0, cnt7=0, cnt8=0, cnt9=0;
 		
 		Chemicals chemicals = Chemicals.readFromFile("data/Chemicals.xml");
+		chemicals.correctVaporPressureConstants();
+//		chemicals.filterForLiquidPhase(tempK);
 		
 		for (Chemical chemical: chemicals) {
 			
-			vpCalc = chemical.calculateVaporPressure(tempK);
+			vpCalc = chemical.determineVaporPressure(tempK);
 			vp = chemical.getVaporPressure(); // vapor pressure at standard temp
 			
 			cnt0++;
@@ -228,87 +225,43 @@ public class ChemicalsTest {
 				cnt1++;
 			} else if (chemical.isAntoineReady(tempK)){
 				cnt2++;
-				ratio = (vp>vpCalc ? vp/vpCalc : vpCalc/vp);;
+				ratio = (vp>vpCalc ? vp/vpCalc : vpCalc/vp);
 				if (ratio>maxRatio) {
 					cnt3++;
-					System.out.println("Antoine vpCalc = "+vpCalc+", vp = "+vp+", "+chemical.getCAS());
+//					System.out.println("Antoine vpCalc = "+vpCalc+", vp = "+vp+", "+chemical.getCAS());
 				}
 //				Assert.assertTrue("Vapor pressure is not calculate the same as on file, "+chemical.getCAS(), ratio<=maxRatio);
 			} else if (chemical.haveCriticalParameters()){
 				cnt4++;
-				ratio = vpCalc/vp;
+				ratio = (vp>vpCalc ? vp/vpCalc : vpCalc/vp);
 				if (ratio>maxRatio) {
 					cnt5++;
-					System.out.println("LeeKesler vpCalc = "+vpCalc+", vp = "+vp+", "+chemical.getCAS());			
+//					System.out.println("LeeKesler vpCalc = "+vpCalc+", vp = "+vp+", "+chemical.getCAS());			
 				}
 //				Assert.assertTrue("Vapor pressure is not calculate the same as on file, "+chemical.getCAS(), ratio<=maxRatio);
 			} else if (chemical.haveAntoineConstants()){
 				cnt6++;
-				ratio = vpCalc/vp;
+				ratio = (vp>vpCalc ? vp/vpCalc : vpCalc/vp);
 				if (ratio>maxRatio) {
 					cnt7++;
-					System.out.println("Antoine out-of-range vpCalc = "+vpCalc+", vp = "+vp+", "+chemical.getCAS());			
+//					System.out.println("Antoine out-of-range vpCalc = "+vpCalc+", vp = "+vp+", "+chemical.getCAS()+", "+chemical.getAntoineTmin()+", "+chemical.getAntoineTmax());			
 				}
 //				Assert.assertTrue("Vapor pressure is not calculate the same as on file, "+chemical.getCAS(), ratio<=maxRatio);
 			} else {
 				cnt8++;
-			}
-			
-		}
-		System.out.println("Std Temp, maxRatio = "+maxRatio+", total = "+cnt0+", non-liquid phase = "+cnt1+", unavailable = "+cnt8);
-		System.out.println("Antoine ratio > maxRatio :"+cnt3/(double)cnt2+" of "+cnt2);
-		System.out.println("LeeKesler ratio > maxRatio :"+cnt5/(double)cnt4+" of "+cnt4);
-		System.out.println("Antoine out-of-range ratio > maxRatio :"+cnt7/(double)cnt6+" of "+cnt6);
-		
-	}
-	
-	@Test
-	public void testBoilingPointVaporPressureCalculate() throws Exception {
-		double vp = 101.325; // standard pressure in kPa
-		double ratio, maxRatio = 10.0;
-		double vpCalc;
-		double bp;
-		int cnt0=0, cnt1=0, cnt2=0, cnt3=0, cnt4=0, cnt5=0, cnt6=0, cnt7=0;
-		
-		Chemicals chemicals = Chemicals.readFromFile("data/Chemicals.xml");
-		for (Chemical chemical: chemicals) {
-			
-			bp  = chemical.getBoilingPoint();  // boiling point at standard pressure
-			vpCalc = chemical.calculateVaporPressure(bp);
-			
-			cnt0++;
-			if (chemical.isAntoineReady(bp)){
-				cnt2++;
 				ratio = (vp>vpCalc ? vp/vpCalc : vpCalc/vp);
 				if (ratio>maxRatio) {
-					cnt3++;
-					System.out.println("Antoine vpCalc = "+vpCalc+", vp = "+vp+", "+chemical.getCAS());			
+					cnt9++;
+//					System.out.println("ClausiusClapeyron vpCalc = "+vpCalc+", vp = "+vp+", "+chemical.getCAS());			
 				}
-//				Assert.assertTrue("Vapor pressure is not 1.0 atm, "+chemical.getCAS(), ratio<=maxRatio);
-			} else if (chemical.haveCriticalParameters()){
-				cnt4++;
-				ratio = vpCalc/vp;
-				if (ratio>maxRatio) {
-					cnt5++;
-					System.out.println("LeeKesler vpCalc = "+vpCalc+", vp = "+vp+", "+chemical.getCAS());			
-				}
-//				Assert.assertTrue("Vapor pressure is not 1.0 atm, "+chemical.getCAS(), ratio<=maxRatio);
-			} else if (chemical.haveAntoineConstants()){
-				cnt6++;
-				ratio = vpCalc/vp;
-				if (ratio>maxRatio) {
-					cnt7++;
-					System.out.println("Antoine out-of-range vpCalc = "+vpCalc+", vp = "+vp+", "+chemical.getCAS());			
-				}
-//				Assert.assertTrue("Vapor pressure is not 1.0 atm, "+chemical.getCAS(), ratio<=maxRatio);
-			} else {
-				cnt1++;
 			}
+			
 		}
-		System.out.println("Std Pressure, maxRatio = "+maxRatio+", total = "+cnt0+", unavailable = "+cnt1);
-		System.out.println("Antoine ratio > maxRatio :"+cnt3/(double)cnt2+" of "+cnt2);
-		System.out.println("LeeKesler ratio > maxRatio :"+cnt5/(double)cnt4+" of "+cnt4);
-		System.out.println("Antoine out-of-range ratio > maxRatio :"+cnt7/(double)cnt6+" of "+cnt6);
+//		System.out.println("Std Temp, maxRatio = "+maxRatio+", total = "+cnt0+", non-liquid phase = "+cnt1);
+		Assert.assertTrue("Antoine ratio > "+maxRatio+", more than "+cnt3+" of "+cnt2, cnt3<=3);
+		Assert.assertTrue("LeeKesler ratio > "+maxRatio+", more than "+cnt5+" of "+cnt4, cnt5<=108);
+		Assert.assertTrue("Antoine out-of-range ratio > "+maxRatio+", more than "+cnt7+" of "+cnt6, cnt7<=1);
+		Assert.assertTrue("ClausiusClapeyron ratio > "+maxRatio+", more than "+cnt9+" of "+cnt8, cnt9<=0);
 		
 	}
 	
