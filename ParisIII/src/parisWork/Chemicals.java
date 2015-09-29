@@ -46,13 +46,13 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 		return chemicals;
 	}
 	
-	public Chemicals filterForVaporPressure() {
+	public Chemicals filterForVaporPressure(double temperature) {
 		Chemicals chemicals = new Chemicals();
 
 		for (int i=0; i<this.elementCount; i++) {
 			Chemical chemical = this.get(i);
 
-			if (chemical.canCalculateVaporPressure()) {
+			if (chemical.canDetermineVaporPressure(temperature)) {
 				chemicals.add(chemical);
 			}
 		}
@@ -255,6 +255,26 @@ public class Chemicals extends Vector<Chemical> implements Serializable, Cloneab
 			e.printStackTrace();
 		}
 		return chemicals;
+	}
+	
+	public void correctVaporPressureConstants() {
+		Chemical chemical;
+		
+		chemical = this.getByCAS("606-27-9");
+		if (chemical!=null) {
+			chemical.setAntoineConstantC(111.957);
+		}
+		chemical = this.getByCAS("13019-20-0");
+		if (chemical!=null) {
+			chemical.setAntoineConstantC(-61.01);
+		}
+		chemical = this.getByCAS("460-19-5");
+		if (chemical!=null) {
+			chemical.setMeltingPoint(245.27);
+			chemical.setBoilingPoint(251.95);
+		}
+		
+		return;
 	}
 	
 
