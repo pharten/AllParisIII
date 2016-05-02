@@ -116,9 +116,10 @@ public class ParisWork extends java.lang.Object implements Serializable {
 	
 	public void start() throws Exception {
 		
-		states = States.readFromFile("data/defaultStates.xml");
-		State state = states.getElementBySystemName("default");
-		if (state==null) throw new Exception("default state not found");
+		states = new States();
+		states.add(new State());
+		states.setActiveState(states.firstElement());
+
 //		states.writeByXML(getClass().getResource("/data/defaultStates.xml").getFile());
 
 		if (concurrentTask!=null) {
@@ -449,17 +450,16 @@ public class ParisWork extends java.lang.Object implements Serializable {
 			public void widgetSelected(SelectionEvent e) {
 				try {
 					MessageBox messageBox = new MessageBox(shell, SWT.ICON_QUESTION | SWT.YES | SWT.NO | SWT.CANCEL);
-					messageBox.setMessage("Do you want to save all your states before exiting?");
+					messageBox.setMessage("Do you want to save any states before exiting?");
 					int response = messageBox.open();
-					if (response != SWT.CANCEL) {
+					if (response == SWT.NO) {
 						messageBox.setText("Exiting Application");
-						if (response == SWT.YES) {
-							String filename = getClass().getResource("/data/defaultStates.xml").getFile();
-							states.writeByXML(filename);
-						}
 						clipboard.dispose();
 						display.dispose();
 //						helpSystem.shutdown();
+					} else if (response == SWT.YES) {
+						previousIndex = 0; // goto Screen0
+						begin();						
 					}
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
