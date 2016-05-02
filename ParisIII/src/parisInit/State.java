@@ -30,7 +30,7 @@ public class State extends Object implements Serializable, Cloneable {
 	
 	private String fileName = null;
 	private int openScreen = 0;
-	private String systemName = null;
+	private String systemName = "default";
 	private Units systemUnit = Units.SI;
 	private String systemTemp = "25.0";//TODO if default units is SI wouldn't you store in SI?
 	private String systemPres = "1.0";//TODO if default units is SI wouldn't you store in SI?
