@@ -20,37 +20,38 @@ public class States extends Vector<State> implements Serializable, Cloneable {
 		super();
 	}
 	
-	public static States readFromFile(String filename) {
-		
-		States states = null;
-		try {
-			if (filename.endsWith(".xml")) {
-				states = States.readByXML(filename);
-			} else {
-				throw new Exception("Filename has unaccepted extension.");
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return states;
-	}
-	
-	private static States readByXML(String filename) throws IOException {
-		XMLDecoder decoder = new XMLDecoder(ClassLoader.getSystemResourceAsStream(filename));
-		States states = (States)decoder.readObject();
-		decoder.close();
-		return states;
-	}
-	
-	public void writeByXML(String filename) throws IOException {
-		FileOutputStream fos = new FileOutputStream(filename);
-		XMLEncoder encoder = new XMLEncoder(fos);
-		encoder.writeObject(this);
-		encoder.flush();
-		encoder.close();
-		fos.close();
-	}
+//	public static States readFromFile(String filename) {
+//		
+//		States states = null;
+//		try {
+//			if (filename.endsWith(".xml")) {
+//				states = States.readByXML(filename);
+//			} else {
+//				throw new Exception("Filename has unaccepted extension.");
+//			}
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return states;
+//	}
+//	
+//	private static States readByXML(String filename) throws IOException {
+//		FileInputStream fis = new FileInputStream(filename);
+//		XMLDecoder decoder = new XMLDecoder(fis);
+//		States states = (States)decoder.readObject();
+//		decoder.close();
+//		return states;
+//	}
+//	
+//	public void writeByXML(String filename) throws IOException {
+//		FileOutputStream fos = new FileOutputStream(filename);
+//		XMLEncoder encoder = new XMLEncoder(fos);
+//		encoder.writeObject(this);
+//		encoder.flush();
+//		encoder.close();
+//		fos.close();
+//	}
 	
 	public State getElementBySystemName(String systemName) {
 		
