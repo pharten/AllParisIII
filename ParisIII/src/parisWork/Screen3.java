@@ -727,6 +727,9 @@ public class Screen3 extends Screen {
 		loadTolerances(states.getActiveState());
 		loadProperties(states.getActiveState());
 		
+		Mixture mixture = states.getActiveState().getMixture();
+		this.scale.setEnabled(mixture!=null && mixture.getChemicals2() !=null && mixture.getChemicals2().length!=0);
+		
 		radioButton_2.setEnabled(bestMixtures!=null);
 		if (states.getActiveState().isSingle()) {
 			radioButton_1.setSelection(true);

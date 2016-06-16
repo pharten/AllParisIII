@@ -2784,9 +2784,13 @@ public class Mixture extends Chemical implements Serializable, Cloneable {
 	public boolean isContained(Chemicals chemicals) {
 		
 		Chemical[] mChemicals = this.chemicals;
-		for (int i=0; i<mChemicals.length; i++) {
-			if (!mChemicals[i].isContained(chemicals)) return false;
+
+		if (mChemicals!=null) { // there are chemicals in mixture to test
+			for (int i=0; i<mChemicals.length; i++) {
+				if (!mChemicals[i].isContained(chemicals)) return false;
+			}
 		}
+		
 		return true;
 	}
 

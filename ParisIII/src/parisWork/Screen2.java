@@ -761,6 +761,9 @@ public class Screen2 extends Screen {
 		loadEnvironmentalIndexes(states.getActiveState());
 		modifyChemicalUnits(states.getActiveState().getSystemUnit());
 		
+		Mixture mixture = states.getActiveState().getMixture();
+		this.scale.setEnabled(mixture!=null && mixture.getChemicals2() !=null && mixture.getChemicals2().length!=0);
+		
 		radioButton_2.setEnabled(bestMixtures!=null);
 		if (states.getActiveState().isSingle()) {
 			radioButton_1.setSelection(true);
