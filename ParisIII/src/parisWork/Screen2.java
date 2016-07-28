@@ -1044,7 +1044,7 @@ public class Screen2 extends Screen {
 			lblKpa.setText(" Pa");
 			lblKgs.setText(" dyne/cm");
 			lblKgms.setText(" cP");
-			lblJmsk.setText(" mW/m-C");
+			lblJmsk.setText(" mW/(m-K)");
 			lblK_1.setText(" C");
 			break;
 		case CGS:
@@ -1054,7 +1054,7 @@ public class Screen2 extends Screen {
 			lblKpa.setText(" Pa");
 			lblKgs.setText(" g/s2");
 			lblKgms.setText(" g/cm-s");
-			lblJmsk.setText(" cal/(cm-s-C)");
+			lblJmsk.setText(" cal/(cm-s-K)");
 			lblK_1.setText(" C");
 			break;
 		case US:
@@ -1064,7 +1064,7 @@ public class Screen2 extends Screen {
 			lblKpa.setText(" atm");
 			lblKgs.setText(" lb/s2");
 			lblKgms.setText(" lb/ft-s");
-			lblJmsk.setText(" Btu/(ft-s-F)");
+			lblJmsk.setText(" Btu/(ft-s-R)");
 			lblK_1.setText(" F");
 			break;
 		default: // units == Units.SI

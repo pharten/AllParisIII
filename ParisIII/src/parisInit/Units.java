@@ -9,9 +9,9 @@ pressure			kPa			mmHg		Pa			atm
 temperature			K			C			C			F	
 density				kg/m3		g/cm3		g/cm3		lb/ft3
 viscosity			kg/(m-s)	cP			g/(cm-s)	lb/(ft-s)
-thermal cond.		J/(m-s-K)	mW/mK		cal/(cm-s-C) Btu/(ft-s-F)		
+thermal cond.		J/(m-s-K)	mW/(m-K)	cal/(cm-s-K)Btu/(ft-s-R)		
 surface tension		kg/s2		dyn/cm		g/s2		lb/s2
-heat capacity		J/(kmol-K)	cal/(mol-C)	cal/(mol-C)	Btu/(mol-F)	
+heat capacity		J/(kmol-K)	cal/(mol-K)	cal/(mol-K)	Btu/(mol-R)	
 */
 
 public enum Units {
